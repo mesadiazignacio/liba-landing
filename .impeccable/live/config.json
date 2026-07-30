@@ -1,0 +1,7 @@
+{
+  "files": ["index.html"],
+  "exclude": ["emailjs-template.html", "dist/**"],
+  "insertBefore": "</body>",
+  "commentSyntax": "html",
+  "cspChecked": true
+}

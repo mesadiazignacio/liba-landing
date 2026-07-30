@@ -1,0 +1,126 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Alverata Informal Regular */
+@font-face {
+  font-family: 'Alverata-Irregular';
+  src: url('/fonts/alverata-informal-regular.otf') format('opentype');
+  font-weight: 900;
+  font-style: bold;
+  font-display: swap;
+}
+
+/* Gotham — place font files in /public/fonts/ */
+@font-face {
+  font-family: 'Gotham';
+  src: url('/fonts/Gotham-Book.woff2') format('woff2'),
+       url('/fonts/Gotham-Book.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Gotham';
+  src: url('/fonts/Gotham-Medium.woff2') format('woff2'),
+       url('/fonts/Gotham-Medium.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Gotham';
+  src: url('/fonts/Gotham-Bold.woff2') format('woff2'),
+       url('/fonts/Gotham-Bold.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Gotham';
+  src: url('/fonts/Gotham-Black.woff2') format('woff2'),
+       url('/fonts/Gotham-Black.woff') format('woff');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@layer base {
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply font-body text-navy bg-white;
+    overflow-x: hidden;
+  }
+
+  /* Dual focus ring: the white outline reads on navy and coral surfaces, the
+     navy halo reads on white and the paper tints. At least one is always
+     visible, whatever the element sits on. Follows the element's radius. */
+  :where(a, button, input, textarea, select, summary, [tabindex]):focus-visible {
+    outline: 2px solid #ffffff;
+    outline-offset: 0;
+    box-shadow: 0 0 0 4px #084d9b;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  .font-alverata {
+    -webkit-text-stroke: 1.5px currentColor;
+    text-shadow: 0 0 1px currentColor;
+  }
+}
+
+@keyframes logo-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* The JS motion layer honours prefers-reduced-motion through
+   useReducedMotionSafe, but the CSS keyframe animations (the testimonial
+   marquee, the stage marker ping, the service shimmer, logo-spin) had no such
+   guard and ran regardless. Collapse them here rather than in each component:
+   the declaration is the same everywhere and a missed one is invisible until a
+   motion-sensitive visitor hits it.
+
+   scroll-behavior goes with them — a smooth-scrolled anchor jump is exactly the
+   kind of unrequested movement the preference is asking us not to make. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Hide all scrollbars visually — scroll still works */
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+* {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE / Edge legacy */
+}
+
+/* Selection */
+::selection {
+  @apply bg-coral/30 text-navy;
+}

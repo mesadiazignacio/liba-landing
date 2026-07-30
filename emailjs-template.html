@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nueva consulta — LIBA Gestoría</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet" />
+</head>
+<body style="margin:0;padding:0;background-color:#f0f4f9;font-family:'Inter','Helvetica Neue',Helvetica,Arial,sans-serif;">
+
+  <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f0f4f9;padding:40px 16px;">
+    <tr>
+      <td align="center">
+        <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;border-radius:16px;overflow:hidden;box-shadow:0 8px 32px rgba(8,77,155,0.12);">
+
+          <!-- HEADER -->
+          <tr>
+            <td style="background-color:#084d9b;padding:36px 40px 28px;">
+              <table width="100%" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td>
+                    <span style="font-size:28px;font-weight:900;color:#ffffff;letter-spacing:-0.5px;">LIBA<span style="color:#ed6d92;">.</span></span>
+                    <p style="margin:4px 0 0;font-size:12px;color:rgba(255,255,255,0.6);letter-spacing:2px;text-transform:uppercase;font-weight:500;font-family:'Inter','Helvetica Neue',Helvetica,Arial,sans-serif;">Gestoría del Automotor</p>
+                  </td>
+                  <td align="right" valign="middle">
+                    <span style="display:inline-block;background-color:rgba(255,255,255,0.12);border-radius:100px;padding:6px 16px;font-size:11px;color:rgba(255,255,255,0.9);font-weight:600;letter-spacing:1px;text-transform:uppercase;font-family:'Inter','Helvetica Neue',Helvetica,Arial,sans-serif;">Nueva consulta</span>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- CORAL ACCENT BAR -->
+          <tr>
+            <td style="height:4px;background:linear-gradient(90deg,#ed6d92,#084d9b);"></td>
+          </tr>
+
+          <!-- INTRO -->
+          <tr>
+            <td style="background-color:#ffffff;padding:32px 40px 8px;">
+              <p style="margin:0;font-size:18px;font-weight:700;color:#084d9b;font-family:'Inter','Helvetica Neue',Helvetica,Arial,sans-serif;">Recibiste una nueva consulta desde el sitio web.</p>
+              <p style="margin:10px 0 0;font-size:14px;color:#6b7280;line-height:1.6;font-family:'Inter','Helvetica Neue',Helvetica,Arial,sans-serif;">A continuación encontrás los datos que completó el cliente en el formulario de contacto.</p>
+            </td>
+          </tr>
+
+          <!-- FIELDS -->
+          <tr>
+            <td style="background-color:#ffffff;padding:24px 40px 8px;">
+
+              <!-- Nombre -->
+              <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:16px;">
+                <tr>
+                  <td style="background-color:#f0f4f9;border-radius:12px;padding:16px 20px;">
+                    <p style="margin:0 0 4px;font-size:10px;font-weight:700;color:#ed6d92;letter-spacing:1.5px;text-transform:uppercase;font-family:'Inter','Helvetica Neue',Helvetica,Arial,sans-serif;">Nombre</p>
+                    <p style="margin:0;font-size:16px;font-weight:600;color:#084d9b;font-family:'Inter','Helvetica Neue',Helvetica,Arial,sans-serif;">{{nombre}}</p>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Contacto -->
+              <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:16px;">
+                <tr>
+                  <td style="background-color:#f0f4f9;border-radius:12px;padding:16px 20px;">
+                    <p style="margin:0 0 4px;font-size:10px;font-weight:700;color:#ed6d92;letter-spacing:1.5px;text-transform:uppercase;font-family:'Inter','Helvetica Neue',Helvetica,Arial,sans-serif;">WhatsApp / Email</p>
+                    <p style="margin:0;font-size:16px;font-weight:600;color:#084d9b;font-family:'Inter','Helvetica Neue',Helvetica,Arial,sans-serif;">{{contacto}}</p>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Trámite -->
+              <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:16px;">
+                <tr>
+                  <td style="background-color:#f0f4f9;border-radius:12px;padding:16px 20px;">
+                    <p style="margin:0 0 4px;font-size:10px;font-weight:700;color:#ed6d92;letter-spacing:1.5px;text-transform:uppercase;font-family:'Inter','Helvetica Neue',Helvetica,Arial,sans-serif;">Trámite que necesita</p>
+                    <p style="margin:0;font-size:16px;font-weight:600;color:#084d9b;font-family:'Inter','Helvetica Neue',Helvetica,Arial,sans-serif;">{{tramite}}</p>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Situación -->
+              <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:8px;">
+                <tr>
+                  <td style="background-color:#f0f4f9;border-radius:12px;padding:16px 20px;">
+                    <p style="margin:0 0 8px;font-size:10px;font-weight:700;color:#ed6d92;letter-spacing:1.5px;text-transform:uppercase;font-family:'Inter','Helvetica Neue',Helvetica,Arial,sans-serif;">Situación / Detalle</p>
+                    <p style="margin:0;font-size:15px;font-weight:400;color:#374151;line-height:1.65;font-family:'Inter','Helvetica Neue',Helvetica,Arial,sans-serif;">{{situacion}}</p>
+                  </td>
+                </tr>
+              </table>
+
+            </td>
+          </tr>
+
+          <!-- FOOTER -->
+          <tr>
+            <td style="background-color:#084d9b;padding:20px 40px;border-radius:0 0 16px 16px;">
+              <table width="100%" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td>
+                    <p style="margin:0;font-size:12px;color:rgba(255,255,255,0.5);line-height:1.6;font-family:'Inter','Helvetica Neue',Helvetica,Arial,sans-serif;">Este mail fue generado automáticamente desde el formulario de contacto de <strong style="color:rgba(255,255,255,0.8);">libagestoria.com</strong></p>
+                  </td>
+                  <td align="right" valign="middle">
+                    <span style="font-size:16px;font-weight:900;color:rgba(255,255,255,0.3);">LIBA<span style="color:#ed6d92;">.</span></span>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+
+</body>
+</html>

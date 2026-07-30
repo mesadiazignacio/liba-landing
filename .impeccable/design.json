@@ -1,0 +1,512 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-07-30T02:17:01.569964+00:00",
+  "title": "Design System: LIBA Gestoría del Automotor",
+  "extensions": {
+    "colorMeta": {
+      "navy": {
+        "role": "primary",
+        "displayName": "Navy",
+        "canonical": "#084d9b",
+        "tonalRamp": [
+          "#03172e",
+          "#052346",
+          "#063a75",
+          "#084d9b",
+          "#2f6db4",
+          "#6a9bd0",
+          "#a9c8e6",
+          "#f0f5fb"
+        ]
+      },
+      "navy-light": {
+        "role": "primary",
+        "displayName": "Navy Light",
+        "canonical": "#1e6bc4"
+      },
+      "coral": {
+        "role": "secondary",
+        "displayName": "Coral",
+        "canonical": "#ed6d92",
+        "tonalRamp": [
+          "#4a1523",
+          "#722036",
+          "#a02d4c",
+          "#ce4a6f",
+          "#ed6d92",
+          "#f294b0",
+          "#f7bccd",
+          "#fde4ec"
+        ]
+      },
+      "coral-deep": {
+        "role": "secondary",
+        "displayName": "Coral Deep",
+        "canonical": "#cc3a66",
+        "tonalRamp": [
+          "#2c0c16",
+          "#4d1626",
+          "#732339",
+          "#99304c",
+          "#cc3a66",
+          "#e06b8d",
+          "#eda4ba",
+          "#f8d6e0"
+        ]
+      },
+      "coral-light": {
+        "role": "secondary",
+        "displayName": "Coral Light",
+        "canonical": "#f4a0b5",
+        "tonalRamp": [
+          "#52212c",
+          "#7b3242",
+          "#a54459",
+          "#ce6a80",
+          "#e2869d",
+          "#f4a0b5",
+          "#f8c4d2",
+          "#fdeaf0"
+        ]
+      },
+      "paper-cool": {
+        "role": "neutral",
+        "displayName": "Paper Cool",
+        "canonical": "#f0f5fb",
+        "tonalRamp": [
+          "#1a222c",
+          "#2d3a49",
+          "#475a70",
+          "#6b8098",
+          "#95a9c0",
+          "#c0d0e2",
+          "#dce8f6",
+          "#f0f5fb"
+        ]
+      },
+      "paper-blush": {
+        "role": "neutral",
+        "displayName": "Paper Blush",
+        "canonical": "#fde4ec",
+        "tonalRamp": [
+          "#2e1a20",
+          "#4a2932",
+          "#6d3d49",
+          "#945867",
+          "#bd8290",
+          "#dcaeb9",
+          "#f2cfd9",
+          "#fde4ec"
+        ]
+      },
+      "border-cool": {
+        "role": "neutral",
+        "displayName": "Border Cool",
+        "canonical": "#dce8f6",
+        "tonalRamp": [
+          "#171f28",
+          "#293846",
+          "#425668",
+          "#63798f",
+          "#8ea5bd",
+          "#b6c9de",
+          "#dce8f6",
+          "#f4f8fd"
+        ]
+      },
+      "white": {
+        "role": "neutral",
+        "displayName": "White",
+        "canonical": "#ffffff"
+      },
+      "star": {
+        "role": "tertiary",
+        "displayName": "Star",
+        "canonical": "#facc15",
+        "tonalRamp": [
+          "#3b2f03",
+          "#5c4906",
+          "#846a09",
+          "#ad8c0c",
+          "#d4ac10",
+          "#facc15",
+          "#fbdd5f",
+          "#fdefaf"
+        ]
+      },
+      "whatsapp": {
+        "role": "tertiary",
+        "displayName": "WhatsApp Green",
+        "canonical": "#25d366",
+        "tonalRamp": [
+          "#062b14",
+          "#0a4520",
+          "#0f6330",
+          "#158443",
+          "#1db954",
+          "#25d366",
+          "#6ce49a",
+          "#b6f2cd"
+        ]
+      },
+      "whatsapp-deep": {
+        "role": "tertiary",
+        "displayName": "WhatsApp Deep",
+        "canonical": "#1db954"
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Section headlines on band openings. Always ships with the 1.5px text-stroke treatment."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Page-level h1. Alverata, same stroke treatment, one step below display."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Card, panel, and disclosure-row headings. Gotham — the serif does not descend below section level. Two real steps: 17px for dense catalog rows, 20–22px for standalone cards."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Running copy, card descriptions, list items."
+      },
+      "body-lede": {
+        "displayName": "Body Lede",
+        "purpose": "The oversized paragraph under a display headline, carrying the emotional statement of a band."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Navigation, buttons, chips. Sentence case. A separate micro-label convention exists at 10–13px, bold, tracked 0.2em and uppercase, for step markers, eyebrows, and roles."
+      },
+      "micro-label": {
+        "displayName": "Micro-label",
+        "purpose": "Section eyebrows and team roles only, uppercase and tracked. At 11px it is the floor of what this palette holds legibly; not a general small-text style."
+      }
+    },
+    "shadows": [
+      {
+        "name": "card",
+        "value": "0 4px 24px rgba(0,0,0,0.08)",
+        "purpose": "Default resting lift for any card sitting on a tonal band."
+      },
+      {
+        "name": "card-hover",
+        "value": "0 12px 48px rgba(0,0,0,0.16)",
+        "purpose": "Hover state. A genuine jump in offset and blur, not a subtle darkening."
+      },
+      {
+        "name": "glow-coral",
+        "value": "0 0 30px rgba(237,109,146,0.3)",
+        "purpose": "Ambient coral halo on primary buttons and feature cards at hover."
+      },
+      {
+        "name": "glow-navy",
+        "value": "0 0 30px rgba(8,77,155,0.3)",
+        "purpose": "Navy halo counterpart, for coral or white surfaces on navy ground."
+      },
+      {
+        "name": "card-navy-cast",
+        "value": "0 12px 32px rgba(8,77,155,0.18)",
+        "purpose": "Navy-tinted lift for cards on tinted bands, where black shadow reads muddy."
+      },
+      {
+        "name": "button-hover",
+        "value": "0 8px 28px rgba(8,77,155,0.22)",
+        "purpose": "Raised state for white action cards on coral ground."
+      },
+      {
+        "name": "stage-reached",
+        "value": "0 0 0 4px rgba(237,109,146,0.26), 0 10px 24px -8px rgba(237,109,146,0.75)",
+        "purpose": "Halo on a case-rail marker the coral fill has passed. Ring plus offset drop, so the marker reads as lifting off the rail."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-out",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Confident arrival. The default for anything entering; exponential ease-out."
+      },
+      {
+        "name": "ease-in-out",
+        "value": "cubic-bezier(0.65, 0, 0.35, 1)",
+        "purpose": "Movement between two known positions."
+      },
+      {
+        "name": "ease-exit",
+        "value": "cubic-bezier(0.4, 0, 1, 1)",
+        "purpose": "Leaving. Front-loaded so the element clears the frame fast."
+      },
+      {
+        "name": "duration-feedback",
+        "value": "140ms",
+        "purpose": "Immediate acknowledgment of a press. Longer than this reads as latency."
+      },
+      {
+        "name": "duration-state",
+        "value": "220ms",
+        "purpose": "A routine state change: colour, chevron, ring, nav wash, route crossfade."
+      },
+      {
+        "name": "duration-layout",
+        "value": "400ms",
+        "purpose": "Layout, disclosure, overlay."
+      },
+      {
+        "name": "duration-entrance",
+        "value": "550ms",
+        "purpose": "A deliberately authored entrance. Used sparingly."
+      },
+      {
+        "name": "duration-exit",
+        "value": "180ms",
+        "purpose": "Anything leaving. Always shorter than the matching entrance."
+      },
+      {
+        "name": "spring-press",
+        "value": "stiffness 400, damping 26",
+        "purpose": "Press and hover acknowledgment. Reassurance, not a bounce."
+      },
+      {
+        "name": "spring-follow",
+        "value": "stiffness 300, damping 22, mass 0.6",
+        "purpose": "Pointer-following: magnetic pull, card tilt."
+      },
+      {
+        "name": "spring-layout",
+        "value": "stiffness 380, damping 32",
+        "purpose": "Shared-layout movement, such as the navbar active fill."
+      },
+      {
+        "name": "spring-progress",
+        "value": "stiffness 42, damping 26, mass 0.85",
+        "purpose": "The case rail's scroll-linked fill. Slow enough to read as advancement, not tracking."
+      },
+      {
+        "name": "stagger-budget",
+        "value": "280ms total",
+        "purpose": "Whatever the item count, the last child starts within this of the first. Derive the per-child step with staggerStep()."
+      },
+      {
+        "name": "marquee",
+        "value": "30s linear infinite",
+        "purpose": "The testimonial ticker. Gated on visibility — it pauses offscreen and when the tab is hidden."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sm",
+        "value": "640px"
+      },
+      {
+        "name": "md",
+        "value": "768px"
+      },
+      {
+        "name": "lg",
+        "value": "1024px"
+      },
+      {
+        "name": "xl",
+        "value": "1280px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The coral call to action. Uses coral-deep so white text clears AA; the glow arrives on hover, never at rest.",
+      "html": "<button class=\"ds-btn-primary\">Agendar consulta</button>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: #cc3a66; color: #ffffff; border: 2px solid #cc3a66; border-radius: 9999px; padding: 12px 24px; font-family: Gotham, Inter, system-ui, sans-serif; font-size: 16px; font-weight: 600; cursor: pointer; transition: transform 0.3s cubic-bezier(0.22,1,0.36,1), box-shadow 0.3s cubic-bezier(0.22,1,0.36,1); } .ds-btn-primary:hover { transform: scale(1.04); box-shadow: 0 0 30px rgba(237,109,146,0.3); } .ds-btn-primary:focus-visible { outline: 2px solid #ffffff; outline-offset: 0; box-shadow: 0 0 0 4px #084d9b; } .ds-btn-primary:active { transform: scale(0.97); }"
+    },
+    {
+      "name": "Outlined Button",
+      "kind": "button",
+      "refersTo": "button-outlined",
+      "description": "Secondary action on navy or coral ground. Inverts to white fill on hover.",
+      "html": "<button class=\"ds-btn-outlined\">Ver trámites</button>",
+      "css": ".ds-btn-outlined { display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: transparent; color: #ffffff; border: 2px solid #ffffff; border-radius: 9999px; padding: 12px 24px; font-family: Gotham, Inter, system-ui, sans-serif; font-size: 16px; font-weight: 600; cursor: pointer; transition: background 0.3s cubic-bezier(0.22,1,0.36,1), color 0.3s cubic-bezier(0.22,1,0.36,1), transform 0.3s cubic-bezier(0.22,1,0.36,1); } .ds-btn-outlined:hover { background: #ffffff; color: #084d9b; transform: scale(1.04); } .ds-btn-outlined:focus-visible { outline: 2px solid #ffffff; outline-offset: 0; box-shadow: 0 0 0 4px #084d9b; } .ds-btn-outlined:active { transform: scale(0.97); }"
+    },
+    {
+      "name": "WhatsApp Button",
+      "kind": "button",
+      "refersTo": "button-whatsapp",
+      "description": "Borrowed platform green. Only ever on a control that opens WhatsApp.",
+      "html": "<button class=\"ds-btn-whatsapp\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884a9.82 9.82 0 016.988 2.898 9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z\"/></svg>Escribinos</button>",
+      "css": ".ds-btn-whatsapp { display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: #25d366; color: #ffffff; border: 2px solid #25d366; border-radius: 9999px; padding: 12px 24px; font-family: Gotham, Inter, system-ui, sans-serif; font-size: 16px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 24px rgba(0,0,0,0.08); transition: background 0.3s cubic-bezier(0.22,1,0.36,1), border-color 0.3s cubic-bezier(0.22,1,0.36,1), transform 0.3s cubic-bezier(0.22,1,0.36,1); } .ds-btn-whatsapp:hover { background: #1db954; border-color: #1db954; transform: scale(1.04); } .ds-btn-whatsapp:focus-visible { outline: 2px solid #ffffff; outline-offset: 0; box-shadow: 0 0 0 4px #084d9b; } .ds-btn-whatsapp:active { transform: scale(0.97); }"
+    },
+    {
+      "name": "Service Chip",
+      "kind": "chip",
+      "refersTo": "chip-service",
+      "description": "A single service line in the services grid. Coral surface, 16px corner — the one chip that is not a pill.",
+      "html": "<button class=\"ds-chip-service\">Transferencias de autos</button>",
+      "css": ".ds-chip-service { display: block; width: 100%; text-align: left; background: #cc3a66; color: #ffffff; border: none; border-radius: 16px; padding: 12px 20px; font-family: Gotham, Inter, system-ui, sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; transition: transform 0.2s cubic-bezier(0.22,1,0.36,1), box-shadow 0.2s cubic-bezier(0.22,1,0.36,1); } .ds-chip-service:hover { transform: translateY(-2px) scale(1.04); box-shadow: 0 8px 28px rgba(237,109,146,0.35); } .ds-chip-service:focus-visible { outline: 2px solid #ffffff; outline-offset: 0; box-shadow: 0 0 0 4px #084d9b; } .ds-chip-service:active { transform: scale(0.97); }"
+    },
+    {
+      "name": "Feature Card",
+      "kind": "card",
+      "refersTo": "card-feature",
+      "description": "Navy differentiator card as shipped in WhyChoose: centered text with a diagonal sheen that fades in on hover.",
+      "html": "<div class=\"ds-card-feature\"><div class=\"ds-card-feature-sheen\"></div><div class=\"ds-card-feature-body\"><h3>Respaldo normativo real</h3><p>Trabajamos siempre con la norma registral como base y fundamentos técnicos, haciendo frente a las adversidades y decisiones arbitrarias de los organismos.</p></div></div>",
+      "css": ".ds-card-feature { position: relative; height: 100%; overflow: hidden; background: #084d9b; border-radius: 16px; padding: 28px 24px; text-align: center; font-family: Gotham, Inter, system-ui, sans-serif; } @media (min-width: 640px) { .ds-card-feature { padding: 32px; } } .ds-card-feature-sheen { position: absolute; inset: 0; border-radius: 16px; opacity: 0; pointer-events: none; background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0) 50%, rgba(255,255,255,0.08) 100%); transition: opacity 0.5s cubic-bezier(0.22,1,0.36,1); } .ds-card-feature:hover .ds-card-feature-sheen { opacity: 1; } .ds-card-feature-body { position: relative; z-index: 1; } .ds-card-feature h3 { margin: 0 0 12px; color: #ffffff; font-size: 20px; font-weight: 600; line-height: 1.1; } .ds-card-feature p { margin: 0; color: rgba(255,255,255,0.8); font-size: 14px; line-height: 1.6; }"
+    },
+    {
+      "name": "Testimonial Card",
+      "kind": "card",
+      "refersTo": "card-testimonial",
+      "description": "White card for the marquee carousel, with a coral quotation watermark. Real reviews only — the star count is data, not decoration. Non-interactive by design, so no hover state.",
+      "html": "<div class=\"ds-card-testimonial\"><svg class=\"ds-quote-mark\" viewBox=\"0 0 40 32\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M0 32V19.2C0 8.533 5.867 2.133 17.6 0l2.133 3.733C13.6 5.067 10.4 8.267 9.6 13.6H16V32H0zm22.4 0V19.2C22.4 8.533 28.267 2.133 40 0l2.133 3.733c-6.133 1.334-9.333 4.534-10.133 9.867H38.4V32H22.4z\"/></svg><div class=\"ds-card-testimonial-who\"><span class=\"ds-avatar\">FC</span><div><p class=\"ds-name\">Franco Christ</p><p class=\"ds-place\">Florida</p></div></div><div class=\"ds-stars\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 20 20\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z\"/></svg><svg width=\"16\" height=\"16\" viewBox=\"0 0 20 20\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z\"/></svg><svg width=\"16\" height=\"16\" viewBox=\"0 0 20 20\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z\"/></svg><svg width=\"16\" height=\"16\" viewBox=\"0 0 20 20\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z\"/></svg><svg width=\"16\" height=\"16\" viewBox=\"0 0 20 20\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z\"/></svg></div><p class=\"ds-quote\">\"Excelente atención y seguimiento en todo momento. El trámite se resolvió rápido y sin complicaciones. Muy recomendable.\"</p></div>",
+      "css": ".ds-card-testimonial { position: relative; overflow: hidden; width: 280px; background: #ffffff; border: 1px solid #f3f4f6; border-radius: 16px; padding: 20px; font-family: Gotham, Inter, system-ui, sans-serif; box-shadow: 0 4px 24px rgba(0,0,0,0.08); } @media (min-width: 640px) { .ds-card-testimonial { width: 310px; } } .ds-quote-mark { position: absolute; top: 12px; right: 12px; width: 32px; height: 32px; color: rgba(237,109,146,0.1); } .ds-card-testimonial-who { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; } .ds-avatar { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; flex-shrink: 0; border-radius: 9999px; background: #084d9b; color: #ffffff; font-size: 14px; font-weight: 700; } .ds-name { margin: 0; color: #084d9b; font-size: 14px; font-weight: 600; } .ds-place { margin: 0; color: #9ca3af; font-size: 12px; } .ds-stars { display: flex; gap: 2px; color: #facc15; } .ds-quote { margin: 12px 0 0; color: #4b5563; font-size: 14px; line-height: 1.6; }"
+    },
+    {
+      "name": "Input Field",
+      "kind": "input",
+      "refersTo": "input-field",
+      "description": "White field on a tinted band, defined by fill rather than stroke. Requires a visible label — placeholders are transparent by design.",
+      "html": "<label class=\"ds-field\"><span class=\"ds-field-label\">Nombre y apellido</span><input class=\"ds-input\" type=\"text\" /></label>",
+      "css": ".ds-field { display: flex; flex-direction: column; gap: 8px; font-family: Gotham, Inter, system-ui, sans-serif; } .ds-field-label { color: #084d9b; font-size: 14px; font-weight: 600; } .ds-input { width: 100%; background: #ffffff; color: #084d9b; border: 1px solid transparent; border-radius: 16px; padding: 14px 16px; font-family: inherit; font-size: 16px; outline: none; transition: border-color 0.2s cubic-bezier(0.22,1,0.36,1), box-shadow 0.2s cubic-bezier(0.22,1,0.36,1); } .ds-input:focus { border-color: rgba(8,77,155,0.2); box-shadow: 0 0 0 2px rgba(8,77,155,0.2); } .ds-input::placeholder { color: transparent; }"
+    },
+    {
+      "name": "Navigation Bar",
+      "kind": "nav",
+      "refersTo": "nav-link",
+      "description": "Navy bar with full-height hit areas. The active item takes a square white fill — the system's one deliberate break from the two-radii rule.",
+      "html": "<nav class=\"ds-nav\"><a class=\"ds-nav-link ds-nav-link-active\" href=\"#\">Sobre LIBA</a><a class=\"ds-nav-link\" href=\"#\">Servicios</a><a class=\"ds-nav-link\" href=\"#\">Trámites</a><a class=\"ds-nav-link\" href=\"#\">Contacto</a></nav>",
+      "css": ".ds-nav { display: flex; align-items: stretch; height: 56px; background: #084d9b; font-family: Gotham, Inter, system-ui, sans-serif; } .ds-nav-link { display: flex; align-items: center; justify-content: center; padding: 0 16px; color: #ffffff; font-size: 14px; font-weight: 700; line-height: 1; text-decoration: none; white-space: nowrap; transition: background 0.2s cubic-bezier(0.22,1,0.36,1), color 0.2s cubic-bezier(0.22,1,0.36,1); } .ds-nav-link:hover { background: rgba(255,255,255,0.1); } .ds-nav-link:focus-visible { outline: 2px solid #ffffff; outline-offset: -2px; } .ds-nav-link-active { background: #ffffff; color: #084d9b; border-radius: 0; } .ds-nav-link-active:hover { background: #ffffff; }"
+    },
+    {
+      "name": "Tonal Panel",
+      "kind": "custom",
+      "refersTo": "card-testimonial",
+      "description": "The workhorse informational block inside a band. Tinted fill, no shadow — it is part of the ground, not lifted off it.",
+      "html": "<div class=\"ds-panel\"><h3>¿Qué incluye?</h3><ul><li>Diagnóstico completo con informes y presupuesto.</li><li>Verificación de deudas y prendas.</li><li>Coordinación de turnos.</li></ul></div>",
+      "css": ".ds-panel { background: #f0f5fb; border-radius: 16px; padding: 20px; font-family: Gotham, Inter, system-ui, sans-serif; } @media (min-width: 640px) { .ds-panel { padding: 28px; } } .ds-panel h3 { margin: 0 0 12px; color: #084d9b; font-size: 18px; font-weight: 700; line-height: 1.25; } .ds-panel ul { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 8px; } .ds-panel li { color: #084d9b; font-size: 14px; line-height: 1.6; }"
+    },
+    {
+      "name": "Case Rail Stage",
+      "kind": "custom",
+      "refersTo": "stage-marker-reached",
+      "description": "The system's temporal signature. A coral fill advances down the rail and each marker commits as it passes — reached is navy with a coral ring and halo, pending is white with a navy hairline.",
+      "html": "<div class=\"ds-rail\"><div class=\"ds-rail-track\"></div><div class=\"ds-rail-fill\"></div><div class=\"ds-rail-stage\"><span class=\"ds-stage-marker ds-stage-marker--reached\">1</span><span class=\"ds-stage-text\">Analizamos tu caso</span></div><div class=\"ds-rail-stage\"><span class=\"ds-stage-marker\">2</span><span class=\"ds-stage-text\">Consultamos con informes</span></div></div>",
+      "css": ".ds-rail { position: relative; padding: 4px 0; font-family: Gotham, Inter, system-ui, sans-serif; }.ds-rail-track { position: absolute; left: 19px; top: 24px; bottom: 24px; width: 2px; background: rgba(8,77,155,0.16); }.ds-rail-fill { position: absolute; left: 19px; top: 24px; height: 44px; width: 2px; background: #ed6d92; }.ds-rail-stage { position: relative; display: flex; align-items: center; gap: 20px; padding: 4px 0 24px; }.ds-stage-marker { position: relative; z-index: 1; flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 9999px; box-sizing: border-box; background: #ffffff; border: 2px solid rgba(8,77,155,0.2); color: rgba(8,77,155,0.8); font-family: \"Alverata-Irregular\", Georgia, serif; font-weight: 900; font-size: 15px; line-height: 1; font-variant-numeric: tabular-nums; transition: background 220ms cubic-bezier(0.16,1,0.3,1), border-color 220ms cubic-bezier(0.16,1,0.3,1), color 220ms cubic-bezier(0.16,1,0.3,1), box-shadow 220ms cubic-bezier(0.16,1,0.3,1); }.ds-stage-marker--reached { background: #084d9b; border-color: #ed6d92; color: #ffffff; box-shadow: 0 0 0 4px rgba(237,109,146,0.26), 0 10px 24px -8px rgba(237,109,146,0.75); }.ds-stage-text { color: #084d9b; font-weight: 700; font-size: 17px; line-height: 1.25; }"
+    },
+    {
+      "name": "Disclosure Row",
+      "kind": "custom",
+      "refersTo": "disclosure-row",
+      "description": "The expandable row behind the FAQ list and the trámite catalog. Lifts onto the navy-cast shadow when open; the chevron points up when closed, which is the incumbent inversion.",
+      "html": "<div class=\"ds-disclosure\"><button class=\"ds-disclosure-trigger\" type=\"button\" aria-expanded=\"false\"><span class=\"ds-disclosure-title\">¿Cuánto tarda una transferencia vehicular?</span><span class=\"ds-disclosure-chevron\" aria-hidden=\"true\"><svg width=\"14\" height=\"14\" viewBox=\"0 0 14 14\" fill=\"none\"><path d=\"M2 9L7 4L12 9\" stroke=\"#084d9b\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg></span></button></div>",
+      "css": ".ds-disclosure { background: #dce8f6; border-radius: 16px; overflow: hidden; font-family: Gotham, Inter, system-ui, sans-serif; transition: box-shadow 220ms cubic-bezier(0.16,1,0.3,1); }.ds-disclosure:hover { box-shadow: 0 12px 32px rgba(8,77,155,0.18); }.ds-disclosure-trigger { display: flex; align-items: center; justify-content: space-between; gap: 16px; width: 100%; padding: 20px 24px; background: none; border: 0; cursor: pointer; text-align: left; font: inherit; }.ds-disclosure-trigger:focus-visible { outline: 2px solid #ffffff; outline-offset: 0; box-shadow: 0 0 0 4px #084d9b; }.ds-disclosure-title { color: #084d9b; font-weight: 600; font-size: 17px; line-height: 1.35; }.ds-disclosure-chevron { flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 9999px; border: 2px solid #084d9b; box-sizing: border-box; transition: transform 220ms cubic-bezier(0.16,1,0.3,1); }.ds-disclosure-trigger[aria-expanded=\"true\"] .ds-disclosure-chevron { transform: rotate(180deg); }"
+    }
+  ],
+  "narrative": {
+    "northStar": "Norma y Abrazo",
+    "overview": "Norm and Embrace. The system is a deliberate duality, and its whole job is to hold both halves at once without letting either win. Navy carries what the law says — institutional, unhedged, the color of the registry and of an argument grounded in norm. Coral carries how you are treated — the color of every human moment: the invitation to talk, the reassurance, the person on the other side of the trámite. A visitor arriving with a stalled transfer and a fear of being taken advantage of needs to feel both at once. Authority without warmth reads as another indifferent institution. Warmth without authority reads as someone who cannot actually win the case.\n\nThe mood is **institutional and credible, warm and human** — and pointedly not serene or crisp. This system is not selling calm or speed as its personality; it is selling that a competent institution will treat you like a person. That distinction decides close calls: given a choice between a treatment that reads efficient and one that reads reassuring, reassuring wins.\n\nThe spatial world is tonal bands. Large flat fields of `paper-cool` and `paper-blush` alternate with white, separated by animated wave dividers rather than hard rules, so the page reads as continuous stretches rather than stacked boxes. Cards sit lifted off those bands on real shadow. Everything — every card, band, input, panel, and chip — resolves to the same 16px corner, and every button and avatar to a full pill. That radical consistency of corner is the system's most recognizable trait and the main reason dense registry information never looks like a government form.\n\nThe motion grammar is **progression, not arrival.** Motion here has one subject — a case moving forward — and one authored expression of it, the `StageTrack` case rail. Everything else is manners: acknowledging a press, making a state legible, holding continuity across a route change. That hierarchy is the whole discipline, and it is easy to lose: the temptation is to give every section its own entrance, at which point nothing is emphasized and the page reads as a slideshow. Durations, curves, and springs are named in `src/lib/motion.ts` and are the only sanctioned source; the curve is an exponential ease-out (`cubic-bezier(0.16, 1, 0.3, 1)`) for anything arriving, and exits always run shorter than entrances because leaving must never cost the visitor a wait. Content is visible in its default state, so a dead script never hides the page.\n\n**The One Loud Entrance Rule.** Each surface gets exactly one word-mask reveal, on its opening statement, and every other heading arrives on the quiet mass reveal. The mask is the system's loudest gesture; its meaning is entirely in its rarity.",
+    "keyCharacteristics": [
+      "Two-voice palette: navy for authority, coral for humanity, never blended into a third mood",
+      "Tonal bands with wave transitions instead of ruled section breaks",
+      "One radius for surfaces (16px), one for actions (pill) — no third value",
+      "Cards genuinely lifted off the ground plane with structural shadow",
+      "Alverata display type with an outline stroke, against Gotham for everything else",
+      "Spanish (voseo) copy at every scale; the type must survive long Argentine registry vocabulary",
+      "One authored motion sequence — the case rail — with everything else reduced to feedback and continuity"
+    ],
+    "rules": [
+      {
+        "name": "The One Loud Entrance Rule",
+        "body": "Each surface gets exactly one word-mask reveal, on its opening statement, and every other heading arrives on the quiet mass reveal. The mask is the system's loudest gesture; its meaning is entirely in its rarity.",
+        "section": "overview"
+      },
+      {
+        "name": "The Two Voices Rule",
+        "body": "Navy states what is true; coral invites contact. A surface may hold both, but no element blends them into a third identity: any element that is neither authority nor invitation should be neutral, not tinted. One exception exists and is temporary — the image placeholder in `Procedures.tsx` runs a `coral-light`→`navy` gradient while it waits for `/procedures-hero.png`, and `AboutUs.tsx` runs a `coral-light`→`coral` one where the founder photograph belongs. Both are stand-ins, not patterns to copy.",
+        "section": "colors"
+      },
+      {
+        "name": "The Load-Bearing Coral Rule",
+        "body": "Coral that carries text is `coral-deep`; coral as pure decoration stays `coral`. Progress bars, the case rail's fill, bullet marks, glow halos, and watermarks keep the brand pink. The moment a label lands on it, the surface darkens — which is why a reached stage marker fills navy and puts the coral in its ring instead of behind its numeral.",
+        "section": "colors"
+      },
+      {
+        "name": "The Borrowed Green Rule",
+        "body": "`whatsapp` green is the destination's color, never LIBA's. If a button is green, tapping it must open WhatsApp. It is excluded from the palette for every other purpose, including success states.",
+        "section": "colors"
+      },
+      {
+        "name": "The Tint-Not-Gray Rule",
+        "body": "Backgrounds are tinted (`paper-cool`, `paper-blush`), never neutral gray. The page has no true gray surfaces; gray appears only as secondary body text.",
+        "section": "colors"
+      },
+      {
+        "name": "The Stroke Belongs to Alverata Rule",
+        "body": "The 1.5px text-stroke utility (`.font-alverata`) is part of the display face's identity, not an effect. Alverata always ships with it; nothing else ever receives it.",
+        "section": "typography"
+      },
+      {
+        "name": "The Serif Stops at Section Level Rule",
+        "body": "Alverata is for display and headline only. Card titles, labels, buttons, and body are Gotham without exception — the serif's job is to open a section, not to decorate inside one.",
+        "section": "typography"
+      },
+      {
+        "name": "The Voseo Fits Rule",
+        "body": "Copy is Argentine Spanish, which runs longer than English and stacks accented capitals (`Regularizá`, `Gestoría`, `Trámites`). Line-height and container widths must be verified against real Spanish strings, never against English placeholder text.",
+        "section": "typography"
+      },
+      {
+        "name": "The Band Continuity Rule",
+        "body": "Every section change is a band change with a wave between it. Sections never butt against each other on a hard horizontal edge.",
+        "section": "layout"
+      },
+      {
+        "name": "The Colored Shadow Rule",
+        "body": "Shadows over tinted bands are cast in navy at low alpha, not black. Neutral black shadow is for white ground only; on `paper-cool` and `paper-blush` a black shadow reads muddy.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Glow-Is-A-State Rule",
+        "body": "Glow halos never appear at rest. A glow means \"this responds to you\" — or, on the case rail, \"the case has got this far.\" Both are states. Using one as decoration destroys its meaning.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Two Radii Rule",
+        "body": "Surfaces are 16px, actions are pills. If a new element seems to need a different corner, it is the wrong element.",
+        "section": "shapes"
+      },
+      {
+        "name": "The Rail Means Progress Rule",
+        "body": "The case rail is reserved for genuine ordered sequences where the order carries information the reader needs — the contact process, the four pillars in the order they are applied. It is not a list decoration. If the items could be reordered without loss, they are a list, not stages.",
+        "section": "components"
+      }
+    ],
+    "dos": [
+      "Do resolve every surface to 16px and every action to a pill. Two radii, no third.",
+      "Do separate sections with a `WaveDivider` whose `fromColor` and `toColor` match the actual adjacent band fills.",
+      "Do lift cards off tonal bands with the resting card shadow, and cast that shadow in navy at low alpha when the ground is tinted.",
+      "Do pair every Alverata heading with the `.font-alverata` stroke utility.",
+      "Do use `coral` for the moment of human contact and `navy` for the statement of fact, on every surface.",
+      "Do write and test layouts against real Argentine Spanish strings, including accented capitals.",
+      "Do give every input a visible label — placeholders are transparent by design.",
+      "Do take durations, curves, and springs from `src/lib/motion.ts`, and derive group stagger from `staggerStep()` so a list of any length finishes arriving inside 0.28s.",
+      "Do reach for the case rail when a sequence's order carries information, and only then.",
+      "Do give every real outcome a visible acknowledgment — the pending sweep on a submit, the drawn check on success."
+    ],
+    "donts": [
+      "Don't introduce a third radius value, a gray surface, or a navy-to-coral gradient.",
+      "Don't use `whatsapp` green on anything that does not open WhatsApp.",
+      "Don't apply glow halos at rest; they mean interactivity.",
+      "Don't set Alverata below section level — card titles and labels are Gotham.",
+      "Don't set body copy in uppercase. Running paragraphs are sentence case; uppercase is reserved for the micro-label role (11–12px, 600, tracked 0.22em) on section eyebrows and team roles.",
+      "Don't put white text on `coral` (`#ed6d92`) — that pairing is 2.92:1 and fails AA at every size. Use `coral-deep`.",
+      "Don't reintroduce `#e8577d` or `#1b3a5c`. These are superseded values from an earlier palette; `coral` is `#ed6d92` and navy is `#084d9b`.",
+      "Don't add one-off navy shades. `#1e6bc4` and `#1e5aa0` exist as unsanctioned hover variants and should consolidate, not multiply.",
+      "Don't give a second element the word-mask entrance. One per surface, on its opening statement.",
+      "Don't hand-write a duration, easing curve, or spring. They live in `src/lib/motion.ts`; a literal in a component is drift.",
+      "Don't let an entrance and its exit share a duration. Leaving is always shorter.",
+      "Don't ship an infinite loop without gating it on visibility, or a scroll-linked effect without a resolved state for reduced motion."
+    ]
+  }
+}
