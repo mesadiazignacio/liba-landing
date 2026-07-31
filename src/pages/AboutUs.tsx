@@ -2,6 +2,7 @@ import { motion } from 'framer-motion'
 import { BlurReveal } from '../components/effects/BlurReveal'
 import { MaskReveal } from '../components/effects/MaskReveal'
 import { CtaFooter } from '../components/sections/CtaFooter'
+import { Footer } from '../components/layout/Footer'
 import { Stage, StageList, StageTrack } from '../components/ui/StageTrack'
 import { WaveDivider } from '../components/ui/WaveDivider'
 import { SPRING } from '../lib/motion'
@@ -345,6 +346,7 @@ export function AboutUs() {
 
       {/* ── CTA FOOTER ─────────────────────────────────────────────── */}
       <CtaFooter />
+      <Footer />
 
     </div>
   )

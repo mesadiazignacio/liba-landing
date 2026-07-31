@@ -1,9 +1,9 @@
-import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { MaskReveal } from '../components/effects/MaskReveal'
 import { BlurReveal } from '../components/effects/BlurReveal'
 import { MagneticButton } from '../components/effects/MagneticButton'
 import { WaveDivider } from '../components/ui/WaveDivider'
+import { Footer } from '../components/layout/Footer'
 import { SPRING } from '../lib/motion'
 import { SHADOW } from '../lib/shadows'
 import { BAND } from '../lib/palette'
@@ -135,14 +135,10 @@ export function Privacy() {
         </div>
       </section>
 
-      <footer className="bg-white border-t border-navy/10 py-6 px-4 text-center">
-        <p className="text-navy/60 text-xs sm:text-sm">
-          ©{new Date().getFullYear()} LIBA Gestoría · Todos los derechos reservados ·{' '}
-          <Link to="/" className="underline decoration-navy/30 underline-offset-2 hover:opacity-80 transition-opacity duration-200">
-            Volver al inicio
-          </Link>
-        </p>
-      </footer>
+      {/* La franja de copyright que cerraba esta página la cierra ahora el mismo
+          footer que el resto del sitio, con el índice completo — que es
+          justamente lo que le faltaba a la ruta más aislada de las ocho. */}
+      <Footer />
 
     </div>
   )

@@ -7,6 +7,7 @@ import { MagneticButton } from '../components/effects/MagneticButton'
 import { DUR, EASE, SPRING, staggerStep } from '../lib/motion'
 import { SHADOW } from '../lib/shadows'
 import { CtaFooter } from '../components/sections/CtaFooter'
+import { Footer } from '../components/layout/Footer'
 
 // ── Data ──────────────────────────────────────────────────────────────────
 
@@ -391,6 +392,7 @@ export function ServicesPage() {
 
       {/* ── 5. CTA FOOTER ───────────────────────────────────────────────── */}
       <CtaFooter />
+      <Footer />
 
     </div>
   )

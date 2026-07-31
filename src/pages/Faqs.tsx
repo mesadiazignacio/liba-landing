@@ -2,6 +2,7 @@ import { MaskReveal } from '../components/effects/MaskReveal'
 import { BlurReveal } from '../components/effects/BlurReveal'
 import { Disclosure } from '../components/ui/Disclosure'
 import { CtaFooter } from '../components/sections/CtaFooter'
+import { Footer } from '../components/layout/Footer'
 import { staggerStep } from '../lib/motion'
 import { COLOR } from '../lib/palette'
 
@@ -101,6 +102,7 @@ export function Faqs() {
       </section>
 
       <CtaFooter />
+      <Footer />
     </div>
   )
 }

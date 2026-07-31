@@ -5,6 +5,7 @@ import { BlurReveal } from '../components/effects/BlurReveal'
 import { MagneticButton } from '../components/effects/MagneticButton'
 import { Disclosure } from '../components/ui/Disclosure'
 import { CtaFooter } from '../components/sections/CtaFooter'
+import { Footer } from '../components/layout/Footer'
 import { useScrollToId } from '../hooks/useScrollToId'
 import { SPRING, staggerStep } from '../lib/motion'
 import { SHADOW } from '../lib/shadows'
@@ -233,6 +234,7 @@ export function Procedures() {
       </section>
 
       <CtaFooter />
+      <Footer />
 
     </div>
   )

@@ -1,16 +1,16 @@
-import { useState } from 'react'
-import { Link } from 'react-router-dom'
-import { AnimatePresence, motion } from 'framer-motion'
-import emailjs from '@emailjs/browser'
+import { motion } from 'framer-motion'
 import { MaskReveal } from '../components/effects/MaskReveal'
 import { BlurReveal } from '../components/effects/BlurReveal'
 import { MagneticButton } from '../components/effects/MagneticButton'
+import { IntakeForm } from '../components/sections/IntakeForm'
 import { Stage, StageList, StageTrack } from '../components/ui/StageTrack'
 import { WaveDivider } from '../components/ui/WaveDivider'
+import { Footer } from '../components/layout/Footer'
+import { useReducedMotionSafe } from '../hooks/useReducedMotionSafe'
 import { DUR, EASE, SPRING } from '../lib/motion'
 import { SHADOW } from '../lib/shadows'
-import { BAND } from '../lib/palette'
-import { WHATSAPP_URL, CALENDLY_URL, EMAILJS_PUBLIC_KEY, EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID } from '../lib/constants'
+import { BAND, COLOR } from '../lib/palette'
+import { WHATSAPP_URL, CALENDLY_URL, SERVICE_AREA } from '../lib/constants'
 
 // ── Icons ──────────────────────────────────────────────────────────────────
 
@@ -27,6 +27,86 @@ function WhatsAppIcon({ className }: { className?: string }) {
 function CalendlyIcon({ className }: { className?: string }) {
   return (
     <img src="/calendly-logo.png" alt="" className={className} aria-hidden />
+  )
+}
+
+// ── Mapa ───────────────────────────────────────────────────────────────────
+
+/**
+ * Recorte de OpenStreetMap centrado en Olivos.
+ *
+ * El `bbox` ya está centrado en el punto, así que el `&marker=` del embed sobra:
+ * el marcador lo dibujamos nosotros en el centro exacto del cuadro. Esa es toda
+ * la razón del cambio — el pin del embed es verde y no existe en la paleta.
+ */
+const OSM_EMBED =
+  'https://www.openstreetmap.org/export/embed.html?bbox=-58.525%2C-34.530%2C-58.490%2C-34.500&layer=mapnik'
+
+/**
+ * Las tiles llegan con rojos, amarillos y verdes que no son de acá y que, sobre
+ * la banda blush, leen como una captura de pantalla pegada en la página. El
+ * filtro va sobre el propio `iframe`: el documento es de otro origen y no se
+ * puede estilar desde afuera, pero un `filter` se aplica al elemento ya
+ * rasterizado. El mapa queda monocromo azulado —textura, no ilustración— y el
+ * único color del cuadro pasa a ser el pin.
+ */
+const MAP_TINT =
+  'grayscale(1) sepia(0.45) hue-rotate(178deg) saturate(1.45) brightness(1.05) contrast(0.92)'
+
+function LocationMap() {
+  const reduced = useReducedMotionSafe()
+
+  return (
+    /* `--crop`: la franja de atribución del embed va impresa dentro del iframe,
+       encima de las tiles, y en pantallas angostas se parte en dos renglones que
+       tapan el mapa. Como es contenido de otro origen no se puede estilar, así
+       que el iframe se dibuja más alto que el marco y el marco le recorta esa
+       franja. El crédito no se pierde: se rearma en el pie de la tarjeta, donde
+       además se lee. Al recortar sólo abajo, el centro del mapa baja media
+       franja, y el pin lo sigue con el mismo `--crop`.
+
+       `bg-paper-cool`: el marco tiene fondo propio porque el iframe carga
+       diferido y es de terceros. Mientras no está, el hueco es una superficie
+       del sistema y no un rectángulo blanco. */
+    <div className="relative h-[260px] overflow-hidden rounded-2xl border border-navy/10 bg-paper-cool [--crop:48px] sm:h-[340px] sm:[--crop:34px]">
+      <iframe
+        title="Ubicación LIBA Gestoría — Olivos, Buenos Aires"
+        src={OSM_EMBED}
+        className="absolute inset-x-0 top-0 w-full"
+        style={{ border: 0, filter: MAP_TINT, height: 'calc(100% + var(--crop))' }}
+        loading="lazy"
+        referrerPolicy="no-referrer-when-downgrade"
+      />
+
+      {/* El único momento con autoría de la sección: el pin cae y se apoya. La
+          punta se ancla al centro del mapa con las clases del contenedor, y la
+          caída vive en el `svg` de adentro — framer escribe `transform` inline y
+          se comería el `-translate` de Tailwind si compartieran elemento.
+          `pointer-events-none` para no robarle el arrastre al mapa. */}
+      <div className="pointer-events-none absolute left-1/2 top-[calc(50%+var(--crop)/2)] -translate-x-1/2 -translate-y-full">
+        <motion.svg
+          width="28"
+          height="37"
+          viewBox="0 0 26 34"
+          fill="none"
+          aria-hidden
+          style={{ filter: 'drop-shadow(0 6px 10px rgba(8,77,155,0.35))' }}
+          initial={reduced ? undefined : { opacity: 0, y: -16 }}
+          whileInView={reduced ? undefined : { opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.5 }}
+          transition={{ duration: DUR.entrance, ease: EASE.out, delay: 0.18 }}
+        >
+          <path
+            d="M13 33s11-12.5 11-20a11 11 0 1 0-22 0c0 7.5 11 20 11 20Z"
+            fill={COLOR.coral}
+            stroke="#fff"
+            strokeWidth="2"
+            strokeLinejoin="round"
+          />
+          <circle cx="13" cy="13" r="4" fill="#fff" />
+        </motion.svg>
+      </div>
+    </div>
   )
 }
 
@@ -51,47 +131,9 @@ const STEPS = [
   },
 ]
 
-// ── Sub-components ────────────────────────────────────────────────────────
-
-// `transition-all` here also asked the browser to interpolate every other
-// animatable property on a field that only ever changes its ring and border.
-const INPUT_CLS =
-  'w-full bg-white rounded-2xl px-4 py-3.5 text-navy text-base outline-none focus:ring-2 focus:ring-navy/20 border border-transparent focus:border-navy/20 transition-[border-color,box-shadow] duration-200 placeholder-transparent'
-
 // ── Page ──────────────────────────────────────────────────────────────────
 
 export function ContactUs() {
-  const [form, setForm] = useState({ nombre: '', contacto: '', tramite: '', situacion: '' })
-  const [submitted, setSubmitted] = useState(false)
-  const [sending, setSending] = useState(false)
-  const [error, setError] = useState(false)
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
-    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }))
-  }
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setSending(true)
-    setError(false)
-    try {
-      await emailjs.send(
-        EMAILJS_SERVICE_ID,
-        EMAILJS_TEMPLATE_ID,
-        { nombre: form.nombre, contacto: form.contacto, tramite: form.tramite, situacion: form.situacion },
-        EMAILJS_PUBLIC_KEY,
-      )
-      setSubmitted(true)
-    } catch (err) {
-      console.error('EmailJS error:', err)
-      setError(true)
-    } finally {
-      setSending(false)
-    }
-  }
-
   return (
     <div className="bg-white">
 
@@ -166,187 +208,32 @@ export function ContactUs() {
       </section>
 
       {/* ── 2. FORM ─────────────────────────────────────────────────────── */}
-      <section className="pb-14 px-4 sm:px-6">
+      {/* La hoja de ingreso es una losa navy que flota como tarjeta, hermana del
+          footer. Por eso la sección no cambia de banda ni lleva olas: la ola vive
+          adentro de la losa, como textura. */}
+      <section className="pb-14 sm:pb-20 px-4 sm:px-6">
         <div className="max-w-3xl mx-auto">
 
-          <BlurReveal>
-            <p className="text-navy font-semibold text-base sm:text-lg text-center mb-8">
-              Contanos tu situación: Cuanto más detalle, mejor nuestro diagnóstico.
-            </p>
-          </BlurReveal>
+          <div className="text-center mb-8 sm:mb-10">
+            <BlurReveal>
+              <h2 className="text-navy font-black text-[clamp(1.5rem,4vw,2.25rem)] leading-tight font-alverata mb-3">
+                Contanos tu caso.
+              </h2>
+            </BlurReveal>
+            <BlurReveal delay={0.08}>
+              <p className="text-navy/85 text-sm sm:text-base leading-relaxed text-balance">
+                Cuanto más detalle nos des, más preciso es el diagnóstico.
+              </p>
+            </BlurReveal>
+          </div>
 
-          <BlurReveal delay={0.1}>
-            <div className="bg-paper-blush rounded-2xl p-6 sm:p-8">
-              {/* The one outcome on this site the visitor is actually waiting on,
-                  so it gets the only drawn mark: the check strokes itself once the
-                  send resolves. mode="wait" keeps the panel from jumping height
-                  mid-crossfade. */}
-              <AnimatePresence mode="wait" initial={false}>
-              {submitted ? (
-                <motion.div
-                  key="sent"
-                  className="text-center py-10"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: DUR.state, ease: EASE.out }}
-                >
-                  <motion.div
-                    className="w-16 h-16 bg-navy rounded-full flex items-center justify-center mx-auto mb-4"
-                    initial={{ scale: 0.8 }}
-                    animate={{ scale: 1 }}
-                    transition={{ ...SPRING.press, delay: 0.04 }}
-                  >
-                    <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden>
-                      <motion.path
-                        d="M5 14L11 20L23 8"
-                        stroke="white"
-                        strokeWidth="2.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        initial={{ pathLength: 0 }}
-                        animate={{ pathLength: 1 }}
-                        transition={{ duration: DUR.entrance, ease: EASE.out, delay: 0.12 }}
-                      />
-                    </svg>
-                  </motion.div>
-                  <h3 className="text-navy font-bold text-xl mb-2">¡Mensaje enviado!</h3>
-                  <p className="text-navy/70 text-sm">
-                    Te vamos a responder a la brevedad por WhatsApp.
-                  </p>
-                </motion.div>
-              ) : (
-                <motion.form
-                  key="form"
-                  onSubmit={handleSubmit}
-                  aria-busy={sending}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: DUR.exit, ease: EASE.exit }}
-                >
-                  {/* Recomposed: four full-width rows stacked identically read as a
-                      long form regardless of how little it actually asks. The two
-                      short identity fields now share a row, so the visitor sees a
-                      three-step form whose last step is the one that matters. */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                    <div>
-                      <label htmlFor="nombre" className="block text-navy font-semibold text-sm mb-1.5">
-                        Tu nombre *
-                      </label>
-                      <input
-                        id="nombre"
-                        name="nombre"
-                        type="text"
-                        required
-                        autoComplete="name"
-                        value={form.nombre}
-                        onChange={handleChange}
-                        className={INPUT_CLS}
-                      />
-                    </div>
-
-                    <div>
-                      <label htmlFor="contacto" className="block text-navy font-semibold text-sm mb-1.5">
-                        Tu WhatsApp o email *
-                      </label>
-                      <input
-                        id="contacto"
-                        name="contacto"
-                        type="text"
-                        required
-                        // The field takes a phone *or* an email, so it cannot
-                        // honestly claim `tel`: that offered phone autofill to
-                        // someone about to type an address.
-                        autoComplete="off"
-                        value={form.contacto}
-                        onChange={handleChange}
-                        className={INPUT_CLS}
-                      />
-                    </div>
-                  </div>
-
-                  <div className="mt-5">
-                    <label htmlFor="tramite" className="block text-navy font-semibold text-sm mb-1.5">
-                      ¿Qué trámite necesitás resolver? *
-                    </label>
-                    <input
-                      id="tramite"
-                      name="tramite"
-                      type="text"
-                      required
-                      value={form.tramite}
-                      onChange={handleChange}
-                      className={INPUT_CLS}
-                    />
-                  </div>
-
-                  {/* The field the diagnóstico actually depends on, so it gets a
-                      rule above it and the most room on the page. */}
-                  <div className="mt-6 border-t border-navy/10 pt-6">
-                    <label htmlFor="situacion" className="block text-navy font-semibold text-sm mb-1.5">
-                      Contanos tu situación
-                    </label>
-                    <textarea
-                      id="situacion"
-                      name="situacion"
-                      value={form.situacion}
-                      onChange={handleChange}
-                      rows={7}
-                      className={INPUT_CLS + ' resize-none'}
-                    />
-                  </div>
-
-                  <AnimatePresence initial={false}>
-                    {error && (
-                      <motion.p
-                        role="alert"
-                        // The message used to open flush against the textarea it
-                        // was reporting on, with no space of its own.
-                        className="text-center text-sm text-red-700 font-medium pt-5"
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        exit={{ opacity: 0, height: 0 }}
-                        transition={{ duration: DUR.state, ease: EASE.out }}
-                      >
-                        Hubo un error al enviar. Intentá de nuevo o contactanos por WhatsApp.
-                      </motion.p>
-                    )}
-                  </AnimatePresence>
-                  <div className="flex justify-center pt-2">
-                    <motion.button
-                      type="submit"
-                      disabled={sending}
-                      className="relative overflow-hidden bg-navy text-white font-bold text-base px-12 py-4 rounded-full disabled:cursor-not-allowed"
-                      whileHover={sending ? undefined : { scale: 1.03, boxShadow: SHADOW.navyBloom }}
-                      whileTap={sending ? undefined : { scale: 0.97 }}
-                      transition={SPRING.press}
-                    >
-                      {/* Pending is a real wait on a third-party send, so it gets
-                          an indeterminate sweep rather than a dimmed button —
-                          "Enviando..." alone leaves the visitor unsure whether
-                          the press registered. */}
-                      {sending && (
-                        <motion.span
-                          aria-hidden
-                          className="absolute inset-0"
-                          style={{
-                            background:
-                              'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.28) 50%, transparent 100%)',
-                          }}
-                          initial={{ x: '-100%' }}
-                          animate={{ x: '100%' }}
-                          transition={{ duration: 1, ease: 'linear', repeat: Infinity }}
-                        />
-                      )}
-                      <span className="relative">{sending ? 'Enviando…' : 'Enviar'}</span>
-                    </motion.button>
-                  </div>
-                </motion.form>
-              )}
-              </AnimatePresence>
-            </div>
+          <BlurReveal delay={0.15}>
+            <IntakeForm />
           </BlurReveal>
 
         </div>
       </section>
+
 
       {/* ── 3. PROCESS STEPS ────────────────────────────────────────────── */}
       <section className="py-14 px-4 sm:px-6">
@@ -391,38 +278,59 @@ export function ContactUs() {
           straight into the blush band with no wave between them. Every other
           band change on every other surface is joined this way. */}
       <WaveDivider fromColor={BAND.white} toColor={BAND.blush} />
-      <section className="py-14 px-4 sm:px-6 bg-paper-blush">
-        <div className="max-w-5xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+      {/* Dos hechos, no cuatro párrafos: dónde estamos y hasta dónde llegamos.
+          Antes los dos vivían en la misma columna de texto corrido y el mapa
+          quedaba al lado sin decir nada. Ahora el lugar lo cuenta el mapa —con
+          su pie— y el alcance lo cuenta la columna, partido en los dos niveles
+          que el visitante viene a distinguir: dónde vamos nosotros y dónde va la
+          red. El punto coral de las fichas es el mismo punto que el pin. */}
+      <section className="bg-paper-blush px-4 py-14 sm:px-6 sm:py-20">
+        <div className="mx-auto max-w-6xl">
+          <div className="grid grid-cols-1 items-center gap-8 md:grid-cols-12 md:gap-12">
 
-            <BlurReveal>
-              <div>
-                <h2 className="text-navy font-black text-xl sm:text-2xl leading-tight mb-4 font-alverata">
-                  Dónde estamos y hasta dónde llegamos
-                </h2>
-                <p className="text-navy/80 text-sm sm:text-base leading-relaxed mb-6">
-                  Estamos ubicados en Olivos, Zona Norte del Gran Buenos Aires. Atendemos de manera presencial en Zona Norte y CABA.
-                </p>
-                <p className="text-navy font-bold text-sm sm:text-base mb-2">
-                  ¿Tu trámite está en otra localidad?
-                </p>
-                <p className="text-navy/70 text-sm sm:text-[15px] leading-relaxed">
-                  Tenemos presencia directa en Zona Norte y CABA. Si tu vehículo está radicado en otra jurisdicción del país, contamos con una red de colegas gestores matriculados con quienes trabajamos en conjunto para que tu trámite tenga el mismo nivel de atención, sin importar dónde esté.
-                </p>
-              </div>
+            <BlurReveal className="md:col-span-5">
+              <h2 className="mb-4 font-alverata text-[clamp(1.5rem,4vw,2.25rem)] font-black leading-tight text-navy">
+                Dónde estamos y hasta dónde llegamos
+              </h2>
+
+              <p className="text-base leading-relaxed text-navy/80 sm:text-lg">
+                Atendemos de manera presencial en{' '}
+                <strong className="font-bold text-navy">Zona Norte</strong> y{' '}
+                <strong className="font-bold text-navy">CABA</strong>.
+              </p>
+
+              <hr className="my-7 border-0 border-t border-navy/10" />
+
+              <h3 className="mb-2 text-base font-bold leading-snug text-navy sm:text-[17px]">
+                ¿Tu trámite está en otra localidad?
+              </h3>
+              <p className="text-sm leading-relaxed text-navy/75 sm:text-[15px]">
+                Si tu vehículo está radicado en otra jurisdicción del país, contamos con una red de colegas gestores matriculados con quienes trabajamos en conjunto para que tu trámite tenga el mismo nivel de atención, sin importar dónde esté.
+              </p>
             </BlurReveal>
 
-            <BlurReveal delay={0.15}>
-              <div className="rounded-2xl overflow-hidden shadow-card" style={{ height: '300px' }}>
-                <iframe
-                  title="Ubicación LIBA Gestoría — Olivos, Buenos Aires"
-                  src="https://www.openstreetmap.org/export/embed.html?bbox=-58.525%2C-34.530%2C-58.490%2C-34.500&layer=mapnik&marker=-34.515%2C-58.507"
-                  width="100%"
-                  height="100%"
-                  style={{ border: 0 }}
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                />
+            {/* Passe-partout blanco, no losa navy: el footer que sigue abajo ya es
+                la losa navy de la página y dos seguidas le sacan el peso. */}
+            <BlurReveal delay={0.12} className="md:col-span-7">
+              <div className="rounded-2xl bg-white p-3 shadow-card-navy sm:p-4">
+                <LocationMap />
+                {/* El crédito que el recorte se llevó de adentro del iframe. La
+                    licencia pide atribución visible, no una franja pisando el
+                    mapa; acá se lee mejor de lo que se leía ahí. */}
+                <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 px-1 pb-0.5 pt-3">
+                  <p className="flex items-center gap-2.5 text-sm font-bold leading-snug text-navy sm:text-[15px]">
+                    <span aria-hidden className="h-2 w-2 flex-shrink-0 rounded-full bg-coral" />
+                    Estamos en {SERVICE_AREA}
+                  </p>
+                  <a
+                    href="https://www.openstreetmap.org/copyright"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[12px] leading-none text-navy/80 transition-colors duration-200 hover:text-navy"
+                  >
+                    © OpenStreetMap
+                  </a>
+                </div>
               </div>
             </BlurReveal>
 
@@ -431,16 +339,10 @@ export function ContactUs() {
       </section>
 
       {/* ── FOOTER ──────────────────────────────────────────────────────── */}
-      <footer className="bg-paper-blush border-t border-navy/10 py-5 px-4 text-center">
-        <p className="text-navy/60 text-xs sm:text-sm">
-          Todos los derechos reservados |{' '}
-          {/* Was href="#", which scrolled to the top of this same page. */}
-          <Link to="/privacy" className="underline decoration-navy/30 underline-offset-2 hover:opacity-80 transition-opacity duration-200">
-            Políticas de Privacidad
-          </Link>{' '}
-          | LIBA Gestoría {new Date().getFullYear()}
-        </p>
-      </footer>
+      {/* Esta página cierra en `paper-blush`, así que la ola del footer sale de
+          ahí. Era una franja de copyright de cinco líneas; ahora es el mismo
+          piso que las otras siete rutas. */}
+      <Footer fromColor={BAND.blush} />
 
     </div>
   )

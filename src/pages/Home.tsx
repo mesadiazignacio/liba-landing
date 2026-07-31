@@ -5,6 +5,7 @@ import { WhyChoose } from '../components/sections/WhyChoose'
 import { Testimonials } from '../components/sections/Testimonials'
 import { Services } from '../components/sections/Services'
 import { CtaFooter } from '../components/sections/CtaFooter'
+import { Footer } from '../components/layout/Footer'
 import { BAND } from '../lib/palette'
 
 export function Home() {
@@ -26,6 +27,7 @@ export function Home() {
       <WaveDivider fromColor={BAND.navy} toColor={BAND.white} />
       <Services />
       <CtaFooter />
+      <Footer />
     </main>
   )
 }
