@@ -5,11 +5,27 @@ import { NAV_LINKS, type NavLink } from '../../lib/constants'
 import { DUR, EASE, SPRING } from '../../lib/motion'
 import { COLOR } from '../../lib/palette'
 import { useNavbarScroll } from '../../hooks/useNavbarScroll'
+import { LogoMark } from '../ui/LogoMark'
 
+/**
+ * El disparador es el enlace entero, no el glifo de 20px: la marca, el wordmark
+ * y «| Gestoría» son un solo objeto que lleva al inicio, y pedirle al visitante
+ * que acierte veinte píxeles para que algo responda es una recompensa que casi
+ * nadie encuentra. El foco de teclado lo dispara igual — es el mismo estado.
+ */
 function Logo() {
+  const [active, setActive] = useState(false)
+
   return (
-    <Link to="/" className="flex flex-row items-center p-4 h-full flex-shrink-0">
-      <img src="/logo-icon.png" alt="" style={{ width: 20, height: 20 }} className="object-contain flex-shrink-0" />
+    <Link
+      to="/"
+      className="flex flex-row items-center p-4 h-full flex-shrink-0"
+      onMouseEnter={() => setActive(true)}
+      onMouseLeave={() => setActive(false)}
+      onFocus={() => setActive(true)}
+      onBlur={() => setActive(false)}
+    >
+      <LogoMark spinning={active} style={{ width: 20, height: 20 }} />
       <img src="/logo-text.png" alt="LIBA" style={{ width: 40, height: 40 }} className="object-contain mx-1 flex-shrink-0" />
       <span className="text-white/75 text-[14px] font-normal leading-none flex-shrink-0">| Gestoría</span>
     </Link>

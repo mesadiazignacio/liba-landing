@@ -28,6 +28,18 @@ export const DUR = {
   state: 0.22,
   /** Layout, disclosure, overlay, route change. */
   layout: 0.4,
+  /**
+   * Un intercambio de tamaño entre vecinos: una tarjeta se ensancha mientras la
+   * de al lado se angosta, disparado por el puntero pasando por encima.
+   *
+   * Más largo que `layout` por dos razones. El visitante sigue dos movimientos
+   * opuestos a la vez, así que el mismo tiempo lee como la mitad. Y sobre todo
+   * el disparador es un barrido: cruzar cuatro tarjetas a la velocidad de
+   * `layout` no son cuatro aperturas, son cuatro parpadeos. Este es el único
+   * caso del sitio donde el movimiento tiene que sobrevivir a que lo
+   * interrumpan cuatro veces seguidas.
+   */
+  exchange: 0.6,
   /** A deliberately authored entrance. Used sparingly. */
   entrance: 0.55,
   /** Anything leaving. */

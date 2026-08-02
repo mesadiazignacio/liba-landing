@@ -6,12 +6,7 @@ import { WaveTexture } from '../ui/WaveTexture'
 import { LenisContext } from '../effects/SmoothScroll'
 import { useReducedMotionSafe } from '../../hooks/useReducedMotionSafe'
 import { BAND } from '../../lib/palette'
-import {
-  CONTACT_EMAIL,
-  CONTACT_EMAIL_URL,
-  SERVICE_AREA,
-  SOCIAL_LINKS,
-} from '../../lib/constants'
+import { CONTACT_EMAIL, CONTACT_EMAIL_URL, SOCIAL_LINKS } from '../../lib/constants'
 
 /**
  * El piso del sitio: una losa navy apoyada sobre la última banda de la página.
@@ -211,23 +206,18 @@ export function Footer({ fromColor = BAND.white }: Props) {
           </div>
 
           {/* ── El pie ────────────────────────────────────────────────────── */}
-          {/* Un solo renglón, no tres columnas con encabezado. Los rótulos
-              «Contacto» y «Seguinos» costaban una línea de altura cada uno para
-              anunciar dos datos y tres glifos que ya se explican solos.
+          {/* Dos renglones apilados y centrados, no tres columnas con
+              encabezado. Los rótulos «Contacto» y «Seguinos» costaban una línea
+              de altura cada uno para anunciar dos datos y tres glifos que ya se
+              explican solos.
 
-              La grilla `1fr auto 1fr` es la parte que importa: con
-              `justify-between` la fila de canales quedaba a mitad de camino
-              entre los dos extremos — 64px corrida a la derecha, porque la zona
-              mide casi el doble que «Políticas de Privacidad» — y no coincidía
-              con la firma, que sí está centrada. Con dos columnas elásticas
-              iguales a los lados, el centro es el centro real de la losa. */}
-          <div className="mt-8 flex flex-col items-center gap-y-4 text-center sm:mt-10 sm:grid sm:grid-cols-[1fr_auto_1fr] sm:items-center sm:gap-x-6 sm:text-left">
+              Apilado en todos los anchos: la firma de arriba está centrada, así
+              que los canales y el enlace legal caen sobre ese mismo eje en vez
+              de repartirse a los costados. El orden también es jerárquico — los
+              canales son la acción, la política es la letra chica que la cierra. */}
+          <div className="mt-8 flex flex-col items-center gap-y-4 text-center sm:mt-10">
 
-            <p className="text-[14px] leading-relaxed text-white/70 sm:justify-self-start">
-              {SERVICE_AREA}
-            </p>
-
-            <ul className="flex items-center gap-1 sm:justify-self-center">
+            <ul className="flex items-center gap-1">
               <li>
                 {/* mailto sin `target="_blank"`: abrir el cliente de correo en
                     una pestaña nueva deja una pestaña en blanco atrás. */}
@@ -249,9 +239,7 @@ export function Footer({ fromColor = BAND.white }: Props) {
               ))}
             </ul>
 
-            <FooterLink to="/privacy" className="sm:justify-self-end">
-              Políticas de Privacidad
-            </FooterLink>
+            <FooterLink to="/privacy">Políticas de Privacidad</FooterLink>
 
           </div>
         </BlurReveal>

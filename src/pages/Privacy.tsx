@@ -8,6 +8,7 @@ import { SPRING } from '../lib/motion'
 import { SHADOW } from '../lib/shadows'
 import { BAND } from '../lib/palette'
 import { WHATSAPP_URL } from '../lib/constants'
+import { PaperGround } from '../components/ui/PaperGround'
 
 /**
  * Both footers linked "Políticas de Privacidad" at `href="#"`, which scrolled the
@@ -44,7 +45,8 @@ export function Privacy() {
   return (
     <div className="bg-white">
 
-      <section className="pt-24 sm:pt-28 pb-14 px-4 sm:px-6">
+      <section className="relative isolate overflow-hidden pt-24 sm:pt-28 pb-14 px-4 sm:px-6">
+        <PaperGround />
         <div className="max-w-3xl mx-auto">
 
           <MaskReveal
@@ -103,7 +105,8 @@ export function Privacy() {
 
       <WaveDivider fromColor={BAND.cool} toColor={BAND.white} />
 
-      <section className="py-14 sm:py-16 px-4 sm:px-6">
+      <section className="relative isolate overflow-hidden py-14 sm:py-16 px-4 sm:px-6">
+        <PaperGround />
         <div className="max-w-2xl mx-auto text-center">
           <BlurReveal>
             <h2 className="text-navy font-black text-xl sm:text-2xl md:text-3xl leading-tight block font-alverata mb-3">

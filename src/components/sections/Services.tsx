@@ -28,6 +28,7 @@ import { useReducedMotionSafe } from '../../hooks/useReducedMotionSafe'
 import { DUR, EASE, SETTLE_DELAY, SPRING } from '../../lib/motion'
 import { SHADOW } from '../../lib/shadows'
 import { services, type Service } from '../../data/services'
+import { PaperGround } from '../ui/PaperGround'
 
 /* Four to a row: at this container width a fifth closed card cannot hold
    "Gestión de multas e infracciones" without breaking it across five lines. */
@@ -39,18 +40,30 @@ const RESTING = 0
 /** No card open — only reachable by clicking the open one shut. */
 const CLOSED = -1
 
-const EASE_OUT = `cubic-bezier(${EASE.out.join(',')})`
+/* Simétrica, no exponencial. La curva de entrada del sistema mete el 97% del
+   recorrido en los primeros 0.2s: sirve para algo que llega desde afuera, pero
+   acá las dos tarjetas ya están en pantalla y sólo se reparten el ancho. No hay
+   nada que aterrizar, hay dos posiciones conocidas entre las que moverse, que es
+   literalmente para lo que `inOut` está declarada en los tokens. Arrancar suave
+   además es lo que hace tolerable el barrido: con la exponencial, cada tarjeta
+   salía disparada apenas el puntero la rozaba. */
+const EASE_EXCHANGE = `cubic-bezier(${EASE.inOut.join(',')})`
 
 /* The open/closed change is a CSS transition rather than framer's `animate`,
    because the same state has to be reachable by pointer and by keyboard and the
    width change is expressed in a flex ratio the layout owns. Durations and curve
-   still come from the motion tokens — nothing here is hand-typed. */
+   still come from the motion tokens — nothing here is hand-typed.
+
+   Todo el cambio va sobre el mismo par duración/curva — el ancho, el fondo, el
+   cuerpo de texto, el signo que rota — porque la tarjeta tiene que cambiar como
+   una sola cosa. Un fondo que resuelve antes que el ancho es una tarjeta que se
+   pinta y después se acomoda. */
 function transitions(properties: string, reduced: boolean, delay = 0): CSSProperties {
   if (reduced) return {}
   return {
     transitionProperty: properties,
-    transitionDuration: `${DUR.layout}s`,
-    transitionTimingFunction: EASE_OUT,
+    transitionDuration: `${DUR.exchange}s`,
+    transitionTimingFunction: EASE_EXCHANGE,
     transitionDelay: delay ? `${delay}s` : undefined,
   }
 }
@@ -156,7 +169,9 @@ export function Services() {
   const [open, setOpen] = useState(RESTING)
 
   return (
-    <section id="servicios" className="relative bg-white px-4 sm:px-6 py-14 sm:py-20 overflow-hidden">
+    <section id="servicios" className="relative isolate bg-white px-4 sm:px-6 py-14 sm:py-20 overflow-hidden">
+      <PaperGround />
+
       <div className="relative z-10 max-w-5xl mx-auto">
 
         {/* A masthead rather than a centered stack: the question on the left, the
@@ -164,14 +179,25 @@ export function Services() {
             from. */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-x-10 gap-y-4 mb-10 sm:mb-14">
           <BlurReveal amount={0.3} className="md:col-span-6">
-            <h2 className="text-navy font-black text-2xl sm:text-3xl md:text-4xl leading-[1.08] text-balance block font-alverata">
+            {/* Interlínea con prefijo en cada escalón: las utilidades de tamaño
+                de Tailwind traen la suya, así que `md:text-4xl` le ganaba a un
+                `leading-[1.08]` sin prefijo y el display salía a 1.11. */}
+            <h2 className="text-navy font-black text-2xl sm:text-3xl md:text-4xl leading-[1.08] sm:leading-[1.08] md:leading-[1.08] text-balance block font-alverata">
               ¿Qué gestión necesitás realizar?
             </h2>
           </BlurReveal>
 
           {/* Steps down from the heading in weight and value instead of matching
-              it in bold navy, so the two stop competing for the same voice. */}
-          <BlurReveal delay={0.08} className="md:col-span-6 md:pt-1.5">
+              it in bold navy, so the two stop competing for the same voice.
+
+              El `-mt` es la misma corrección óptica que el panel de `WhyChoose`:
+              las dos columnas arrancan en el mismo borde de caja, pero cada
+              cuerpo reserva la mitad de su interlínea arriba de las mayúsculas y
+              la del párrafo es mucho mayor, así que su tinta caía 10px por
+              debajo de la del título. Antes había un `pt-1.5` acá que empujaba
+              en la dirección contraria. Sólo en `md`: apilado, el párrafo va
+              debajo del título y esto sería comerse el aire entre los dos. */}
+          <BlurReveal delay={0.08} className="md:col-span-6 md:-mt-1">
             <p className="text-navy/80 text-[15px] sm:text-base font-medium leading-relaxed">
               La transferencia de autos y motos es el trámite más solicitado, pero no el único.
               Trabajamos con particulares, flotas corporativas, concesionarias/reventas

@@ -8,6 +8,7 @@ import { WaveDivider } from '../components/ui/WaveDivider'
 import { SPRING } from '../lib/motion'
 import { SHADOW } from '../lib/shadows'
 import { BAND, COLOR } from '../lib/palette'
+import { PaperGround } from '../components/ui/PaperGround'
 
 /**
  * Section eyebrows, in the one form DESIGN.md documents for the role: Gotham 600
@@ -151,7 +152,8 @@ export function AboutUs() {
     <div className="bg-white">
 
       {/* ── 1. HERO BIO ────────────────────────────────────────────── */}
-      <section className="pt-28 pb-16 px-4 sm:px-6">
+      <section className="relative isolate overflow-hidden pt-28 pb-16 px-4 sm:px-6">
+        <PaperGround />
         <div className="max-w-5xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
 
@@ -211,7 +213,8 @@ export function AboutUs() {
       </section>
 
       {/* ── 2. MISIÓN ──────────────────────────────────────────────── */}
-      <section className="py-14 px-4 sm:px-6 bg-white">
+      <section className="relative isolate overflow-hidden py-14 px-4 sm:px-6 bg-white">
+        <PaperGround />
         <div className="max-w-3xl mx-auto text-center">
           <BlurReveal>
             <div className="mb-3">
@@ -257,7 +260,8 @@ export function AboutUs() {
       <WaveDivider fromColor={BAND.cool} toColor={BAND.white} />
 
       {/* ── 4. FÓRMULA ─────────────────────────────────────────────── */}
-      <section className="py-14 px-4 sm:px-6 bg-white">
+      <section className="relative isolate overflow-hidden py-14 px-4 sm:px-6 bg-white">
+        <PaperGround />
         <div className="max-w-3xl mx-auto text-center">
           {/* Sentence case. This is an eight-word sentence, not a label, and the
               system reserves uppercase for the 11–12px micro-label role. */}

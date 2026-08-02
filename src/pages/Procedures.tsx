@@ -10,6 +10,7 @@ import { useScrollToId } from '../hooks/useScrollToId'
 import { SPRING, staggerStep } from '../lib/motion'
 import { SHADOW } from '../lib/shadows'
 import { COLOR } from '../lib/palette'
+import { PaperGround } from '../components/ui/PaperGround'
 import {
   procedureCategories,
   type Procedure,
@@ -142,7 +143,8 @@ export function Procedures() {
     <div className="bg-white">
 
       {/* ── HERO ─────────────────────────────────────────────────────────── */}
-      <section className="pt-24 sm:pt-28 pb-10 px-4 sm:px-6">
+      <section className="relative isolate overflow-hidden pt-24 sm:pt-28 pb-10 px-4 sm:px-6">
+        <PaperGround />
         <div className="max-w-5xl mx-auto">
 
           <div className="text-center mb-6">
@@ -225,7 +227,8 @@ export function Procedures() {
       </section>
 
       {/* ── CATEGORÍAS + TRÁMITES ────────────────────────────────────────── */}
-      <section id="tramites" className="scroll-mt-24 pb-16 px-4 sm:px-6">
+      <section id="tramites" className="relative isolate overflow-hidden scroll-mt-24 pb-16 px-4 sm:px-6">
+        <PaperGround />
         <div className="max-w-3xl mx-auto space-y-12 sm:space-y-16">
           {procedureCategories.map((category) => (
             <CategoryBlock key={category.title} category={category} />

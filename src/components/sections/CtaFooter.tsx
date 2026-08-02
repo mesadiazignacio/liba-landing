@@ -5,6 +5,7 @@ import { WhatsAppIcon } from '../ui/BrandIcons'
 import { SPRING } from '../../lib/motion'
 import { SHADOW } from '../../lib/shadows'
 import { WHATSAPP_URL, CALENDLY_URL } from '../../lib/constants'
+import { PaperGround } from '../ui/PaperGround'
 
 // Decorative: the button's own label already says Calendly, so the icon must not
 // repeat it to a screen reader. `aria-hidden` with a non-empty `alt` is a
@@ -15,7 +16,9 @@ function CalendlyIcon({ className }: { className?: string }) {
 
 export function CtaFooter() {
   return (
-    <section id="contacto" className="relative bg-white py-14 sm:py-16 overflow-hidden">
+    <section id="contacto" className="relative isolate bg-white py-14 sm:py-16 overflow-hidden">
+      <PaperGround />
+
       <div className="relative max-w-4xl mx-auto px-4 sm:px-6 text-center">
 
         {/* This block is shared by five surfaces, each of which already spends

@@ -5,6 +5,7 @@ import { CtaFooter } from '../components/sections/CtaFooter'
 import { Footer } from '../components/layout/Footer'
 import { staggerStep } from '../lib/motion'
 import { COLOR } from '../lib/palette'
+import { PaperGround } from '../components/ui/PaperGround'
 
 const FAQS = [
   {
@@ -70,7 +71,8 @@ function FaqItem({
 export function Faqs() {
   return (
     <div className="bg-white">
-      <section className="pt-24 sm:pt-28 pb-16 px-4 sm:px-6">
+      <section className="relative isolate overflow-hidden pt-24 sm:pt-28 pb-16 px-4 sm:px-6">
+        <PaperGround />
         <div className="max-w-3xl mx-auto">
 
           <div className="text-center mb-10 sm:mb-12">

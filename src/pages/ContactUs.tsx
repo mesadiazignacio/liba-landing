@@ -11,6 +11,7 @@ import { DUR, EASE, SPRING } from '../lib/motion'
 import { SHADOW } from '../lib/shadows'
 import { BAND, COLOR } from '../lib/palette'
 import { WHATSAPP_URL, CALENDLY_URL, SERVICE_AREA } from '../lib/constants'
+import { PaperGround } from '../components/ui/PaperGround'
 
 // ── Icons ──────────────────────────────────────────────────────────────────
 
@@ -138,7 +139,8 @@ export function ContactUs() {
     <div className="bg-white">
 
       {/* ── 1. CONTACT METHODS ──────────────────────────────────────────── */}
-      <section className="pt-24 sm:pt-28 pb-14 px-4 sm:px-6">
+      <section className="relative isolate overflow-hidden pt-24 sm:pt-28 pb-14 px-4 sm:px-6">
+        <PaperGround />
         <div className="max-w-4xl mx-auto text-center">
 
           <MaskReveal
@@ -211,7 +213,8 @@ export function ContactUs() {
       {/* La hoja de ingreso es una losa navy que flota como tarjeta, hermana del
           footer. Por eso la sección no cambia de banda ni lleva olas: la ola vive
           adentro de la losa, como textura. */}
-      <section className="pb-14 sm:pb-20 px-4 sm:px-6">
+      <section className="relative isolate overflow-hidden pb-14 sm:pb-20 px-4 sm:px-6">
+        <PaperGround />
         <div className="max-w-3xl mx-auto">
 
           <div className="text-center mb-8 sm:mb-10">
@@ -236,7 +239,8 @@ export function ContactUs() {
 
 
       {/* ── 3. PROCESS STEPS ────────────────────────────────────────────── */}
-      <section className="py-14 px-4 sm:px-6">
+      <section className="relative isolate overflow-hidden py-14 px-4 sm:px-6">
+        <PaperGround />
         <div className="max-w-3xl mx-auto">
 
           <div className="text-center mb-10">

@@ -1,15 +1,28 @@
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { LogoSpinner } from './LogoSpinner'
+import { LogoMark } from '../ui/LogoMark'
 import { DUR, EASE } from '../../lib/motion'
 import { markIntroReady } from '../../hooks/useIntroReady'
 
 /**
- * Hard ceiling on the cover. Its job is to hide the webfont swap — Gotham and
- * Alverata both carry the brand and both arrive after first paint — not to be
- * the wait. If readiness has not resolved by now, the visitor gets the page.
+ * Piso de la portada. La disponibilidad medida — fuentes resueltas más dos
+ * frames — se resuelve normalmente en menos de medio segundo, así que la marca
+ * alcanzaba a girar un cuarto de vuelta y ya no estaba. Acá la portada deja de
+ * ser sólo el tapado del swap de fuentes y pasa a ser un momento: la marca gira
+ * el tiempo suficiente para leerse como marca.
+ *
+ * Se mide desde el montaje, no desde que las fuentes resuelven, así que una
+ * carga lenta no suma este tiempo encima — lo absorbe.
  */
-const MAX_HOLD_MS = 600
+const MIN_HOLD_MS = 1600
+
+/**
+ * Techo. Su trabajo sigue siendo tapar el swap de fuentes — Gotham y Alverata
+ * cargan las dos la marca y las dos llegan después del primer pintado — no ser
+ * la espera. Si la disponibilidad no resolvió para acá, el visitante recibe la
+ * página igual.
+ */
+const MAX_HOLD_MS = 2200
 
 /** Shown once per session. A returning visitor has already met the logo. */
 const SEEN_KEY = 'liba:intro-seen'
@@ -34,7 +47,10 @@ export function PageLoader() {
       return
     }
 
+    const mountedAt = performance.now()
     let settled = false
+    let floor: ReturnType<typeof setTimeout> | undefined
+
     const finish = () => {
       if (settled) return
       settled = true
@@ -46,6 +62,16 @@ export function PageLoader() {
       setVisible(false)
     }
 
+    /** Disponibilidad resuelta: sale ya, o cuando se cumpla el piso. */
+    const release = () => {
+      const remaining = MIN_HOLD_MS - (performance.now() - mountedAt)
+      if (remaining <= 0) {
+        finish()
+        return
+      }
+      floor = setTimeout(finish, remaining)
+    }
+
     const cap = setTimeout(finish, MAX_HOLD_MS)
 
     // Measured readiness rather than a guessed duration: webfonts resolved, then
@@ -53,10 +79,13 @@ export function PageLoader() {
     // cover. This is the whole reason the cover exists.
     const fonts = document.fonts?.ready ?? Promise.resolve()
     void fonts.then(() => {
-      requestAnimationFrame(() => requestAnimationFrame(finish))
+      requestAnimationFrame(() => requestAnimationFrame(release))
     })
 
-    return () => clearTimeout(cap)
+    return () => {
+      clearTimeout(cap)
+      if (floor) clearTimeout(floor)
+    }
   }, [visible])
 
   return (
@@ -68,7 +97,9 @@ export function PageLoader() {
           exit={{ opacity: 0 }}
           transition={{ duration: DUR.exit, ease: EASE.exit }}
         >
-          <LogoSpinner size={104} duration={2.4} />
+          {/* `spinning` fijo en true: acá el giro no es una respuesta a nada,
+              es el estado de la portada mientras existe. */}
+          <LogoMark spinning style={{ width: 104, height: 104 }} />
         </motion.div>
       )}
     </AnimatePresence>

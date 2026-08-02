@@ -8,6 +8,7 @@ import { useScrollToId } from '../../hooks/useScrollToId'
 import { DUR, EASE, SPRING, staggerStep } from '../../lib/motion'
 import { SHADOW } from '../../lib/shadows'
 import { YOUTUBE_EMBED_URL, WHATSAPP_URL, STATS } from '../../lib/constants'
+import { PaperGround } from '../ui/PaperGround'
 
 /**
  * The hero's entrance used to be a set of absolute delays (1.1s headline, 1.3s
@@ -33,7 +34,9 @@ export function Hero() {
   const statStep = staggerStep(STATS.length, 0.08)
 
   return (
-    <section id="inicio" className="relative bg-white pt-14 overflow-hidden">
+    <section id="inicio" className="relative isolate bg-white pt-14 overflow-hidden">
+      <PaperGround />
+
 
       {/* Headline */}
       <div className="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 pt-12 pb-6 text-center">

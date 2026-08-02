@@ -12,12 +12,15 @@ import { SpotlightCard } from '../effects/SpotlightCard'
 import { cardVariant } from '../../lib/animations'
 import { staggerStep } from '../../lib/motion'
 import { features } from '../../data/features'
+import { PaperGround } from '../ui/PaperGround'
 
 const [lead, ...rest] = features
 
 export function WhyChoose() {
   return (
-    <section id="por-que" className="relative bg-white px-4 sm:px-6 py-14 sm:py-20 overflow-hidden">
+    <section id="por-que" className="relative isolate bg-white px-4 sm:px-6 py-14 sm:py-20 overflow-hidden">
+      <PaperGround />
+
       <div className="relative z-10 max-w-5xl mx-auto">
         <div className="text-center mb-8 sm:mb-10">
           <BlurReveal amount={0.3}>
@@ -38,13 +41,34 @@ export function WhyChoose() {
             {/* Title and claim sit side by side on desktop so the panel is filled
                 by its own content rather than by padding — a short title above two
                 lines of copy left the right half of a full-width panel empty. */}
-            <div className="bg-navy px-6 py-8 sm:px-10 sm:py-11 grid grid-cols-1 md:grid-cols-12 gap-x-10 gap-y-4 items-baseline">
+            {/* `items-start`, no `items-baseline`. Alinear por primera línea de
+                base parece lo correcto y acá es exactamente lo que rompía la
+                lectura: el título tiene casi el doble de cuerpo que el párrafo,
+                así que con las bases en la misma línea sus alturas de mayúscula
+                no pueden coincidir — la del párrafo cae tanto más abajo como
+                difieran las dos. Medido, arrancaba 13px por debajo del título en
+                todo ancho de dos columnas. El ojo alinea por el techo de la
+                tinta, no por la base. */}
+            <div className="bg-navy px-6 py-8 sm:px-10 sm:py-11 grid grid-cols-1 md:grid-cols-12 gap-x-10 gap-y-4 items-start">
               {/* One step below the section's own h2, on the documented ladder —
-                  no new type sizes were needed to make this outrank the list. */}
-              <h3 className="md:col-span-5 text-white font-black font-alverata text-xl sm:text-2xl md:text-3xl leading-[1.06]">
+                  no new type sizes were needed to make this outrank the list.
+
+                  `md:leading-[1.06]` y no sólo `leading-[1.06]`: las utilidades
+                  de tamaño de Tailwind traen su propia interlínea, así que
+                  `md:text-3xl` le ganaba a la interlínea sin prefijo y el
+                  display renderizaba a 1.2 en vez del 1.06 que documenta el
+                  sistema. Con prefijo empatan en especificidad y gana la última,
+                  que es esta. */}
+              <h3 className="md:col-span-5 text-white font-black font-alverata text-xl sm:text-2xl md:text-3xl leading-[1.06] sm:leading-[1.06] md:leading-[1.06]">
                 {lead.title}
               </h3>
-              <p className="md:col-span-7 text-white/85 text-[15px] sm:text-lg leading-relaxed">
+              {/* Los dos bloques arrancan en el mismo borde de caja, pero no en
+                  la misma tinta: cada tamaño reserva la mitad de su interlínea
+                  arriba de las mayúsculas, y la del párrafo es mucho mayor. El
+                  desplazamiento cancela esa diferencia medida. Va sólo en `md`,
+                  que es donde existen las dos columnas — apilado, subir el
+                  párrafo sería comerse el aire que lo separa del título. */}
+              <p className="md:col-span-7 md:-mt-[7px] text-white/85 text-[15px] sm:text-lg leading-relaxed">
                 {lead.description}
               </p>
             </div>
