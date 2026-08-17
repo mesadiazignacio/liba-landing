@@ -97,7 +97,10 @@ export function WhyChoose() {
               <h3 className="text-navy font-bold text-[1.0625rem] sm:text-xl leading-snug mb-2">
                 {feature.title}
               </h3>
-              <p className="text-navy/70 text-sm sm:text-[15px] leading-relaxed">
+              {/* `/80`, no `/70`: medido, `navy/70` da 3.98:1 sobre blanco a
+                  15px — bajo el piso AA de 4.5. `/80` mide 5.05:1 y la lista
+                  sigue leyéndose un escalón por debajo de su título. */}
+              <p className="text-navy/80 text-sm sm:text-[15px] leading-relaxed">
                 {feature.description}
               </p>
             </motion.div>

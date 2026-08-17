@@ -2,6 +2,7 @@ import { BlurReveal } from '../effects/BlurReveal'
 import { usePauseOffscreen } from '../../hooks/usePauseOffscreen'
 import { testimonials } from '../../data/testimonials'
 import { BAND } from '../../lib/palette'
+import { PaperGround } from '../ui/PaperGround'
 
 function StarRating({ rating }: { rating: number }) {
   return (
@@ -31,13 +32,22 @@ export function Testimonials() {
   const marqueeRef = usePauseOffscreen<HTMLDivElement>()
 
   return (
-    <section id="clientes" className="relative bg-navy py-10 sm:py-12 overflow-hidden">
+    /* Segunda banda navy a sangre del home, y la que menos lo necesitaba: son
+       tarjetas blancas sobre el fondo, así que el azul saturado sólo servía para
+       hacerlas destellar. Sobre `paper-cool` se levantan con la sombra navy que
+       el sistema documenta para banda tintada, y las estrellas y la comilla
+       coral recuperan su valor en vez de competir con el fondo. */
+    <section id="clientes" className="relative isolate bg-paper-cool py-10 sm:py-12 overflow-hidden">
+      <PaperGround />
+
       <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 mb-10 text-center">
         <BlurReveal>
-          <p className="text-white/80 text-xl font-semibold mb-2">Lo que dicen nuestros clientes</p>
+          {/* `/80`: a 20px/600 no califica como texto grande para WCAG (pide 700),
+              así que el piso sigue siendo 4.5 y `/70` medía 3.78 sobre `cool`. */}
+          <p className="text-navy/80 text-xl font-semibold mb-2">Lo que dicen nuestros clientes</p>
         </BlurReveal>
         <BlurReveal delay={0.08} amount={0.3}>
-          <h2 className="text-white font-black text-2xl sm:text-3xl md:text-4xl leading-tight block font-alverata">
+          <h2 className="text-navy font-black text-2xl sm:text-3xl md:text-4xl leading-tight block font-alverata">
             Tu opinión realmente nos importa
           </h2>
         </BlurReveal>
@@ -46,11 +56,12 @@ export function Testimonials() {
       <BlurReveal>
         <div className="relative z-10 overflow-hidden select-none pointer-events-none max-w-5xl mx-auto" aria-hidden>
           {/* The fades have to be the band's exact fill or the marquee appears to
-              run over a seam, so they read it from the same place the band does. */}
+              run over a seam, so they read it from the same place the band does.
+              Siguen a la banda: si arriba dice `cool`, acá dice `cool`. */}
           <div className="absolute left-0 top-0 bottom-0 w-16 z-10"
-            style={{ background: `linear-gradient(to right, ${BAND.navy}, transparent)` }} />
+            style={{ background: `linear-gradient(to right, ${BAND.cool}, transparent)` }} />
           <div className="absolute right-0 top-0 bottom-0 w-16 z-10"
-            style={{ background: `linear-gradient(to left, ${BAND.navy}, transparent)` }} />
+            style={{ background: `linear-gradient(to left, ${BAND.cool}, transparent)` }} />
 
           <div
             ref={marqueeRef}
@@ -59,7 +70,10 @@ export function Testimonials() {
           >
             {doubled.map((t, i) => (
               <div key={i} className="flex-shrink-0 w-[280px] sm:w-[310px]">
-                <div className="bg-white border border-gray-100 rounded-2xl p-5 shadow-card h-full relative overflow-hidden">
+                {/* `shadow-card-navy` y capilar `navy/10`: la tarjeta pasó a
+                    estar sobre banda tintada, y ahí el sistema dicta sombra
+                    navy a baja alfa — la negra sobre `paper-cool` embarra. */}
+                <div className="bg-white border border-navy/10 rounded-2xl p-5 shadow-card-navy h-full relative overflow-hidden">
                   <QuoteIcon className="absolute top-3 right-3 w-8 h-8 text-coral/10" />
                   <div className="flex items-center gap-3 mb-3">
                     <div className="w-11 h-11 rounded-full bg-navy flex items-center justify-center text-white font-bold text-sm flex-shrink-0">

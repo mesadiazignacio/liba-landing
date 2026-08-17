@@ -19,7 +19,13 @@ import { PaperGround } from '../components/ui/PaperGround'
  */
 function Eyebrow({ children }: { children: string }) {
   return (
-    <p className="text-coral-deep font-semibold text-[11px] sm:text-xs tracking-[0.22em] uppercase">
+    /* Navy, no `coral-deep`. Dos razones que apuntan al mismo lado: medido,
+       `coral-deep` sobre `paper-cool` da 4.39:1 y no llega al piso AA a 11px —
+       el 4.81 que documenta el sistema es contra blanco, no contra la banda
+       tintada. Y por la Regla de las Dos Voces, un rótulo estructural
+       ("Nuestros pilares") es una afirmación, no una invitación: el coral no
+       era suyo. En navy mide 5.05:1 y dice lo que corresponde. */
+    <p className="text-navy/80 font-semibold text-[11px] sm:text-xs tracking-[0.22em] uppercase">
       {children}
     </p>
   )
@@ -91,7 +97,7 @@ function PillarColumn({ pillar }: { pillar: Pillar }) {
       <h3 className="text-navy font-bold text-base sm:text-lg mb-2 leading-tight">
         {pillar.title}
       </h3>
-      <p className="text-navy/70 text-sm leading-relaxed">{pillar.description}</p>
+      <p className="text-navy/80 text-sm leading-relaxed">{pillar.description}</p>
     </div>
   )
 }
@@ -104,7 +110,7 @@ function PillarRow({ pillar }: { pillar: Pillar }) {
       <h3 className="text-navy font-bold text-base sm:text-lg mb-2 leading-tight">
         {pillar.title}
       </h3>
-      <p className="text-navy/70 text-sm leading-relaxed">{pillar.description}</p>
+      <p className="text-navy/80 text-sm leading-relaxed">{pillar.description}</p>
     </div>
   )
 }

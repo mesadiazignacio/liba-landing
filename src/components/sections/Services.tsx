@@ -208,6 +208,7 @@ export function Services() {
 
         {/* Leaving the set returns it to transferencia rather than freezing on
             whatever the pointer happened to cross on its way out. */}
+
         <div className="space-y-3 sm:space-y-4" onMouseLeave={() => setOpen(RESTING)}>
           {ROWS.map((row, r) => (
             <BlurReveal key={r} delay={r * 0.08}>
@@ -232,6 +233,7 @@ export function Services() {
             </BlurReveal>
           ))}
         </div>
+
 
         <BlurReveal delay={0.16}>
           <div className="mt-8 sm:mt-10 sm:flex sm:justify-end">

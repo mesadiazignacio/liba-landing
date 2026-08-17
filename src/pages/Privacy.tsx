@@ -66,7 +66,7 @@ export function Privacy() {
           </BlurReveal>
 
           <BlurReveal delay={0.18}>
-            <p className="text-navy/70 text-sm sm:text-base leading-relaxed">
+            <p className="text-navy/80 text-sm sm:text-base leading-relaxed">
               Lo que sí podemos decirte hoy, con precisión, es qué hace este sitio con lo que le
               escribís. Es poco, y está todo acá abajo. Cuando el documento completo esté listo,
               va a vivir en esta misma página.
@@ -93,7 +93,7 @@ export function Privacy() {
                   <dt className="text-navy font-bold text-[1.0625rem] sm:text-xl leading-snug mb-2">
                     {item.title}
                   </dt>
-                  <dd className="text-navy/70 text-sm sm:text-[15px] leading-relaxed">
+                  <dd className="text-navy/80 text-sm sm:text-[15px] leading-relaxed">
                     {item.body}
                   </dd>
                 </div>
@@ -114,7 +114,7 @@ export function Privacy() {
             </h2>
           </BlurReveal>
           <BlurReveal delay={0.08}>
-            <p className="text-navy/70 text-sm sm:text-base leading-relaxed mb-7">
+            <p className="text-navy/80 text-sm sm:text-base leading-relaxed mb-7">
               Escribinos y la eliminamos de nuestro correo. Lo mismo si querés saber qué tenemos
               tuyo o corregir un dato: preguntanos directamente y te respondemos una persona, no
               un formulario.

@@ -144,7 +144,8 @@ function ServiceEntry({ title, children }: { title: string; children: ReactNode 
 /** The "Destinado a:" line, identical on every entry. */
 function DestinedFor({ children }: { children: ReactNode }) {
   return (
-    <p className="text-sm text-navy/60 leading-relaxed max-w-2xl">
+    /* `/60` medía 3.3:1 sobre blanco. `/80` es el secundario del sistema. */
+    <p className="text-sm text-navy/80 leading-relaxed max-w-2xl">
       <span className="font-semibold text-navy">Destinado a: </span>
       {children}
     </p>
@@ -251,7 +252,14 @@ export function ServicesPage() {
           {/* Coral pill cards — row 1: 3 cards, row 2: 2 cards centradas.
               The rows are laid out separately but arrive as one list, so the
               delay is derived from the card's index across the whole set rather
-              than hand-offset per row. */}
+              than hand-offset per row.
+
+              Eran cinco bloques `coral-deep` a saturación plena, uno al lado del
+              otro: el mismo problema que la losa del hero, repetido cinco veces.
+              Van sobre `paper-blush` — el coral en su registro de banda — que es
+              además el tono correcto para lo que dicen: estas cinco frases son
+              el miedo del visitante, no un llamado a la acción, y no deberían
+              tener el peso visual de un botón. */}
           <div className="mb-8 space-y-3">
             {[painPoints.slice(0, 3), painPoints.slice(3)].map((row, rowIndex) => (
               <div
@@ -263,7 +271,7 @@ export function ServicesPage() {
                   return (
                     <motion.div
                       key={point}
-                      className="bg-coral-deep text-white text-sm font-medium px-5 py-4 rounded-2xl text-center leading-snug"
+                      className="bg-paper-blush text-navy text-sm font-medium px-5 py-4 rounded-2xl text-center leading-snug"
                       initial={{ opacity: 0, y: 12 }}
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true }}
@@ -310,7 +318,7 @@ export function ServicesPage() {
           <div>
             {serviceCards.map((card) => (
               <ServiceEntry key={card.id} title={card.title}>
-                <p className="text-navy/70 text-sm sm:text-base leading-relaxed mb-4 max-w-2xl">
+                <p className="text-navy/80 text-sm sm:text-base leading-relaxed mb-4 max-w-2xl">
                   {card.description}
                 </p>
                 <DestinedFor>{card.destinado}</DestinedFor>
@@ -320,7 +328,7 @@ export function ServicesPage() {
             {/* The fifth entry, in the same component as the other four: it is the
                 next item in the index, not a different kind of thing. */}
             <ServiceEntry title="Transferencia de vehículos por oficio de sucesión">
-              <p className="text-navy/70 text-sm sm:text-base leading-relaxed mb-4 max-w-2xl">
+              <p className="text-navy/80 text-sm sm:text-base leading-relaxed mb-4 max-w-2xl">
                 Cuando hay necesidad de realizar una sucesión, el vehículo a tratar puede quedarse en un
                 limbo registral durante meses (o años) si no se sabe cómo avanzar. Si ya contás con el
                 oficio sucesorio emitido en el juzgado, nosotros nos encargamos de todo lo que sigue: la
@@ -328,7 +336,7 @@ export function ServicesPage() {
                 de los herederos o de un tercero de manera definitiva.
               </p>
 
-              <p className="text-navy/70 text-sm sm:text-base leading-relaxed mb-4 max-w-2xl">
+              <p className="text-navy/80 text-sm sm:text-base leading-relaxed mb-4 max-w-2xl">
                 Si es necesario trabajamos en coordinación con el abogado para que el trámite registral
                 fluya sin fricciones y brindándote alivio en este acompañamiento.
               </p>
@@ -344,7 +352,7 @@ export function ServicesPage() {
                 <p className="text-navy font-semibold text-sm mb-1.5">
                   ¿Todavía no tenés el oficio de sucesión?
                 </p>
-                <p className="text-navy/70 text-sm leading-relaxed">
+                <p className="text-navy/80 text-sm leading-relaxed">
                   Este paso corresponde al proceso judicial que lleva tu abogado. Una vez que esté emitido,
                   nosotros tomamos el trámite desde ahí. Si tenés dudas sobre en qué etapa estás,
                   contános y te orientamos.

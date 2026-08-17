@@ -86,59 +86,78 @@ export function Hero() {
           </motion.div>
         </BlurReveal>
 
-        {/* Coral card — rises to tuck under the video plate it overlaps. */}
-        <motion.div
-          className="bg-coral-deep rounded-2xl px-5 sm:px-10 pt-32 pb-12 sm:pb-14 -mt-16 relative z-10 shadow-card-navy"
-          initial={{ opacity: 0, y: 28 }}
-          animate={ready ? { opacity: 1, y: 0 } : { opacity: 0, y: 28 }}
-          transition={{ duration: DUR.entrance, ease: EASE.out, delay: STEP.card }}
-        >
-          {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-3 sm:gap-6 md:gap-8 mb-6 sm:mb-8 md:mb-10 max-w-4xl mx-auto">
-            <MagneticButton className="flex-1">
+        {/* El bloque de contacto, partido en dos.
+
+            Era una sola caja: un rectángulo de color con `pt-32` de relleno
+            superior cuya única razón de ser era despejar el video que se le monta
+            encima. Esos 128px arrancaban vacíos, y como la caja era más ancha que
+            el video (`max-w-6xl` contra `max-w-4xl`), el color asomaba en alas a
+            los costados. Saturada leía como losa deliberada; en tinte pálido leía
+            como una caja vacía con cosas abajo.
+
+            Ahora son dos superficies con dos trabajos distintos. La placa de
+            acciones baja al ancho exacto del video, así que la superposición se
+            lee como encastre y no como accidente, y su relleno superior es sólo
+            el que despeja la monta. Las cifras se salen del contenedor: no son
+            una acción, son evidencia, y sobre el fondo de la página con una
+            capilar arriba pesan lo que tienen que pesar.
+
+            La superposición se mantiene — el `-mt-16` sigue acá, que es la única
+            idea espacial que este bloque siempre tuvo. */}
+        <div className="relative z-10 -mt-16">
+          {/* La placa baja al ancho exacto del video, así que la monta encastre;
+              su relleno superior es sólo el que despeja esos 64px. */}
+          <motion.div
+            className="max-w-4xl mx-auto grid gap-3 sm:grid-cols-2 sm:gap-4 bg-white rounded-2xl border border-navy/10 shadow-card-navy px-4 sm:px-7 pt-20 pb-5"
+            initial={{ opacity: 0, y: 28 }}
+            animate={ready ? { opacity: 1, y: 0 } : { opacity: 0, y: 28 }}
+            transition={{ duration: DUR.entrance, ease: EASE.out, delay: STEP.card }}
+          >
+            <MagneticButton className="w-full">
               <motion.a
                 href={WHATSAPP_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex flex-col items-center gap-1 bg-white rounded-2xl px-6 py-4 w-full"
+                className="flex flex-col items-center gap-1 bg-coral-deep rounded-2xl px-5 py-4 w-full"
                 style={{ boxShadow: SHADOW.actionRest }}
                 whileHover={{ scale: 1.02, boxShadow: SHADOW.actionHover }}
                 whileTap={{ scale: 0.97 }}
                 transition={SPRING.press}
               >
-                <span className="text-navy font-bold text-base sm:text-xl md:text-3xl leading-none">Agendar consulta</span>
-                <span className="text-navy/85 text-xs sm:text-sm text-center leading-tight">
+                <span className="text-white font-bold text-base sm:text-lg md:text-2xl leading-none">Agendar consulta</span>
+                {/* Blanco pleno: sobre `coral-deep` sólo el blanco entero llega
+                    al 4.81:1 a este cuerpo. */}
+                <span className="text-white text-xs sm:text-sm text-center leading-tight">
                   Llamado inicial de 20 minutos sin cargo
                 </span>
               </motion.a>
             </MagneticButton>
-            <MagneticButton className="flex-1">
+            <MagneticButton className="w-full">
               <motion.button
                 type="button"
                 onClick={() => scrollToId('servicios')}
-                className="flex flex-col items-center gap-1 bg-white rounded-2xl px-6 py-4 w-full"
+                className="flex flex-col items-center gap-1 bg-paper-cool rounded-2xl px-5 py-4 w-full"
                 style={{ boxShadow: SHADOW.actionRest }}
                 whileHover={{ scale: 1.02, boxShadow: SHADOW.actionHover }}
                 whileTap={{ scale: 0.97 }}
                 transition={SPRING.press}
               >
-                <span className="text-navy font-bold text-base sm:text-xl md:text-3xl leading-none">Servicios</span>
+                <span className="text-navy font-bold text-base sm:text-lg md:text-2xl leading-none">Servicios</span>
                 <span className="text-navy/85 text-xs sm:text-sm text-center leading-tight">
                   Conocé todo lo que podemos resolver por vos
                 </span>
               </motion.button>
             </MagneticButton>
-          </div>
+          </motion.div>
 
-          {/* Stats. These tiles used to sit on #1e5aa0 — a fourth navy the system
-              never sanctioned — under a resting zero-offset halo, which is
-              decoration wearing the glow's meaning. They are navy now, flat at
-              rest, and the coral glow arrives on hover where it says something. */}
-          <div className="grid grid-cols-3 gap-2 sm:gap-8 max-w-5xl mx-auto">
+          {/* Las cifras, fuera de toda caja. No son una acción: son evidencia,
+              así que van sobre el fondo de la página, separadas por la capilar
+              `navy/10` que el sistema documenta para fondo claro. */}
+          <div className="max-w-3xl mx-auto mt-8 sm:mt-10 grid grid-cols-3 border-t border-navy/10 pt-5">
             {STATS.map((stat, i) => (
               <motion.div
                 key={stat.label}
-                className="bg-navy rounded-2xl px-1 sm:px-3 md:px-4 py-3 sm:py-4 md:py-5 flex flex-col items-center text-center gap-1 cursor-default"
+                className={`px-2 sm:px-4 text-center ${i > 0 ? 'border-l border-navy/10' : ''}`}
                 initial={{ opacity: 0, y: 12 }}
                 animate={ready ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
                 transition={{
@@ -146,10 +165,9 @@ export function Hero() {
                   delay: STEP.stats + i * statStep,
                   ease: EASE.out,
                 }}
-                whileHover={{ scale: 1.03, boxShadow: SHADOW.glowCoral }}
               >
-                <span className="text-white font-black text-xl sm:text-4xl md:text-6xl leading-none">
-                  {/* The figures count once the card has landed, not on a timer
+                <span className="block text-navy font-black text-xl sm:text-3xl md:text-5xl leading-none">
+                  {/* The figures count once the plate has landed, not on a timer
                       guessed against the loader. */}
                   <Counter
                     end={stat.value}
@@ -160,15 +178,13 @@ export function Hero() {
                     play={ready}
                   />
                 </span>
-                {/* Walks the documented ladder as the figure grows: micro-label
-                    floor (11px), label (14px), title (20px). It was at 10px on
-                    mobile — below the floor this palette holds legibly, in bold
-                    white on a mid-blue. */}
-                <p className="text-white text-[11px] sm:text-sm md:text-xl font-bold leading-[1.08] whitespace-pre-line">{stat.label}</p>
+                <p className="mt-1.5 text-navy/80 text-[11px] sm:text-sm md:text-base font-bold leading-[1.08] whitespace-pre-line">
+                  {stat.label}
+                </p>
               </motion.div>
             ))}
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   )

@@ -51,7 +51,7 @@ export function CtaFooter() {
                     <WhatsAppIcon className="w-6 h-6 flex-shrink-0" />
                   </motion.a>
                 </MagneticButton>
-                <p className="text-navy/70 text-sm font-medium">
+                <p className="text-navy/80 text-sm font-medium">
                   Respondemos en el día · Primer llamado sin cargo
                 </p>
               </div>
@@ -72,7 +72,7 @@ export function CtaFooter() {
                     <CalendlyIcon className="w-6 h-6 flex-shrink-0" />
                   </motion.a>
                 </MagneticButton>
-                <p className="text-navy/70 text-sm font-medium">
+                <p className="text-navy/80 text-sm font-medium">
                   Te quedará asignado un llamado inicial de 20 minutos
                 </p>
               </div>

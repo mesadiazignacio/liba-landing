@@ -177,7 +177,7 @@ export function ContactUs() {
                       <WhatsAppIcon className="w-6 h-6 flex-shrink-0" />
                     </motion.a>
                   </MagneticButton>
-                  <p className="text-navy/70 text-sm font-medium">
+                  <p className="text-navy/80 text-sm font-medium">
                     Respondemos en el día · Primer llamado sin cargo
                   </p>
                 </div>
@@ -197,7 +197,7 @@ export function ContactUs() {
                       <CalendlyIcon className="w-6 h-6 flex-shrink-0" />
                     </motion.a>
                   </MagneticButton>
-                  <p className="text-navy/70 text-sm font-medium">
+                  <p className="text-navy/80 text-sm font-medium">
                     Te quedará asignado un llamado inicial de 20 minutos
                   </p>
                 </div>
@@ -250,7 +250,7 @@ export function ContactUs() {
               </h2>
             </BlurReveal>
             <BlurReveal delay={0.08}>
-              <p className="text-navy/70 text-sm sm:text-base">
+              <p className="text-navy/80 text-sm sm:text-base">
                 Así funciona nuestro proceso desde el primer mensaje.
               </p>
             </BlurReveal>
@@ -308,7 +308,7 @@ export function ContactUs() {
               <h3 className="mb-2 text-base font-bold leading-snug text-navy sm:text-[17px]">
                 ¿Tu trámite está en otra localidad?
               </h3>
-              <p className="text-sm leading-relaxed text-navy/75 sm:text-[15px]">
+              <p className="text-sm leading-relaxed text-navy/80 sm:text-[15px]">
                 Si tu vehículo está radicado en otra jurisdicción del país, contamos con una red de colegas gestores matriculados con quienes trabajamos en conjunto para que tu trámite tenga el mismo nivel de atención, sin importar dónde esté.
               </p>
             </BlurReveal>

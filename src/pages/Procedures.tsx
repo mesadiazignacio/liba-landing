@@ -83,7 +83,11 @@ function ProcedureItem({
               {procedure.title}
             </span>
             {procedure.subtitle && (
-              <span className="block text-gray-500 text-xs sm:text-sm mt-1 leading-snug">
+              /* Gris sobre banda tintada: medía 4.41:1 sobre `paper-cool` y
+                 4.03:1 sobre `paper-blush`, las dos bajo el piso. Y el sistema
+                 no tiene superficies grises — sobre un fondo con color, el
+                 secundario se saca del mismo tono, no de un gris neutro. */
+              <span className="block text-navy/80 text-xs sm:text-sm mt-1 leading-snug">
                 {procedure.subtitle}
               </span>
             )}
