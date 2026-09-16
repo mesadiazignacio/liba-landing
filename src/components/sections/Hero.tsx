@@ -7,6 +7,7 @@ import { Counter } from '../ui/Counter'
 import { useIntroReady } from '../../hooks/useIntroReady'
 import { useScrollToId } from '../../hooks/useScrollToId'
 import { useReducedMotionSafe } from '../../hooks/useReducedMotionSafe'
+import { useMediaQuery } from '../../hooks/useMediaQuery'
 import { DUR, EASE, SPRING, staggerStep } from '../../lib/motion'
 import { SHADOW } from '../../lib/shadows'
 import { YOUTUBE_EMBED_URL, WHATSAPP_URL, STATS } from '../../lib/constants'
@@ -30,11 +31,13 @@ import { PaperGround } from '../ui/PaperGround'
  * halos — uno navy, uno coral — que derivan muy despacio: es el aire de las
  * dos voces del sistema, sin mezclarse en un tercer color.
  */
-/* El video y su placa de acciones comparten ancho. Tope de 56rem, pero además
- * atado al alto de la ventana: en una laptop chata o un iPad apaisado, un video
- * de 16:9 a todo el ancho empujaba los botones debajo del pliegue. 25rem es lo
- * que ocupan la barra, el titular y la parte visible de la placa. */
-const HERO_PLATE_MAX = 'min(56rem, max(22rem, calc((100svh - 25rem) * 16 / 9)))'
+/* El video y su placa de acciones comparten ancho: 56rem. Sólo en una tablet
+ * apaisada el tope se ata además al alto de la ventana, porque ahí un video de
+ * 16:9 a todo el ancho empujaba los botones debajo del pliegue (25rem es lo que
+ * ocupan la barra, el titular y la parte visible de la placa). En desktop no:
+ * con el alto que deja el navegador en una laptop, el video caía a ~600px. */
+const HERO_PLATE_MAX = '56rem'
+const HERO_PLATE_MAX_TABLET = 'min(56rem, max(22rem, calc((100svh - 25rem) * 16 / 9)))'
 
 const STEP = {
   headline: 0,
@@ -49,6 +52,8 @@ export function Hero() {
   const reduced = useReducedMotionSafe()
   const scrollToId = useScrollToId()
   const statStep = staggerStep(STATS.length, 0.08)
+  const tabletLandscape = useMediaQuery('(pointer: coarse) and (orientation: landscape) and (min-width: 768px)')
+  const plateMax = tabletLandscape ? HERO_PLATE_MAX_TABLET : HERO_PLATE_MAX
 
   const sectionRef = useRef<HTMLElement>(null)
   const { scrollYProgress } = useScroll({
@@ -99,7 +104,7 @@ export function Hero() {
         <BlurReveal delay={STEP.video} play={ready} className="relative z-20">
           <motion.div
             className="relative mx-auto rounded-2xl overflow-hidden shadow-card-navy ring-1 ring-navy/10"
-            style={reduced ? { maxWidth: HERO_PLATE_MAX } : { maxWidth: HERO_PLATE_MAX, y: plateY, scale: plateScale }}
+            style={reduced ? { maxWidth: plateMax } : { maxWidth: plateMax, y: plateY, scale: plateScale }}
             whileHover={{ scale: 1.005 }}
             transition={{ duration: DUR.state, ease: EASE.out }}
           >
@@ -122,7 +127,7 @@ export function Hero() {
           <motion.div
             className="mx-auto grid gap-3 sm:grid-cols-2 sm:gap-4 bg-white rounded-2xl border border-navy/10 shadow-card-navy px-4 sm:px-7 pt-20 pb-5"
             initial={{ opacity: 0, y: 28 }}
-            style={{ maxWidth: HERO_PLATE_MAX }}
+            style={{ maxWidth: plateMax }}
             animate={ready ? { opacity: 1, y: 0 } : { opacity: 0, y: 28 }}
             transition={{ duration: DUR.entrance, ease: EASE.out, delay: STEP.card }}
           >
