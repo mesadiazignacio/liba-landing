@@ -29,7 +29,6 @@ import { SpotlightCard } from '../effects/SpotlightCard'
 import { StaggerChildren } from '../effects/StaggerChildren'
 import { WhatsAppIcon } from '../ui/BrandIcons'
 import { PaperGround } from '../ui/PaperGround'
-import { WaveTexture } from '../ui/WaveTexture'
 import { useReducedMotionSafe } from '../../hooks/useReducedMotionSafe'
 import { useMediaQuery } from '../../hooks/useMediaQuery'
 import { cardVariant } from '../../lib/animations'
@@ -207,7 +206,6 @@ function ActivePlate({
       spotlightColor="rgba(255,255,255,0.10)"
       spotlightSize={380}
     >
-      <WaveTexture />
       <div className="relative flex min-h-[380px] flex-col p-8 lg:p-10">
         <AnimatePresence mode="wait" initial={false}>
           <motion.div

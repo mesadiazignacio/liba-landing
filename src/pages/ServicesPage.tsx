@@ -14,7 +14,6 @@ import { CtaFooter } from '../components/sections/CtaFooter'
 import { Footer } from '../components/layout/Footer'
 import { PaperGround } from '../components/ui/PaperGround'
 import { WaveDivider } from '../components/ui/WaveDivider'
-import { WaveTexture } from '../components/ui/WaveTexture'
 import { WhatsAppIcon } from '../components/ui/BrandIcons'
 
 // ── Data ──────────────────────────────────────────────────────────────────
@@ -385,7 +384,6 @@ function PainPoints() {
               >
                 <BubbleTail side="right" className="text-navy" />
                 <div className="relative overflow-hidden rounded-2xl bg-navy px-6 pb-6 pt-4 text-white sm:px-7 sm:pb-7 sm:pt-5">
-                  <WaveTexture />
                   <p className="relative mb-2 text-[13px] font-semibold text-white/70">
                     LIBA · Gestoría del Automotor
                   </p>
@@ -643,7 +641,6 @@ function ServicePlate({ card, index, total, progress, span, stacking, reduced }:
           spotlightColor="rgba(255,255,255,0.10)"
           spotlightSize={460}
         >
-          <WaveTexture />
           <div className="relative grid grid-cols-1 items-start gap-x-10 gap-y-5 px-6 py-8 sm:px-10 sm:py-11 md:grid-cols-12 lg:py-12">
             {/* Alverata en el título: cada placa es la afirmación que abre su
                 propia superficie en la pila, no una tarjeta dentro de una

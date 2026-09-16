@@ -6,7 +6,6 @@ import { BlurReveal } from '../components/effects/BlurReveal'
 import { MagneticButton } from '../components/effects/MagneticButton'
 import { StaggerChildren } from '../components/effects/StaggerChildren'
 import { Disclosure } from '../components/ui/Disclosure'
-import { WaveTexture } from '../components/ui/WaveTexture'
 import { CtaFooter } from '../components/sections/CtaFooter'
 import { Footer } from '../components/layout/Footer'
 import { useScrollToId } from '../hooks/useScrollToId'
@@ -195,7 +194,6 @@ function CategoryBlock({
           className="relative overflow-hidden rounded-2xl px-6 py-4 mb-4 sm:mb-5"
           style={{ backgroundColor: tone.band }}
         >
-          {category.tone === 'coral' && <WaveTexture />}
           <h2
             id={headingId}
             className={`relative ${tone.bandText} font-black text-lg sm:text-xl md:text-2xl leading-tight font-alverata`}

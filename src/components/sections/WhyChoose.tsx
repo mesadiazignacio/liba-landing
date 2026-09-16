@@ -15,7 +15,6 @@ import { cardVariant } from '../../lib/animations'
 import { DUR, EASE, staggerStep } from '../../lib/motion'
 import { features } from '../../data/features'
 import { PaperGround } from '../ui/PaperGround'
-import { WaveTexture } from '../ui/WaveTexture'
 import { useReducedMotionSafe } from '../../hooks/useReducedMotionSafe'
 
 const [lead, ...rest] = features
@@ -73,9 +72,6 @@ export function WhyChoose() {
             spotlightColor="rgba(255,255,255,0.10)"
             spotlightSize={420}
           >
-            {/* La curva de nivel de las losas navy, como en el footer y la hoja
-                de ingreso: el panel deja de ser un rectángulo plano. */}
-            <WaveTexture />
             {/* Title and claim sit side by side on desktop so the panel is filled
                 by its own content rather than by padding — a short title above two
                 lines of copy left the right half of a full-width panel empty. */}

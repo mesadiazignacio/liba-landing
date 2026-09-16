@@ -7,7 +7,6 @@ import { SpotlightCard } from '../components/effects/SpotlightCard'
 import { IntakeForm } from '../components/sections/IntakeForm'
 import { Stage, StageList, StageTrack } from '../components/ui/StageTrack'
 import { WaveDivider } from '../components/ui/WaveDivider'
-import { WaveTexture } from '../components/ui/WaveTexture'
 import { Footer } from '../components/layout/Footer'
 import { useReducedMotionSafe } from '../hooks/useReducedMotionSafe'
 import { DUR, EASE, staggerStep } from '../lib/motion'
@@ -242,7 +241,6 @@ export function ContactUs() {
                 spotlightColor="rgba(255,255,255,0.10)"
                 spotlightSize={380}
               >
-                <WaveTexture />
                 <div className="relative flex h-full flex-col p-6 sm:p-8 lg:p-10">
                   <h2 className="mb-4 font-alverata text-[clamp(1.5rem,4vw,2.25rem)] font-black leading-tight text-white">
                     Dónde estamos y hasta dónde llegamos

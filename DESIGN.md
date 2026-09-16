@@ -277,7 +277,7 @@ Two shapes are in play and the split is real, not drift: **pill for navigational
 
 ### Cards / Containers
 - **Corner Style:** 16px, always.
-- **Feature plate** (as shipped in `WhyChoose`): Navy fill with the `WaveTexture` contour, 36–56px vertical padding, title left (Alverata, Display step for the lead claim, Headline step for the rest) and lede-size body right on a 5/7 split. Five plates stack on scroll — see *Scroll devices on the home page* — and the pointer spotlight is their only hover.
+- **Feature plate** (as shipped in `WhyChoose`): Flat navy fill, 36–56px vertical padding, title left (Alverata, Display step for the lead claim, Headline step for the rest) and lede-size body right on a 5/7 split. Five plates stack on scroll — see *Scroll devices on the home page* — and the pointer spotlight is their only hover.
 - **Testimonial card** (as shipped in `Testimonials`): White fill, `navy/10` hairline, 20px padding, 300px opening to 340px, the navy-cast card shadow (it sits on `paper-cool`), a `coral/10` quotation-mark watermark in the top-right corner, a 44px navy initials pill, `star` rating row, and `navy/80` body copy shown in full. Six real reviews ride two full-bleed rows drifting in opposite directions, three per row so no name is ever on screen twice; the rows brake to a stop under the pointer and the card lifts 4px on hover.
 - **Pillar card** (as shipped in `AboutUs`): White fill at 16px with 20px padding, a `navy/5` ring, and the navy-cast resting shadow because it sits on `paper-cool`. Lifts 3px on hover. Holds a stage marker to its left (mobile) or above it (desktop).
 - **Panel:** `paper-cool` or `paper-blush` fill at 16px with 20–28px padding. The workhorse for informational blocks inside a band.

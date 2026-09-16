@@ -10,7 +10,6 @@ import { Footer } from '../components/layout/Footer'
 import { PaperGround } from '../components/ui/PaperGround'
 import { Stage, StageList, StageTrack } from '../components/ui/StageTrack'
 import { WaveDivider } from '../components/ui/WaveDivider'
-import { WaveTexture } from '../components/ui/WaveTexture'
 import { useReducedMotionSafe } from '../hooks/useReducedMotionSafe'
 import { cardVariant } from '../lib/animations'
 import { SPRING, staggerStep } from '../lib/motion'
@@ -344,7 +343,7 @@ export function AboutUs() {
           </BlurReveal>
 
           {/* La premisa es una placa navy, como las del home: una superficie
-              propia con la curva de nivel y la luz del puntero. Es la afirmación
+              propia con la luz del puntero. Es la afirmación
               que abre esta banda, así que conserva la Alverata. El superíndice
               va en blanco al 85% (≈6.4:1): `coral-light` sobre navy mide 4.14:1
               y a 16px no llega al piso AA. */}
@@ -354,7 +353,6 @@ export function AboutUs() {
               spotlightColor="rgba(255,255,255,0.10)"
               spotlightSize={420}
             >
-              <WaveTexture />
               <div className="relative px-6 py-8 sm:px-10 sm:py-10">
                 <p className="font-black text-xl sm:text-2xl md:text-3xl leading-snug font-alverata">
                   {/* Dos tramos que no se parten por dentro: en pantallas

@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import emailjs from '@emailjs/browser'
-import { WaveTexture } from '../ui/WaveTexture'
 import { DUR, EASE, SPRING } from '../../lib/motion'
 import { COLOR } from '../../lib/palette'
 import {
@@ -13,10 +12,9 @@ import {
 /**
  * La hoja de ingreso: una losa navy, hermana del footer.
  *
- * Misma gramática que `Footer` — tarjeta de 16px con la ola mudada adentro
- * como textura de contorno. Por eso acá tampoco hay `WaveDivider`: la ola no
- * une dos bandas porque abajo no hay una segunda banda, hay una tarjeta. La
- * sombra no la lleva la losa sino la placa blanca en la que `ContactUs` la
+ * Misma gramática que `Footer` — tarjeta de 16px sobre navy plano. Por eso acá
+ * tampoco hay `WaveDivider`: la ola no une dos bandas porque abajo no hay una
+ * segunda banda, hay una tarjeta. La sombra no la lleva la losa sino la placa blanca en la que `ContactUs` la
  * monta: dos sombras anidadas leen como una tarjeta pegada sobre otra.
  *
  * Los campos son renglones, no cajas. En reposo una regla `white/45` —el único
@@ -141,8 +139,6 @@ export function IntakeForm() {
 
   return (
     <div className="relative isolate overflow-hidden rounded-2xl bg-navy text-white">
-      <WaveTexture />
-
       {/* mode="wait" mantiene la altura estable durante el cruce. */}
       <AnimatePresence mode="wait" initial={false}>
         {submitted ? (

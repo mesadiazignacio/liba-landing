@@ -2,7 +2,6 @@ import { useCallback, useContext, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { BlurReveal } from '../effects/BlurReveal'
 import { SOCIAL_ICONS } from '../ui/BrandIcons'
-import { WaveTexture } from '../ui/WaveTexture'
 import { LenisContext } from '../effects/SmoothScroll'
 import { useReducedMotionSafe } from '../../hooks/useReducedMotionSafe'
 import { BAND } from '../../lib/palette'
@@ -149,8 +148,6 @@ export function Footer({ fromColor = BAND.white }: Props) {
   return (
     <div style={{ backgroundColor: fromColor }} className="px-3 pb-3 sm:px-5 sm:pb-5">
       <footer className="relative isolate mx-auto max-w-6xl overflow-hidden rounded-2xl bg-navy text-white shadow-card">
-        <WaveTexture />
-
         {/* En reposo es sólo el redondel con la flecha; la etiqueta crece hacia
             la izquierda al pasar el puntero. Anclado arriba a la derecha, no en
             la fila de abajo: ahí obligaba a una segunda línea de píldoras y
