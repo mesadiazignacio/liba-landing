@@ -44,8 +44,13 @@ function ChevronCircle({ open }: { open: boolean }) {
 }
 
 interface Props {
-  /** The always-visible row content, rendered inside the trigger. */
-  summary: ReactNode
+  /**
+   * The always-visible row content, rendered inside the trigger. A function
+   * receives the open state, so a caller can mark the active row on its own
+   * title — an underline sweep, a colour — without the row owning that choice.
+   * A plain node keeps the incumbent behaviour.
+   */
+  summary: ReactNode | ((open: boolean) => ReactNode)
   children: ReactNode
   /** Row fill. The catalog tones its rows by category, the FAQ list alternates. */
   background: string
@@ -73,7 +78,7 @@ export function Disclosure({ summary, children, background, className = '' }: Pr
         aria-expanded={open}
         aria-controls={panelId}
       >
-        {summary}
+        {typeof summary === 'function' ? summary(open) : summary}
         <ChevronCircle open={open} />
       </button>
 

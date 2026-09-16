@@ -4,6 +4,7 @@ import { SmoothScroll } from './components/effects/SmoothScroll'
 import { ScrollToTop } from './components/effects/ScrollToTop'
 import { PageLoader } from './components/effects/PageLoader'
 import { NoiseOverlay } from './components/effects/NoiseOverlay'
+import { CursorDot } from './components/effects/CursorDot'
 import { ScrollProgress } from './components/ui/ScrollProgress'
 import { Navbar } from './components/layout/Navbar'
 import { DUR, EASE } from './lib/motion'
@@ -22,6 +23,7 @@ export default function App() {
     <SmoothScroll>
       <PageLoader />
       <NoiseOverlay />
+      <CursorDot />
       <ScrollProgress />
       <Navbar />
 

@@ -127,8 +127,7 @@ export function Privacy() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center gap-2 bg-navy text-white font-bold text-sm sm:text-base px-7 py-3.5 rounded-full"
-                whileHover={{ scale: 1.03, boxShadow: SHADOW.navyBloom }}
-                whileTap={{ scale: 0.97 }}
+                whileHover={{ boxShadow: SHADOW.navyBloom }}
                 transition={SPRING.press}
               >
                 Consultar por WhatsApp

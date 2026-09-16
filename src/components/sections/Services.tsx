@@ -1,261 +1,341 @@
-/* An accordion of cards: one trámite is open at a time and the rest are closed.
+/* El índice de trámites.
  *
- * Two constraints shaped the adaptation of the reference. First, eight lines is
- * more than a single row of cards can hold and still leave a closed one legible,
- * so they run as two rows of four and share one open card between them — hovering
- * anywhere in the set closes whatever was open. Second, an open card has to be
- * worth opening: the reference fills its expanded card with a photograph, and
- * LIBA has exactly one real photograph and no per-trámite imagery, so the space
- * goes to what the trámite actually resolves. Seven of those sentences are
- * condensed from LIBA's own copy; the eighth is flagged in `data/services.ts`.
+ * La versión anterior era un acordeón de tarjetas que se ensanchaban y
+ * angostaban al pasar el puntero: ocho cajas del mismo tono repartiéndose un
+ * ancho, con el texto saltando de tamaño en cada barrido. Leía como un widget,
+ * no como una lista de lo que LIBA resuelve.
  *
- * The set rests on transferencia — it opens closed-state-free on load and returns
- * there when the pointer leaves, so the most requested trámite is what the
- * section shows when nobody is touching it. That is the whole ranking; it needs
- * no label and no larger type to say so.
+ * Ahora es un índice: ocho filas a toda línea, una debajo de la otra, con el
+ * nombre del trámite en el cuerpo más grande que la sección permite. La fila
+ * activa se pinta de navy con un barrido desde la izquierda — la misma banda
+ * de color que el sistema usa para afirmar algo — y a la derecha una placa
+ * fija acompaña el scroll mostrando qué resuelve ese trámite y un botón para
+ * consultarlo por WhatsApp con el trámite ya nombrado en el mensaje.
  *
- * All eight cards pointed at the same `/services` route, so a per-card link would
- * have been eight copies of the section's own button. The card is a disclosure,
- * the button below is the navigation, and neither pretends to be the other.
+ * Por debajo de `md` no hay columna fija: cada fila se abre en su lugar, como
+ * un desplegable, con el mismo contenido y el mismo botón.
+ *
+ * El índice arranca en transferencia, el trámite más pedido, y no se resetea
+ * cuando el puntero se va: la placa se queda en lo último que el visitante
+ * miró, que es lo que está por leer.
  */
 
-import { useState, type CSSProperties } from 'react'
+import { useId, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { motion } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
 import { BlurReveal } from '../effects/BlurReveal'
 import { MagneticButton } from '../effects/MagneticButton'
-import { useReducedMotionSafe } from '../../hooks/useReducedMotionSafe'
-import { DUR, EASE, SETTLE_DELAY, SPRING } from '../../lib/motion'
-import { SHADOW } from '../../lib/shadows'
-import { services, type Service } from '../../data/services'
+import { SpotlightCard } from '../effects/SpotlightCard'
+import { StaggerChildren } from '../effects/StaggerChildren'
+import { WhatsAppIcon } from '../ui/BrandIcons'
 import { PaperGround } from '../ui/PaperGround'
+import { WaveTexture } from '../ui/WaveTexture'
+import { useReducedMotionSafe } from '../../hooks/useReducedMotionSafe'
+import { useMediaQuery } from '../../hooks/useMediaQuery'
+import { cardVariant } from '../../lib/animations'
+import { DUR, EASE, SETTLE_DELAY, SPRING, staggerStep } from '../../lib/motion'
+import { SHADOW } from '../../lib/shadows'
+import { whatsappUrlFor } from '../../lib/constants'
+import { COLOR } from '../../lib/palette'
+import { services, type Service } from '../../data/services'
 
-/* Four to a row: at this container width a fifth closed card cannot hold
-   "Gestión de multas e infracciones" without breaking it across five lines. */
-const ROWS = [services.slice(0, 4), services.slice(4)]
-
-/** The card the section falls back to whenever nothing is being pointed at. */
+/** La fila que la sección muestra cuando nadie la tocó todavía. */
 const RESTING = 0
 
-/** No card open — only reachable by clicking the open one shut. */
-const CLOSED = -1
+/** Navy en canales, para las alfas que framer anima. Mismo valor que `COLOR.navy`. */
+const NAVY_RGB = '8, 77, 155'
 
-/* Simétrica, no exponencial. La curva de entrada del sistema mete el 97% del
-   recorrido en los primeros 0.2s: sirve para algo que llega desde afuera, pero
-   acá las dos tarjetas ya están en pantalla y sólo se reparten el ancho. No hay
-   nada que aterrizar, hay dos posiciones conocidas entre las que moverse, que es
-   literalmente para lo que `inOut` está declarada en los tokens. Arrancar suave
-   además es lo que hace tolerable el barrido: con la exponencial, cada tarjeta
-   salía disparada apenas el puntero la rozaba. */
-const EASE_EXCHANGE = `cubic-bezier(${EASE.inOut.join(',')})`
-
-/* The open/closed change is a CSS transition rather than framer's `animate`,
-   because the same state has to be reachable by pointer and by keyboard and the
-   width change is expressed in a flex ratio the layout owns. Durations and curve
-   still come from the motion tokens — nothing here is hand-typed.
-
-   Todo el cambio va sobre el mismo par duración/curva — el ancho, el fondo, el
-   cuerpo de texto, el signo que rota — porque la tarjeta tiene que cambiar como
-   una sola cosa. Un fondo que resuelve antes que el ancho es una tarjeta que se
-   pinta y después se acomoda. */
-function transitions(properties: string, reduced: boolean, delay = 0): CSSProperties {
-  if (reduced) return {}
-  return {
-    transitionProperty: properties,
-    transitionDuration: `${DUR.exchange}s`,
-    transitionTimingFunction: EASE_EXCHANGE,
-    transitionDelay: delay ? `${delay}s` : undefined,
-  }
-}
-
-/** Rotates 45° into a close mark when its card opens. */
-function PlusMark({ className, style }: { className?: string; style?: CSSProperties }) {
+function ArrowMark({ className }: { className?: string }) {
   return (
-    <svg className={className} style={style} viewBox="0 0 16 16" fill="none" aria-hidden>
-      <path d="M8 2v12M2 8h12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+    <svg className={className} viewBox="0 0 16 16" fill="none" aria-hidden>
+      <path
+        d="M3 8h10M9 4l4 4-4 4"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   )
 }
 
-interface CardProps {
+/** El botón que cierra cada panel: consultar ese trámite, ya nombrado. */
+function ConsultLink({
+  service,
+  tone,
+  linkRef,
+}: {
   service: Service
+  tone: 'light' | 'dark'
+  linkRef?: React.RefObject<HTMLAnchorElement>
+}) {
+  const dark = tone === 'dark'
+  return (
+    <MagneticButton strength={0.15} className="inline-block">
+      <motion.a
+        ref={linkRef}
+        href={whatsappUrlFor(service.label)}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={`inline-flex items-center gap-2.5 rounded-full px-5 py-3 text-sm font-bold ${
+          dark ? 'bg-white text-navy' : 'bg-navy text-white'
+        }`}
+        whileHover={{ boxShadow: dark ? SHADOW.outlinedBloom : SHADOW.navyBloom }}
+        transition={SPRING.press}
+      >
+        Consultar por WhatsApp
+        <WhatsAppIcon className="h-[18px] w-[18px] flex-shrink-0" />
+      </motion.a>
+    </MagneticButton>
+  )
+}
+
+interface RowProps {
+  service: Service
+  active: boolean
   open: boolean
-  onOpen: () => void
-  /* The mark on an open card is a close mark, so it has to close. Pointer users
-     rarely need it — moving away is enough — but on touch there is no "away",
-     and a control that draws an × and then does nothing is the worst of both. */
-  onClose: () => void
+  panelId: string
+  /** Si la fila es un desplegable (bajo `md`) o un selector de la placa fija. */
+  disclosure: boolean
+  onActivate: () => void
+  onToggle: () => void
   reduced: boolean
 }
 
-function ServiceCard({ service, open, onOpen, onClose, reduced }: CardProps) {
+function ServiceRow({ service, active, open, panelId, disclosure, onActivate, onToggle, reduced }: RowProps) {
+  const fillTransition = reduced
+    ? { duration: 0 }
+    : { duration: DUR.layout, ease: EASE.out }
+
   return (
-    <div
-      onMouseEnter={onOpen}
-      /* `flex-grow` only exists at lg, where the row becomes a flex line; below
-         that the cards are grid cells and the value is inert. `basis-0` keeps the
-         ratio honest, so a long label cannot widen its own closed card. */
-      className="lg:basis-0 lg:min-w-0"
-      style={{ flexGrow: open ? 2.4 : 1, ...transitions('flex-grow', reduced) }}
-    >
+    <motion.li variants={cardVariant} className="relative">
+      {/* El barrido navy. Vive detrás del botón y se estira desde la izquierda
+          en vez de aparecer: la fila no cambia de color, se pinta. Sobresale
+          16px a cada lado del texto para que la fila activa lea como una placa
+          y no como una línea resaltada. */}
+      <motion.span
+        aria-hidden
+        className="pointer-events-none absolute -inset-x-3 inset-y-0 rounded-2xl bg-navy origin-left sm:-inset-x-4"
+        initial={false}
+        animate={{ scaleX: active ? 1 : 0, opacity: active ? 1 : 0.6 }}
+        transition={fillTransition}
+        style={{ boxShadow: active ? SHADOW.cardNavy : 'none' }}
+      />
+
+      {/* Bajo `md` el botón abre el panel de abajo y lo dice con ARIA. En
+          `md`+ el panel no existe: el botón elige qué muestra la placa fija y
+          lleva el foco a su enlace, así el teclado tiene el mismo camino que el
+          puntero. */}
       <button
         type="button"
-        aria-expanded={open}
-        onClick={open ? onClose : onOpen}
-        onFocus={onOpen}
-        className={`flex h-full w-full flex-col rounded-2xl p-4 text-left lg:p-5 ${
-          open ? 'bg-navy shadow-card-navy' : 'bg-paper-cool'
-        }`}
-        style={transitions('background-color, box-shadow', reduced)}
+        aria-expanded={disclosure ? open : undefined}
+        aria-controls={disclosure ? panelId : undefined}
+        aria-pressed={disclosure ? undefined : active}
+        onMouseEnter={onActivate}
+        onFocus={onActivate}
+        onClick={onToggle}
+        className="relative z-10 flex w-full items-center justify-between gap-6 py-5 text-left sm:py-6"
       >
-        <span
-          className={`block font-bold leading-snug ${
-            open ? 'text-white text-lg lg:text-xl' : 'text-navy text-base lg:text-[15px]'
-          }`}
-          style={transitions('color, font-size', reduced)}
+        <motion.span
+          className="block text-xl font-bold leading-tight sm:text-2xl"
+          initial={false}
+          animate={{ color: active ? COLOR.white : COLOR.navy, x: active ? 6 : 0 }}
+          transition={fillTransition}
         >
           {service.label}
-        </span>
+        </motion.span>
 
-        {/* 0fr → 1fr gives the panel its real height without measuring it, so the
-            copy is never clipped at a guessed pixel value or stretched mid-open. */}
-        <span
-          className="grid"
-          style={{
-            gridTemplateRows: open ? '1fr' : '0fr',
-            ...transitions('grid-template-rows', reduced),
+        <motion.span
+          className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full border"
+          initial={false}
+          animate={{
+            backgroundColor: active ? COLOR.coralDeep : 'rgba(255,255,255,0)',
+            borderColor: active ? COLOR.coralDeep : `rgba(${NAVY_RGB},0.3)`,
+            color: active ? COLOR.white : `rgba(${NAVY_RGB},0.7)`,
+            rotate: disclosure && open ? 90 : 0,
           }}
+          transition={fillTransition}
         >
-          <span className="overflow-hidden">
-            {/* The panel takes height first and the sentence settles a beat
-                behind it — the site's documented disclosure behaviour. */}
-            <span
-              className="block pt-3 text-sm leading-relaxed text-white/80"
-              style={{
-                opacity: open ? 1 : 0,
-                ...transitions('opacity', reduced, open ? SETTLE_DELAY : 0),
-              }}
-            >
-              {service.summary}
-            </span>
-          </span>
-        </span>
-
-        <span className="mt-auto pt-4">
-          <span
-            className={`flex h-9 w-9 items-center justify-center rounded-full ${
-              open ? 'bg-coral-deep text-white' : 'border border-navy/30 text-navy/70'
-            }`}
-            style={transitions('background-color, border-color, color', reduced)}
-          >
-            {/* Rotates into a close mark, on the same token as the fill it turns
-                over, so the glyph and its circle change as one thing. */}
-            <PlusMark
-              className="h-4 w-4"
-              style={{
-                transform: open ? 'rotate(45deg)' : 'rotate(0deg)',
-                ...transitions('transform', reduced),
-              }}
-            />
-          </span>
-        </span>
+          <ArrowMark className="h-4 w-4" />
+        </motion.span>
       </button>
-    </div>
+
+      {/* El panel en línea, sólo por debajo de `md`. Toma alto primero y el
+          texto se asienta un instante después, como todo desplegable del sitio. */}
+      <div
+        id={panelId}
+        className="relative z-10 grid md:hidden"
+        style={{
+          gridTemplateRows: open ? '1fr' : '0fr',
+          transition: reduced ? undefined : `grid-template-rows ${DUR.layout}s cubic-bezier(${EASE.out.join(',')})`,
+        }}
+      >
+        <div className="overflow-hidden">
+          <div
+            className={`pb-6 pt-1 ${active ? 'text-white/85' : 'text-navy/80'}`}
+            style={{
+              opacity: open ? 1 : 0,
+              transition: reduced
+                ? undefined
+                : `opacity ${open ? DUR.layout : DUR.clear}s cubic-bezier(${EASE.out.join(',')}) ${open ? SETTLE_DELAY : 0}s`,
+            }}
+          >
+            <p className="mb-4 text-[15px] leading-relaxed">{service.summary}</p>
+            <ConsultLink service={service} tone={active ? 'dark' : 'light'} />
+          </div>
+        </div>
+      </div>
+
+      <span aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-navy/10" />
+    </motion.li>
+  )
+}
+
+/** La placa fija de escritorio: qué resuelve el trámite activo. */
+function ActivePlate({
+  service,
+  reduced,
+  linkRef,
+}: {
+  service: Service
+  reduced: boolean
+  linkRef: React.RefObject<HTMLAnchorElement>
+}) {
+  return (
+    <SpotlightCard
+      className="rounded-2xl bg-navy text-white shadow-card-navy"
+      spotlightColor="rgba(255,255,255,0.10)"
+      spotlightSize={380}
+    >
+      <WaveTexture />
+      <div className="relative flex min-h-[380px] flex-col p-8 lg:p-10">
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.div
+            key={service.label}
+            className="flex flex-1 flex-col"
+            initial={reduced ? false : { opacity: 0, y: 10, filter: 'blur(6px)' }}
+            animate={{
+              opacity: 1,
+              y: 0,
+              filter: 'blur(0px)',
+              transition: { duration: DUR.layout, ease: EASE.out },
+            }}
+            exit={{
+              opacity: 0,
+              y: -6,
+              filter: 'blur(4px)',
+              transition: { duration: DUR.exit, ease: EASE.exit },
+            }}
+          >
+            <h3 className="font-alverata text-2xl font-black leading-[1.06] lg:text-3xl">
+              {service.label}
+            </h3>
+            <p className="mt-5 text-[15px] leading-relaxed text-white/85 lg:text-base">
+              {service.summary}
+            </p>
+            <div className="mt-auto pt-8">
+              <ConsultLink service={service} tone="dark" linkRef={linkRef} />
+            </div>
+          </motion.div>
+        </AnimatePresence>
+      </div>
+    </SpotlightCard>
   )
 }
 
 export function Services() {
   const reduced = useReducedMotionSafe()
-  const [open, setOpen] = useState(RESTING)
+  const baseId = useId()
+  const [active, setActive] = useState(RESTING)
+  const [open, setOpen] = useState<number | null>(null)
+  const disclosure = !useMediaQuery('(min-width: 768px)')
+  const plateLink = useRef<HTMLAnchorElement>(null)
+
+  const toggle = (i: number) => {
+    setActive(i)
+    if (disclosure) {
+      setOpen((current) => (current === i ? null : i))
+      return
+    }
+    // En escritorio el clic no abre nada: la placa ya muestra el trámite, así
+    // que el siguiente paso es su enlace. Esperar un frame deja que la placa
+    // reciba el trámite nuevo antes de mover el foco.
+    requestAnimationFrame(() => plateLink.current?.focus())
+  }
 
   return (
-    <section id="servicios" className="relative isolate bg-white px-4 sm:px-6 py-14 sm:py-20 overflow-hidden">
+    <section
+      id="servicios"
+      className="relative isolate overflow-clip bg-white px-4 py-16 sm:px-6 sm:py-24"
+    >
       <PaperGround />
 
-      <div className="relative z-10 max-w-5xl mx-auto">
-
-        {/* A masthead rather than a centered stack: the question on the left, the
-            answer's scope on the right, both hanging off the line the cards start
-            from. */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-x-10 gap-y-4 mb-10 sm:mb-14">
-          <BlurReveal amount={0.3} className="md:col-span-6">
-            {/* Interlínea con prefijo en cada escalón: las utilidades de tamaño
-                de Tailwind traen la suya, así que `md:text-4xl` le ganaba a un
-                `leading-[1.08]` sin prefijo y el display salía a 1.11. */}
-            <h2 className="text-navy font-black text-2xl sm:text-3xl md:text-4xl leading-[1.08] sm:leading-[1.08] md:leading-[1.08] text-balance block font-alverata">
+      <div className="relative z-10 mx-auto max-w-6xl">
+        <div className="mb-10 grid grid-cols-1 gap-x-10 gap-y-4 md:grid-cols-12 sm:mb-14">
+          <BlurReveal amount={0.3} className="md:col-span-7">
+            <h2 className="font-alverata block text-balance text-[clamp(1.5rem,5vw,3.125rem)] font-black leading-[1.06] text-navy">
               ¿Qué gestión necesitás realizar?
             </h2>
           </BlurReveal>
-
-          {/* Steps down from the heading in weight and value instead of matching
-              it in bold navy, so the two stop competing for the same voice.
-
-              El `-mt` es la misma corrección óptica que el panel de `WhyChoose`:
-              las dos columnas arrancan en el mismo borde de caja, pero cada
-              cuerpo reserva la mitad de su interlínea arriba de las mayúsculas y
-              la del párrafo es mucho mayor, así que su tinta caía 10px por
-              debajo de la del título. Antes había un `pt-1.5` acá que empujaba
-              en la dirección contraria. Sólo en `md`: apilado, el párrafo va
-              debajo del título y esto sería comerse el aire entre los dos. */}
-          <BlurReveal delay={0.08} className="md:col-span-6 md:-mt-1">
-            <p className="text-navy/80 text-[15px] sm:text-base font-medium leading-relaxed">
+          <BlurReveal delay={0.08} className="md:col-span-5 md:-mt-1">
+            <p className="text-[15px] font-medium leading-relaxed text-navy/80 sm:text-base">
               La transferencia de autos y motos es el trámite más solicitado, pero no el único.
-              Trabajamos con particulares, flotas corporativas, concesionarias/reventas
-              y aseguradoras en toda la Argentina.
+              Trabajamos con particulares, flotas corporativas, concesionarias/reventas y
+              aseguradoras.
             </p>
           </BlurReveal>
         </div>
 
-        {/* Leaving the set returns it to transferencia rather than freezing on
-            whatever the pointer happened to cross on its way out. */}
+        <div className="grid grid-cols-1 gap-x-12 gap-y-10 md:grid-cols-12 lg:gap-x-16">
+          <StaggerChildren
+            className="md:col-span-7"
+            staggerDelay={staggerStep(services.length, 0.05)}
+          >
+            <ol className="border-t border-navy/10" aria-label="Trámites que resolvemos">
+              {services.map((service, i) => (
+                <ServiceRow
+                  key={service.label}
+                  service={service}
+                  active={active === i}
+                  open={disclosure && open === i}
+                  panelId={`${baseId}-panel-${i}`}
+                  disclosure={disclosure}
+                  onActivate={() => setActive(i)}
+                  onToggle={() => toggle(i)}
+                  reduced={reduced}
+                />
+              ))}
+            </ol>
+          </StaggerChildren>
 
-        <div className="space-y-3 sm:space-y-4" onMouseLeave={() => setOpen(RESTING)}>
-          {ROWS.map((row, r) => (
-            <BlurReveal key={r} delay={r * 0.08}>
-              {/* Tall enough for the longest summary at the open card's width,
-                  and no taller — a fixed height is what keeps the row even, not
-                  a place to park empty colour. */}
-              <div className="grid gap-3 sm:grid-cols-2 sm:gap-4 lg:flex lg:h-56 lg:gap-4">
-                {row.map((service, i) => {
-                  const index = r * ROWS[0].length + i
-                  return (
-                    <ServiceCard
-                      key={service.label}
-                      service={service}
-                      open={open === index}
-                      onOpen={() => setOpen(index)}
-                      onClose={() => setOpen(CLOSED)}
-                      reduced={reduced}
-                    />
-                  )
-                })}
+          {/* La placa acompaña el scroll de la lista. `self-start` es
+              obligatorio: sin él la celda de la grilla se estira al alto de la
+              lista y `sticky` no tiene adónde pegarse. */}
+          <div className="hidden md:col-span-5 md:block">
+            <BlurReveal delay={0.12} className="sticky top-28">
+              <div aria-live="polite">
+                <ActivePlate service={services[active]} reduced={reduced} linkRef={plateLink} />
               </div>
             </BlurReveal>
-          ))}
+          </div>
         </div>
 
-
         <BlurReveal delay={0.16}>
-          <div className="mt-8 sm:mt-10 sm:flex sm:justify-end">
+          <div className="mt-10 sm:mt-12 sm:flex sm:justify-end">
             <MagneticButton strength={0.15} className="w-full sm:w-auto">
-              {/* inline-block + the pill radius on the anchor itself: an inline
-                  <a> wrapping an inline-flex span collapses to a 20px line box,
-                  so the focus ring drew a thin bar across the middle of the
-                  button instead of tracing it. */}
               <Link to="/services" className="block w-full rounded-full">
                 <motion.span
-                  className="flex w-full items-center justify-center gap-2 bg-navy text-white font-bold text-sm sm:text-base px-7 py-3.5 rounded-full"
-                  whileHover={{ scale: 1.03, boxShadow: SHADOW.navyBloom }}
-                  whileTap={{ scale: 0.97 }}
+                  className="flex w-full items-center justify-center gap-2 rounded-full bg-navy px-7 py-3.5 text-sm font-bold text-white sm:text-base"
+                  whileHover={{ boxShadow: SHADOW.navyBloom }}
                   transition={SPRING.press}
                 >
                   Ver todos los servicios
+                  <ArrowMark className="h-4 w-4" />
                 </motion.span>
               </Link>
             </MagneticButton>
           </div>
         </BlurReveal>
-
       </div>
     </section>
   )

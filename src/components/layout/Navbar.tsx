@@ -189,14 +189,14 @@ export function Navbar() {
       >
         <Logo />
 
-        <div className="hidden md:flex flex-1 items-stretch h-full justify-evenly relative">
+        <div className="hidden lg:flex flex-1 items-stretch h-full justify-evenly relative">
           {NAV_LINKS.map((link) => (
             <DesktopNavItem key={link.to} link={link} isActive={isLinkActive(link, pathname)} />
           ))}
         </div>
 
         <button
-          className="md:hidden ml-auto flex items-center px-4 h-full"
+          className="lg:hidden ml-auto flex items-center px-4 h-full"
           onClick={() => setMenuOpen((v) => !v)}
           aria-expanded={menuOpen}
           aria-label={menuOpen ? 'Cerrar menú' : 'Abrir menú'}
@@ -212,7 +212,7 @@ export function Navbar() {
       <AnimatePresence>
         {menuOpen && (
           <motion.div
-            className="md:hidden absolute left-4 right-4 max-w-[960px] mx-auto rounded-2xl border border-white/10 overflow-hidden shadow-lg"
+            className="lg:hidden absolute left-4 right-4 max-w-[960px] mx-auto rounded-2xl border border-white/10 overflow-hidden shadow-lg"
             // Sits a fixed 10px below the bar, whatever height the bar currently
             // is. Hard-coding 62px meant the gap grew to 16px once the bar shrank.
             style={{

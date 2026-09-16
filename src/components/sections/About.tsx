@@ -1,58 +1,43 @@
-/* Esta banda era `bg-navy` a sangre: el campo saturado más alto del sitio, y
-   además la voz equivocada. Lo que dice acá — "Detrás de cada trámite hay una
-   historia. Te escuchamos y actuamos con empatía" — es el registro humano, que
-   en este sistema es el coral, no el navy. Pintarlo sobre el azul institucional
-   pleno era gritar con el timbre de la otra voz. Sobre `paper-cool` el texto va
-   en navy, que es donde el navy sí significa algo: la tinta de lo que se afirma.
-   El panel de la norma en `WhyChoose` queda como el único navy saturado del
-   scroll, que es exactamente el reclamo que el color existe para llevar.
-
-   Se va el `CursorGlow`: sobre el azul pleno era calidez ambiente, sobre un
-   tinte pálido es una mancha rosa. Y un halo significa "esto te responde" —
-   esta sección no responde a nada. En su lugar va `PaperGround`, la misma capa
-   que llevan todas las bandas claras del sitio, así que la firma espacial se
-   mantiene en vez de perderse. */
+/* El manifiesto.
+ *
+ * Sobre `paper-cool` y en navy: es la voz de lo que LIBA afirma de sí misma. La
+ * novedad es cómo se lee. Los dos párrafos van en el mismo display serif que el
+ * título, con el tamaño de la misión de «Sobre LIBA», y no llegan como una masa: se van
+ * encendiendo palabra por palabra a medida que el visitante baja, en el ritmo
+ * en que baja. Es un texto largo para un home y el scroll lo vuelve lectura en
+ * vez de bloque — y el gesto es el mismo del sitio entero: algo avanza, y se ve
+ * hasta dónde llegó.
+ *
+ * El título mantiene la entrada tranquila; la máscara de palabras sigue siendo
+ * una sola por superficie y es la del hero. */
 
 import { BlurReveal } from '../effects/BlurReveal'
+import { ScrubText } from '../effects/ScrubText'
 import { PaperGround } from '../ui/PaperGround'
 
 export function About() {
   return (
-    <section id="nosotros" className="relative isolate bg-paper-cool px-5 sm:px-8 py-14 sm:py-16 overflow-hidden">
-      {/* `isolate` es obligatorio y no decorativo: `PaperGround` se monta en
-          `-z-10` y sin contexto de apilamiento propio se hunde detrás del fondo
-          de la banda y desaparece. */}
+    <section id="nosotros" className="relative isolate overflow-hidden bg-paper-cool px-5 py-16 sm:px-8 sm:py-24">
+      {/* `isolate` es obligatorio: `PaperGround` se monta en `-z-10` y sin
+          contexto de apilamiento propio se hunde detrás del fondo de la banda. */}
       <PaperGround />
 
-      <div className="relative z-10 max-w-4xl mx-auto text-center">
-        {/* The word-mask entrance is reserved for the statement that opens a
-            surface — on the home page that is the hero h1. Six of them on one
-            scroll turned the page into a slideshow. */}
+      <div className="relative z-10 mx-auto max-w-4xl text-center">
         <BlurReveal amount={0.3}>
-          {/* The Display step from DESIGN.md verbatim. This was three hand-typed
-              literals — 24/38/50 — whose endpoints already were the documented
-              clamp's, with an off-ramp 38px in the middle. */}
-          <h2 className="text-navy font-black text-[clamp(1.5rem,5vw,3.125rem)] leading-[1.06] mb-6 sm:mb-8 block font-alverata">
-            Gestoría del automotor con criterio, norma y acompañamiento humano.
+          {/* Rótulo de sección, en la misma forma que «Nuestra misión» en Sobre
+              LIBA: la afirmación grande la llevan los párrafos de abajo. */}
+          <h2 className="mb-3 text-[11px] font-semibold uppercase tracking-[0.22em] text-navy/80 sm:text-xs">
+            Criterio, norma y acompañamiento humano.
           </h2>
         </BlurReveal>
 
-        <div className="flex flex-col gap-4">
-          <BlurReveal delay={0.1}>
-            <p className="text-navy text-[15px] sm:text-lg md:text-2xl leading-relaxed sm:leading-[1.12] font-medium">
-              {/* Plural, matching the paragraph below it — this sentence was the
-                  last first-person singular left in the shipped copy. */}
-              Detrás de cada trámite hay una historia. Te escuchamos y actuamos con empatía y
-              transparencia para brindarte la confianza que necesitás.
-            </p>
-          </BlurReveal>
-          <BlurReveal delay={0.18}>
-            <p className="text-navy/80 text-[15px] sm:text-lg md:text-2xl leading-relaxed sm:leading-[1.12] font-medium">
-              No sólo hacemos el trámite. Te explicamos qué pasa en cada etapa, te avisamos si hay
-              un problema antes de que se agrave y buscamos todas las alternativas posibles
-              para que tu caso se resuelva.
-            </p>
-          </BlurReveal>
+        <div className="flex flex-col gap-6 sm:gap-8">
+          <ScrubText className="font-alverata block text-xl font-black leading-snug text-navy sm:text-2xl md:text-3xl">
+            Detrás de cada trámite hay una historia. Te escuchamos y actuamos con empatía y transparencia para brindarte la confianza que necesitás.
+          </ScrubText>
+          <ScrubText className="font-alverata block text-xl font-black leading-snug text-navy sm:text-2xl md:text-3xl">
+            No sólo hacemos el trámite. Te explicamos qué pasa en cada etapa, te avisamos si hay un problema antes de que se agrave y buscamos todas las alternativas posibles para que tu caso se resuelva.
+          </ScrubText>
         </div>
       </div>
     </section>

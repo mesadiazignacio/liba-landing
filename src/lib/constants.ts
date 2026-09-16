@@ -3,6 +3,17 @@ const _ytUrl = import.meta.env.VITE_YOUTUBE_EMBED_URL as string
 
 export const WHATSAPP_NUMBER = _whatsapp
 export const WHATSAPP_URL = `https://wa.me/${_whatsapp}?text=Hola%2C%20quiero%20consultar%20sobre%20un%20tr%C3%A1mite`
+
+/**
+ * El mismo `wa.me`, con el trámite ya nombrado. Quien toca «Consultar» desde una
+ * fila de servicios ya dijo de qué se trata, y un mensaje que llega diciéndolo es
+ * un mensaje que se contesta sin una vuelta de preguntas.
+ */
+export function whatsappUrlFor(subject: string): string {
+  return `https://wa.me/${_whatsapp}?text=${encodeURIComponent(
+    `Hola, quiero consultar sobre ${subject.charAt(0).toLowerCase()}${subject.slice(1)}`,
+  )}`
+}
 export const YOUTUBE_EMBED_URL = _ytUrl.replace('youtube.com/watch?v=', 'youtube.com/embed/')
 export const CALENDLY_URL = import.meta.env.VITE_CALENDLY_URL as string
 

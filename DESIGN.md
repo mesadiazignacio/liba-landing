@@ -215,7 +215,7 @@ A two-voice palette: one saturated institutional blue, one warm rose coral, and 
 
 **The Stroke Belongs to Alverata Rule.** The 1.5px text-stroke utility (`.font-alverata`) is part of the display face's identity, not an effect. Alverata always ships with it; nothing else ever receives it.
 
-**The Serif Stops at Section Level Rule.** Alverata is for display and headline only. Card titles, labels, buttons, and body are Gotham without exception — the serif's job is to open a section, not to decorate inside one.
+**The Serif Stops at Section Level Rule.** Alverata is for display and headline only. Card titles, labels, buttons, and body are Gotham without exception — the serif's job is to open a section, not to decorate inside one. One bounded exception: a **plate that is a surface of its own** — the stacked differentiator plates in `WhyChoose` and the sticky trámite plate in `Services` — carries its title in Alverata, because each plate is the opening statement of what the visitor is looking at, not a card inside a section. Ordinary cards (testimonials, pillars, panels) stay Gotham.
 
 **The Voseo Fits Rule.** Copy is Argentine Spanish, which runs longer than English and stacks accented capitals (`Regularizá`, `Gestoría`, `Trámites`). Line-height and container widths must be verified against real Spanish strings, never against English placeholder text.
 
@@ -277,8 +277,8 @@ Two shapes are in play and the split is real, not drift: **pill for navigational
 
 ### Cards / Containers
 - **Corner Style:** 16px, always.
-- **Feature card** (as shipped in `WhyChoose`): Navy fill, 24–32px padding, centered text, no border. A white diagonal sheen (`rgba(255,255,255,0.12)` → transparent → `0.08`) fades in over 500ms on hover, layered under a spotlight that follows the cursor and a 5° tilt. Title is Gotham 600 at 20–36px; body is `white/80`.
-- **Testimonial card** (as shipped in `Testimonials`): White fill, `gray-100` hairline, 20px padding, 280px opening to 310px, resting card shadow, a `coral/10` quotation-mark watermark in the top-right corner, a 44px navy initials pill, `star` rating row, and gray body copy clamped to four lines. It rides a 30s marquee and is intentionally non-interactive, so it has no hover state.
+- **Feature plate** (as shipped in `WhyChoose`): Navy fill with the `WaveTexture` contour, 36–56px vertical padding, title left (Alverata, Display step for the lead claim, Headline step for the rest) and lede-size body right on a 5/7 split. Five plates stack on scroll — see *Scroll devices on the home page* — and the pointer spotlight is their only hover.
+- **Testimonial card** (as shipped in `Testimonials`): White fill, `navy/10` hairline, 20px padding, 300px opening to 340px, the navy-cast card shadow (it sits on `paper-cool`), a `coral/10` quotation-mark watermark in the top-right corner, a 44px navy initials pill, `star` rating row, and `navy/80` body copy shown in full. Six real reviews ride two full-bleed rows drifting in opposite directions, three per row so no name is ever on screen twice; the rows brake to a stop under the pointer and the card lifts 4px on hover.
 - **Pillar card** (as shipped in `AboutUs`): White fill at 16px with 20px padding, a `navy/5` ring, and the navy-cast resting shadow because it sits on `paper-cool`. Lifts 3px on hover. Holds a stage marker to its left (mobile) or above it (desktop).
 - **Panel:** `paper-cool` or `paper-blush` fill at 16px with 20–28px padding. The workhorse for informational blocks inside a band.
 - **Internal Padding:** 24px standard; 20px mobile opening to 28px at `sm` on larger panels.
@@ -327,6 +327,19 @@ The case rail: a 2px track with an advancing `coral` fill and a 40px pill marker
 - **Two orientations:** vertical (the contact process, and the pillars below `md`) and horizontal (the pillars at `md` and up). Each measures only the markers it renders, so only one is ever mounted per breakpoint.
 
 **The Rail Means Progress Rule.** The case rail is reserved for genuine ordered sequences where the order carries information the reader needs — the contact process, the four pillars in the order they are applied. It is not a list decoration. If the items could be reordered without loss, they are a list, not stages.
+
+### Scroll devices
+
+Added in the September 2026 refinement, first on the home page and then across every route in the navbar. All of them are scroll-linked or pointer-linked rather than timed entrances, so they extend the "progression, not arrival" grammar instead of competing with it. Each is gated on visibility and rendered static under `prefers-reduced-motion`.
+
+- **`ScrubText`** (`effects/ScrubText.tsx`): a paragraph whose words rise from 0.16 to full opacity as the block crosses the viewport, reading in both directions. Used for the two manifesto paragraphs in `About`. It is the reading-pace counterpart of the case rail: the visitor sets the tempo.
+- **Stacking plates** (`WhyChoose`): the five differentiators are navy plates that stick at `96px + 14px × index` and, as the next plate covers them, scale down 3.5% per plate above and take a `#04213f` veil up to 0.55. The veil is not a resting state — it is zero until the stack asks for it.
+- **Index rows with a navy sweep** (`Services`): the active trámite row is painted by a `scaleX` fill from the left, on `DUR.layout`, with a `coral-deep` arrow pill; a sticky navy plate on `md`+ crossfades (blur + rise) to the active trámite and carries a per-trámite WhatsApp link (`whatsappUrlFor`). Below `md` each row opens in place as a disclosure.
+- **Drifting rows** (`Testimonials`, `ui/KeywordMarquee.tsx`): motion-value marquees driven by `useAnimationFrame` at a stated px/s velocity, braking to a stop on hover through `SPRING.press`. The keyword band sets the trámite names in Alverata display, filled and outlined by turns, with a `coral` dot between them.
+- **`CursorDot`** (`effects/CursorDot.tsx`): a 28px difference-blended ring that trails the pointer on `SPRING.follow`, grows to 1.8× with a 0.28-alpha fill over interactive elements, and shrinks to 0.8× on press. Fine pointers only; the native cursor is never hidden.
+- **`AmbientOrbs`** (`effects/AmbientOrbs.tsx`): the two halos behind a surface's opening block, navy on one side and coral on the other at 80px blur, drifting on `AMBIENT_DRIFT`. Three variants and no more — `hero` for the home, `header` for a route's title block, `warm` for Contacto, where coral is the surface's own voice and carries the stronger halo. **Known exception to the Glow-Is-A-State Rule:** these are ambient, not interactive. They are the only resting glow in the system, they belong to opening blocks alone, and they must never be copied onto a card or a button.
+- **Sticky category index** (`Procedures`): on `md`+ a left column tracks which trámite category is in view through one IntersectionObserver band and marks it with a shared-`layoutId` navy pill; below `md` the same categories become a scrollable chip row. Jumps go through `useScrollToId`, because Lenis owns the scroll position.
+- **Hero depth**: headline and video plate retreat at different rates on scroll; the `hero` variant of `AmbientOrbs` sits behind the plate.
 
 ## Do's and Don'ts
 

@@ -1,8 +1,21 @@
+import { motion, useAnimationFrame, useInView, useMotionValue, useSpring } from 'framer-motion'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { BlurReveal } from '../effects/BlurReveal'
-import { usePauseOffscreen } from '../../hooks/usePauseOffscreen'
-import { testimonials } from '../../data/testimonials'
+import { useReducedMotionSafe } from '../../hooks/useReducedMotionSafe'
+import { testimonials, type Testimonial } from '../../data/testimonials'
+import { SPRING } from '../../lib/motion'
 import { BAND } from '../../lib/palette'
+import { SHADOW } from '../../lib/shadows'
 import { PaperGround } from '../ui/PaperGround'
+
+/**
+ * Velocidad del marquee en px/s. No es una duración de motion.ts: es una
+ * velocidad de desplazamiento continuo.
+ */
+const ROW_SPEED = 40
+
+/** Un frame no puede saltar más que esto (ms) al volver de una pestaña oculta. */
+const MAX_FRAME_MS = 64
 
 function StarRating({ rating }: { rating: number }) {
   return (
@@ -26,10 +39,118 @@ function QuoteIcon({ className }: { className?: string }) {
   )
 }
 
-const doubled = [...testimonials, ...testimonials]
+function TestimonialCard({ t }: { t: Testimonial }) {
+  return (
+    <motion.div
+      className="flex-shrink-0 w-[300px] sm:w-[340px] flex flex-col bg-white border border-navy/10 rounded-2xl p-5 shadow-card-navy relative overflow-hidden"
+      initial={{ boxShadow: SHADOW.cardNavy }}
+      whileHover={{ y: -4, boxShadow: SHADOW.cardHover }}
+      transition={SPRING.press}
+    >
+      <QuoteIcon className="absolute top-3 right-3 w-8 h-8 text-coral/10" />
+      <div className="flex items-center gap-3 mb-3">
+        <div className="w-11 h-11 rounded-full bg-navy flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
+          {t.initials}
+        </div>
+        <div>
+          <p className="font-semibold text-navy text-sm">{t.name}</p>
+          <p className="text-navy/60 text-xs">{t.location}</p>
+        </div>
+      </div>
+      <StarRating rating={t.rating} />
+      <p className="text-navy/80 text-sm leading-relaxed mt-3">"{t.text}"</p>
+    </motion.div>
+  )
+}
+
+interface RowProps {
+  items: Testimonial[]
+  /** px/s */
+  speed: number
+  direction: 'left' | 'right'
+  /** Whether the row should be moving at all (in view, motion allowed). */
+  active: boolean
+  /** Pointer over the marquee: the row eases to a stop instead of snapping. */
+  hovered: boolean
+  /** Con movimiento reducido la fila no anda: se desplaza a mano. */
+  reduced: boolean
+}
+
+/**
+ * Copias de la lista. Seis reseñas de 340px son ~2100px; hacen falta viewport +
+ * una copia para que nunca asome un hueco, y tres copias cubren hasta 4200px.
+ */
+const COPIES = 3
+
+function MarqueeRow({ items, speed, direction, active, hovered, reduced }: RowProps) {
+  const rowRef = useRef<HTMLDivElement>(null)
+  const half = useRef(0)
+  const x = useMotionValue(0)
+  // 1 = full speed, 0 = stopped. Sprung so the pause reads as braking.
+  const factor = useSpring(1, SPRING.press)
+
+  useEffect(() => {
+    factor.set(hovered ? 0 : 1)
+  }, [hovered, factor])
+
+  // One copy of the list is the wrap point.
+  useLayoutEffect(() => {
+    const el = rowRef.current
+    if (!el) return
+    const measure = () => {
+      half.current = el.scrollWidth / COPIES
+    }
+    measure()
+    const ro = new ResizeObserver(measure)
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, [])
+
+  useAnimationFrame((_, delta) => {
+    if (!active) return
+    const w = half.current
+    if (!w) return
+    const dir = direction === 'left' ? 1 : -1
+    const step = (dir * speed * factor.get() * Math.min(delta, MAX_FRAME_MS)) / 1000
+    // Keep x in (-w, 0]: both copies are identical, so the wrap is invisible.
+    const next = x.get() - step
+    x.set(-((((-next) % w) + w) % w))
+  })
+
+  const repeated = Array.from({ length: COPIES }, () => items).flat()
+
+  return (
+    <div className={reduced ? 'relative overflow-x-auto' : 'relative overflow-hidden'}>
+      {/* The fades have to be the band's exact fill or the marquee appears to
+          run over a seam, so they read it from the same place the band does. */}
+      <div
+        className="pointer-events-none absolute left-0 top-0 bottom-0 w-16 sm:w-24 z-10"
+        style={{ background: `linear-gradient(to right, ${BAND.cool}, transparent)` }}
+      />
+      <div
+        className="pointer-events-none absolute right-0 top-0 bottom-0 w-16 sm:w-24 z-10"
+        style={{ background: `linear-gradient(to left, ${BAND.cool}, transparent)` }}
+      />
+      {/* py: room for the hover lift and its shadow inside overflow-hidden. */}
+      <motion.div
+        ref={rowRef}
+        className="flex items-stretch gap-4 px-2 py-4"
+        style={{ x, width: 'max-content' }}
+      >
+        {repeated.map((t, i) => (
+          <TestimonialCard key={`${t.name}-${i}`} t={t} />
+        ))}
+      </motion.div>
+    </div>
+  )
+}
 
 export function Testimonials() {
-  const marqueeRef = usePauseOffscreen<HTMLDivElement>()
+  const rowsRef = useRef<HTMLDivElement>(null)
+  const inView = useInView(rowsRef, { margin: '80px' })
+  const reduced = useReducedMotionSafe()
+  const [hovered, setHovered] = useState(false)
+  const active = inView && !reduced
 
   return (
     /* Segunda banda navy a sangre del home, y la que menos lo necesitaba: son
@@ -40,7 +161,7 @@ export function Testimonials() {
     <section id="clientes" className="relative isolate bg-paper-cool py-10 sm:py-12 overflow-hidden">
       <PaperGround />
 
-      <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 mb-10 text-center">
+      <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 mb-6 text-center">
         <BlurReveal>
           {/* `/80`: a 20px/600 no califica como texto grande para WCAG (pide 700),
               así que el piso sigue siendo 4.5 y `/70` medía 3.78 sobre `cool`. */}
@@ -53,43 +174,17 @@ export function Testimonials() {
         </BlurReveal>
       </div>
 
+      {/* Full-bleed: the rows live outside the container on purpose. Pointer
+          events stay on so hovering brakes the row. */}
       <BlurReveal>
-        <div className="relative z-10 overflow-hidden select-none pointer-events-none max-w-5xl mx-auto" aria-hidden>
-          {/* The fades have to be the band's exact fill or the marquee appears to
-              run over a seam, so they read it from the same place the band does.
-              Siguen a la banda: si arriba dice `cool`, acá dice `cool`. */}
-          <div className="absolute left-0 top-0 bottom-0 w-16 z-10"
-            style={{ background: `linear-gradient(to right, ${BAND.cool}, transparent)` }} />
-          <div className="absolute right-0 top-0 bottom-0 w-16 z-10"
-            style={{ background: `linear-gradient(to left, ${BAND.cool}, transparent)` }} />
-
-          <div
-            ref={marqueeRef}
-            className="flex gap-4 px-6 animate-marquee"
-            style={{ width: 'max-content' }}
-          >
-            {doubled.map((t, i) => (
-              <div key={i} className="flex-shrink-0 w-[280px] sm:w-[310px]">
-                {/* `shadow-card-navy` y capilar `navy/10`: la tarjeta pasó a
-                    estar sobre banda tintada, y ahí el sistema dicta sombra
-                    navy a baja alfa — la negra sobre `paper-cool` embarra. */}
-                <div className="bg-white border border-navy/10 rounded-2xl p-5 shadow-card-navy h-full relative overflow-hidden">
-                  <QuoteIcon className="absolute top-3 right-3 w-8 h-8 text-coral/10" />
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className="w-11 h-11 rounded-full bg-navy flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
-                      {t.initials}
-                    </div>
-                    <div>
-                      <p className="font-semibold text-navy text-sm">{t.name}</p>
-                      <p className="text-gray-500 text-xs">{t.location}</p>
-                    </div>
-                  </div>
-                  <StarRating rating={t.rating} />
-                  <p className="text-gray-600 text-sm leading-relaxed mt-3 line-clamp-4">"{t.text}"</p>
-                </div>
-              </div>
-            ))}
-          </div>
+        <div
+          ref={rowsRef}
+          className="relative z-10 select-none"
+          aria-hidden
+          onPointerEnter={() => setHovered(true)}
+          onPointerLeave={() => setHovered(false)}
+        >
+          <MarqueeRow items={testimonials} speed={ROW_SPEED} direction="left" active={active} hovered={hovered} reduced={reduced} />
         </div>
       </BlurReveal>
 

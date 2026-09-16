@@ -50,10 +50,15 @@ export function MaskReveal({
 
   return (
     // @ts-expect-error dynamic tag
-    <Tag ref={ref} className={className} aria-label={children}>
+    <Tag ref={ref} className={className}>
+      {/* El texto entero, una vez, para el lector de pantalla; los fragmentos
+          animados van ocultos. Más robusto que un `aria-label`, que no todo
+          elemento admite. */}
+      <span className="sr-only">{children}</span>
       {words.map((word, i) => (
         <span
           key={i}
+          aria-hidden
           // The mask has to clear descenders and the accented capitals this copy
           // is full of (Regularizá, Gestoría, Trámites) — hence the padding and
           // the matching negative margin that keeps the line box unchanged.
@@ -67,8 +72,11 @@ export function MaskReveal({
         >
           <motion.span
             style={{ display: 'inline-block' }}
-            initial={{ y: '115%' }}
-            animate={inView && play ? { y: '0%' } : {}}
+            // La palabra sube desde detrás de su línea de base y se enfoca al
+            // llegar: el desenfoque es lo que la hace leer como un objeto que
+            // aterriza y no como un recorte que se desliza.
+            initial={{ y: '115%', filter: 'blur(8px)' }}
+            animate={inView && play ? { y: '0%', filter: 'blur(0px)' } : {}}
             transition={{ duration: DUR.entrance, ease: EASE.out, delay: delay + i * step }}
           >
             {word}

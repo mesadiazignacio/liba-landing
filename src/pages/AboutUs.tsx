@@ -1,14 +1,21 @@
-import { motion } from 'framer-motion'
+import { useRef } from 'react'
+import { motion, useScroll, useTransform } from 'framer-motion'
 import { BlurReveal } from '../components/effects/BlurReveal'
 import { MaskReveal } from '../components/effects/MaskReveal'
+import { ScrubText } from '../components/effects/ScrubText'
+import { SpotlightCard } from '../components/effects/SpotlightCard'
+import { StaggerChildren } from '../components/effects/StaggerChildren'
 import { CtaFooter } from '../components/sections/CtaFooter'
 import { Footer } from '../components/layout/Footer'
+import { PaperGround } from '../components/ui/PaperGround'
 import { Stage, StageList, StageTrack } from '../components/ui/StageTrack'
 import { WaveDivider } from '../components/ui/WaveDivider'
-import { SPRING } from '../lib/motion'
+import { WaveTexture } from '../components/ui/WaveTexture'
+import { useReducedMotionSafe } from '../hooks/useReducedMotionSafe'
+import { cardVariant } from '../lib/animations'
+import { SPRING, staggerStep } from '../lib/motion'
 import { SHADOW } from '../lib/shadows'
 import { BAND, COLOR } from '../lib/palette'
-import { PaperGround } from '../components/ui/PaperGround'
 
 /**
  * Section eyebrows, in the one form DESIGN.md documents for the role: Gotham 600
@@ -54,15 +61,29 @@ const pillars = [
   },
 ]
 
-const team = [
+interface TeamMember {
+  name: string
+  role: string
+  bio: string
+  initials: string
+  bg: string
+  /** Foto real; sin ella la tarjeta muestra las iniciales sobre su tinte. */
+  photo?: string
+  /** `object-position` de la foto: los retratos son verticales y la placa 4:3. */
+  photoPosition?: string
+}
+
+const team: TeamMember[] = [
   {
-    name: 'Florencia Marina Mosa',
+    name: 'Florencia Marina Mesa',
     role: 'Fundadora',
     bio: 'Mandataria automotor nacional matriculada. Especialista en trámites registrales complejos, devolución de patentes, tramitación segura y atención personalizada. Licenciada en Marketing.',
     initials: 'FM',
     // coral-deep, not coral: these initials are text on a near-white tint of
     // their own colour, and #ed6d92 reaches only ~2.9:1 there.
     bg: COLOR.coralDeep,
+    photo: '/team/florencia-marina-mosa.jpg',
+    photoPosition: '50% 18%',
   },
   {
     name: 'Franco Dimet',
@@ -70,6 +91,10 @@ const team = [
     bio: 'Dedicado a la gestión estratégica y gran colaborador operativo. MBA Especializado en Management y Marketing.',
     initials: 'FD',
     bg: COLOR.navy,
+    // La foto original viene muy cerrada: se le extendió la pared a la
+    // izquierda y arriba para que la cara no llene la placa.
+    photo: '/team/franco-dimet.jpg',
+    photoPosition: '50% 45%',
   },
   {
     name: 'Mascota',
@@ -78,6 +103,9 @@ const team = [
     initials: '🐾',
     // Outside the palette by intent, and recorded as such in DESIGN.md.
     bg: '#f59e0b',
+    // Ya compuesta en 4:3: la foto original venía muy cerrada, así que va
+    // más chica al centro y los costados son la misma foto desenfocada.
+    photo: '/team/mascota.jpg',
   },
 ]
 
@@ -90,15 +118,18 @@ interface Pillar {
    look like it was decorating a card grid rather than ordering four principles.
    Boxing them was also redundant — the rail already groups them. Now they are
    plain ruled columns, so the rail is the only structure in the section and the
-   type carries the rest. Copy untouched. */
+   type carries the rest. Copy untouched.
+
+   Cada columna es un nodo de variantes para que `StaggerChildren` la encuentre
+   a través de los `motion.div` sin variantes que `Stage` interpone. */
 function PillarColumn({ pillar }: { pillar: Pillar }) {
   return (
-    <div className="h-full">
+    <motion.div variants={cardVariant} className="h-full">
       <h3 className="text-navy font-bold text-base sm:text-lg mb-2 leading-tight">
         {pillar.title}
       </h3>
       <p className="text-navy/80 text-sm leading-relaxed">{pillar.description}</p>
-    </div>
+    </motion.div>
   )
 }
 
@@ -106,12 +137,12 @@ function PillarColumn({ pillar }: { pillar: Pillar }) {
    above it to separate from its neighbour without re-boxing it. */
 function PillarRow({ pillar }: { pillar: Pillar }) {
   return (
-    <div className="border-t border-navy/10 pt-4">
+    <motion.div variants={cardVariant} className="border-t border-navy/10 pt-4">
       <h3 className="text-navy font-bold text-base sm:text-lg mb-2 leading-tight">
         {pillar.title}
       </h3>
       <p className="text-navy/80 text-sm leading-relaxed">{pillar.description}</p>
-    </div>
+    </motion.div>
   )
 }
 
@@ -122,101 +153,136 @@ function PillarRow({ pillar }: { pillar: Pillar }) {
  *
  * The two orientations are separate tracks because each measures the markers it
  * actually renders; only one is ever mounted per breakpoint.
+ *
+ * Cada riel lleva su propio `StaggerChildren`: los dos están en el DOM (uno
+ * oculto por breakpoint), y un solo contenedor contaría ocho hijos y le daría
+ * al riel visible los índices 4 a 7.
  */
 function PillarsTimeline({ items }: { items: Pillar[] }) {
+  const step = staggerStep(items.length)
   return (
     <>
-      <div className="hidden md:block">
-        <StageTrack orientation="horizontal">
-          <StageList className="grid grid-cols-4 gap-6 items-start">
-            {items.map((pillar, i) => (
-              <Stage key={pillar.title} step={i + 1}>
-                <PillarColumn pillar={pillar} />
-              </Stage>
-            ))}
-          </StageList>
-        </StageTrack>
+      <div className="hidden lg:block">
+        <StaggerChildren staggerDelay={step}>
+          <StageTrack orientation="horizontal">
+            <StageList className="grid grid-cols-4 gap-6 items-start">
+              {items.map((pillar, i) => (
+                <Stage key={pillar.title} step={i + 1}>
+                  <PillarColumn pillar={pillar} />
+                </Stage>
+              ))}
+            </StageList>
+          </StageTrack>
+        </StaggerChildren>
       </div>
 
-      <div className="md:hidden">
-        <StageTrack>
-          <StageList className="space-y-6">
-            {items.map((pillar, i) => (
-              <Stage key={pillar.title} step={i + 1}>
-                <PillarRow pillar={pillar} />
-              </Stage>
-            ))}
-          </StageList>
-        </StageTrack>
+      <div className="lg:hidden">
+        <StaggerChildren staggerDelay={step}>
+          <StageTrack>
+            <StageList className="space-y-6">
+              {items.map((pillar, i) => (
+                <Stage key={pillar.title} step={i + 1}>
+                  <PillarRow pillar={pillar} />
+                </Stage>
+              ))}
+            </StageList>
+          </StageTrack>
+        </StaggerChildren>
       </div>
     </>
   )
 }
 
+
+/**
+ * La presentación. Misma profundidad que el hero del home: al bajar, la columna
+ * de texto se retira más rápido que la placa de la foto y la placa más rápido
+ * que la página, así la banda se despide en capas.
+ *
+ * La placa lleva la foto de la fundadora, levantada del plano como toda
+ * superficie del sitio con la sombra navy.
+ */
+function HeroBio() {
+  const reduced = useReducedMotionSafe()
+  const sectionRef = useRef<HTMLElement>(null)
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start start', 'end start'],
+  })
+
+  const textY = useTransform(scrollYProgress, [0, 1], [0, -90])
+  const plateY = useTransform(scrollYProgress, [0, 1], [0, -36])
+  const plateScale = useTransform(scrollYProgress, [0, 1], [1, 0.94])
+
+  return (
+    <section ref={sectionRef} className="relative isolate overflow-hidden bg-white pt-28 pb-16 px-4 sm:px-6">
+      <PaperGround />
+
+      <div className="relative z-10 max-w-5xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
+
+          {/* Left — text */}
+          <motion.div style={reduced ? undefined : { y: textY }}>
+            <MaskReveal
+              as="h1"
+              className="text-navy font-black text-[clamp(1.5rem,5vw,3.125rem)] leading-tight mb-5 block font-alverata"
+              stagger={0.04}
+              amount={0.2}
+            >
+              Vocación de servicio en cada trámite
+            </MaskReveal>
+
+            <BlurReveal delay={0.15}>
+              <p className="text-navy font-semibold text-base sm:text-lg leading-snug mb-6">
+                Soy Florencia, fundadora de LIBA Gestoría y Mandataria del Automotor. Me especializo
+                en trámites registrales e impositivos con respaldo normativo, criterio profesional y
+                acompañamiento cercano.
+              </p>
+            </BlurReveal>
+
+            <BlurReveal delay={0.25}>
+              <p className="text-gray-600 text-sm sm:text-base leading-relaxed mb-4">
+                Mi recorrido en el mundo de los servicios comenzó en la hotelería, donde aprendí la
+                importancia de la responsabilidad real: las personas buscan predisposición y soluciones
+                claras, no explicaciones. Esa mirada me llevó a formarme como Licenciada en Marketing,
+                incorporando estrategia, comunicación y un enfoque integral poco habitual en la gestoría.
+              </p>
+            </BlurReveal>
+
+            
+          </motion.div>
+
+          {/* Right — founder photo, lifted as a plate */}
+          <BlurReveal delay={0.2}>
+            <motion.div style={reduced ? undefined : { y: plateY, scale: plateScale }}>
+              <div className="relative overflow-hidden rounded-2xl bg-coral-light shadow-card-navy ring-1 ring-navy/10">
+                <img
+                  src="/team/florencia-marina-mosa.jpg"
+                  alt="Florencia Marina Mesa, fundadora de LIBA"
+                  width={800}
+                  height={1200}
+                  decoding="async"
+                  className="w-full aspect-[7/8] object-cover"
+                  style={{ objectPosition: '50% 18%' }}
+                />
+              </div>
+            </motion.div>
+          </BlurReveal>
+
+        </div>
+      </div>
+    </section>
+  )
+}
+
 export function AboutUs() {
+  const teamStep = staggerStep(team.length, 0.08)
+
   return (
     <div className="bg-white">
 
       {/* ── 1. HERO BIO ────────────────────────────────────────────── */}
-      <section className="relative isolate overflow-hidden pt-28 pb-16 px-4 sm:px-6">
-        <PaperGround />
-        <div className="max-w-5xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
-
-            {/* Left — text */}
-            <div>
-              <MaskReveal
-                as="h1"
-                className="text-navy font-black text-[clamp(1.5rem,5vw,3.125rem)] leading-tight mb-5 block font-alverata"
-                stagger={0.04}
-                amount={0.2}
-              >
-                Vocación de servicio en cada trámite
-              </MaskReveal>
-
-              <BlurReveal delay={0.15}>
-                <p className="text-navy font-semibold text-base sm:text-lg leading-snug mb-6">
-                  Soy Florencia, fundadora de LIBA Gestoría y Mandataria del Automotor. Me especializo
-                  en trámites registrales e impositivos con respaldo normativo, criterio profesional y
-                  acompañamiento cercano.
-                </p>
-              </BlurReveal>
-
-              <BlurReveal delay={0.25}>
-                <p className="text-gray-600 text-sm sm:text-base leading-relaxed mb-4">
-                  Mi recorrido en el mundo de los servicios comenzó en la hotelería, donde aprendí la
-                  importancia de la responsabilidad real: las personas buscan predisposición y soluciones
-                  claras, no explicaciones. Esa mirada me llevó a formarme como Licenciada en Marketing,
-                  incorporando estrategia, comunicación y un enfoque integral poco habitual en la gestoría.
-                </p>
-              </BlurReveal>
-
-              <BlurReveal delay={0.35}>
-                <p className="text-gray-600 text-sm sm:text-base leading-relaxed">
-                  Luego me formé como Mandataria Automotor, un sector complejo y burocrático, con un
-                  objetivo claro: ir más allá del trámite. Hoy trabajo con una premisa clara: entender
-                  el sistema, hacer accesible la información y acompañar en cada caso con vocación de
-                  servicio.
-                </p>
-              </BlurReveal>
-            </div>
-
-            {/* Right — photo placeholder */}
-            <BlurReveal delay={0.2}>
-              <div className="relative w-full aspect-[7/8] rounded-2xl overflow-hidden bg-coral/20 flex items-end justify-center">
-                <div
-                  className="absolute inset-0 rounded-2xl"
-                  style={{ background: `linear-gradient(135deg, ${COLOR.coralLight} 0%, ${COLOR.coral} 100%)` }}
-                />
-                <div className="relative z-10 w-full h-full flex items-center justify-center">
-                  <span className="text-white/40 text-7xl font-black select-none">FM</span>
-                </div>
-              </div>
-            </BlurReveal>
-
-          </div>
-        </div>
-      </section>
+      <HeroBio />
 
       {/* ── 2. MISIÓN ──────────────────────────────────────────────── */}
       <section className="relative isolate overflow-hidden py-14 px-4 sm:px-6 bg-white">
@@ -227,12 +293,12 @@ export function AboutUs() {
               <Eyebrow>Nuestra misión</Eyebrow>
             </div>
           </BlurReveal>
-          <BlurReveal delay={0.08}>
-            <p className="text-navy font-black text-xl sm:text-2xl md:text-3xl leading-snug block font-alverata">
-              Resolver trámites automotores de forma profesional, eficiente, humana y transparente,
-              generando certidumbre y tranquilidad en cada cliente que confía en nosotros.
-            </p>
-          </BlurReveal>
+          {/* La misión se enciende palabra por palabra al ritmo del scroll, como
+              el manifiesto del home. Sigue en Alverata: el trazo del display se
+              hereda en cada palabra. */}
+          <ScrubText className="text-navy font-black text-xl sm:text-2xl md:text-3xl leading-snug block font-alverata">
+            Resolver trámites automotores de forma profesional, eficiente, humana y transparente, generando certidumbre y tranquilidad en cada cliente que confía en nosotros.
+          </ScrubText>
         </div>
       </section>
 
@@ -277,13 +343,31 @@ export function AboutUs() {
             </p>
           </BlurReveal>
 
+          {/* La premisa es una placa navy, como las del home: una superficie
+              propia con la curva de nivel y la luz del puntero. Es la afirmación
+              que abre esta banda, así que conserva la Alverata. El superíndice
+              va en blanco al 85% (≈6.4:1): `coral-light` sobre navy mide 4.14:1
+              y a 16px no llega al piso AA. */}
           <BlurReveal delay={0.15}>
-            <div className="inline-block bg-paper-cool rounded-2xl px-8 py-6 mb-8 w-full">
-              <p className="text-navy font-black text-xl sm:text-2xl md:text-3xl leading-snug font-alverata">
-                [ (Conocimiento + Habilidades) x Actitud ]
-                <sup className="text-coral-deep text-base font-bold ml-1 not-italic">Pasión</sup>
-              </p>
-            </div>
+            <SpotlightCard
+              className="rounded-2xl bg-navy text-white shadow-card-navy mb-8"
+              spotlightColor="rgba(255,255,255,0.10)"
+              spotlightSize={420}
+            >
+              <WaveTexture />
+              <div className="relative px-6 py-8 sm:px-10 sm:py-10">
+                <p className="font-black text-xl sm:text-2xl md:text-3xl leading-snug font-alverata">
+                  {/* Dos tramos que no se parten por dentro: en pantallas
+                      angostas la fórmula baja de línea entre ellos y nunca deja
+                      el corchete de cierre o el exponente solos. */}
+                  <span className="inline-block whitespace-nowrap">[ (Conocimiento + Habilidades)</span>{' '}
+                  <span className="inline-block whitespace-nowrap">
+                    x Actitud ]
+                    <sup className="text-white/85 text-sm sm:text-base font-bold ml-1 not-italic">Pasión</sup>
+                  </span>
+                </p>
+              </div>
+            </SpotlightCard>
           </BlurReveal>
         </div>
       </section>
@@ -306,24 +390,34 @@ export function AboutUs() {
             </BlurReveal>
           </div>
 
-          {/* Team cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
-            {team.map((member, i) => (
-              <BlurReveal key={member.name} delay={i * 0.1}>
+          {/* Team cards: one staggered entrance for the three, inside the
+              stagger budget, instead of three hand-set delays. */}
+          <StaggerChildren className="mx-auto grid max-w-md grid-cols-1 gap-5 md:max-w-none md:grid-cols-3" staggerDelay={teamStep}>
+            {team.map((member) => (
+              <motion.div key={member.name} variants={cardVariant}>
                 {/* These sit on paper-cool, so they take the navy-cast lift. A
                     black `shadow-sm` over a tinted band reads muddy, and left the
                     cards looking flat against the field behind them. */}
                 <motion.div
-                  className="bg-white rounded-2xl overflow-hidden shadow-card-navy border border-navy/5"
+                  className="h-full bg-white rounded-2xl overflow-hidden shadow-card-navy border border-navy/5"
                   whileHover={{ y: -4, boxShadow: SHADOW.cardHover }}
                   transition={SPRING.press}
                 >
                   {/* Photo area */}
                   <div
-                    className="w-full aspect-[4/3] flex items-center justify-center text-5xl"
+                    className="w-full aspect-[4/3] flex items-center justify-center text-5xl overflow-hidden"
                     style={{ background: member.bg + '22' }}
                   >
-                    {member.initials.length <= 2 ? (
+                    {member.photo ? (
+                      <img
+                        src={member.photo}
+                        alt={member.name}
+                        loading="lazy"
+                        decoding="async"
+                        className="h-full w-full object-cover"
+                        style={{ objectPosition: member.photoPosition }}
+                      />
+                    ) : member.initials.length <= 2 ? (
                       <span
                         className="font-black text-4xl select-none"
                         style={{ color: member.bg }}
@@ -346,9 +440,9 @@ export function AboutUs() {
                     <p className="text-gray-500 text-sm leading-relaxed">{member.bio}</p>
                   </div>
                 </motion.div>
-              </BlurReveal>
+              </motion.div>
             ))}
-          </div>
+          </StaggerChildren>
 
         </div>
       </section>

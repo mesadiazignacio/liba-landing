@@ -13,10 +13,11 @@ import {
 /**
  * La hoja de ingreso: una losa navy, hermana del footer.
  *
- * Misma gramática que `Footer` — tarjeta de 16px con la sombra de reposo,
- * flotando sobre el fondo en vez de sangrar como banda, con la ola mudada
- * adentro como textura de contorno. Por eso acá tampoco hay `WaveDivider`: la
- * ola no une dos bandas porque abajo no hay una segunda banda, hay una tarjeta.
+ * Misma gramática que `Footer` — tarjeta de 16px con la ola mudada adentro
+ * como textura de contorno. Por eso acá tampoco hay `WaveDivider`: la ola no
+ * une dos bandas porque abajo no hay una segunda banda, hay una tarjeta. La
+ * sombra no la lleva la losa sino la placa blanca en la que `ContactUs` la
+ * monta: dos sombras anidadas leen como una tarjeta pegada sobre otra.
  *
  * Los campos son renglones, no cajas. En reposo una regla `white/45` —el único
  * límite del control, así que tiene que llegar al 3:1 de contraste no textual— y
@@ -139,7 +140,7 @@ export function IntakeForm() {
   }
 
   return (
-    <div className="relative isolate overflow-hidden rounded-2xl bg-navy text-white shadow-card">
+    <div className="relative isolate overflow-hidden rounded-2xl bg-navy text-white">
       <WaveTexture />
 
       {/* mode="wait" mantiene la altura estable durante el cruce. */}
@@ -258,9 +259,7 @@ export function IntakeForm() {
                 type="submit"
                 disabled={sending}
                 className="relative overflow-hidden bg-white text-navy font-bold text-base px-8 py-3.5 rounded-full disabled:cursor-not-allowed flex-shrink-0"
-                whileHover={sending ? undefined : { scale: 1.03 }}
-                whileTap={sending ? undefined : { scale: 0.97 }}
-                transition={SPRING.press}
+                                transition={SPRING.press}
               >
                 {/* La espera es real —un envío contra un tercero— así que se
                     declara con un barrido y no con un botón atenuado. */}

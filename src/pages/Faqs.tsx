@@ -1,8 +1,11 @@
+import { useRef } from 'react'
+import { motion, useScroll, useTransform } from 'framer-motion'
 import { MaskReveal } from '../components/effects/MaskReveal'
 import { BlurReveal } from '../components/effects/BlurReveal'
 import { Disclosure } from '../components/ui/Disclosure'
 import { CtaFooter } from '../components/sections/CtaFooter'
 import { Footer } from '../components/layout/Footer'
+import { useReducedMotionSafe } from '../hooks/useReducedMotionSafe'
 import { staggerStep } from '../lib/motion'
 import { COLOR } from '../lib/palette'
 import { PaperGround } from '../components/ui/PaperGround'
@@ -69,22 +72,40 @@ function FaqItem({
 }
 
 export function Faqs() {
+  const reduced = useReducedMotionSafe()
+  const heroRef = useRef<HTMLElement>(null)
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ['start start', 'end start'],
+  })
+  // La misma retirada en capas del home: el título se aleja más rápido que la
+  // página, así la cabecera se despide en vez de subir como una hoja.
+  const headlineY = useTransform(scrollYProgress, [0, 1], [0, -90])
+  const headlineOpacity = useTransform(scrollYProgress, [0, 0.6], [1, 0])
+
   return (
     <div className="bg-white">
-      <section className="relative isolate overflow-hidden pt-24 sm:pt-28 pb-16 px-4 sm:px-6">
+      <section
+        ref={heroRef}
+        className="relative isolate overflow-hidden px-4 pb-20 pt-24 sm:px-6 sm:pb-24 sm:pt-28"
+      >
         <PaperGround />
-        <div className="max-w-3xl mx-auto">
 
-          <div className="text-center mb-10 sm:mb-12">
+        <div className="relative z-10 mx-auto max-w-3xl">
+
+          <motion.div
+            className="mb-10 text-center sm:mb-12"
+            style={reduced ? undefined : { y: headlineY, opacity: headlineOpacity }}
+          >
             <MaskReveal
               as="h1"
-              className="text-navy font-black text-3xl sm:text-4xl md:text-5xl font-alverata leading-tight block"
+              className="font-alverata block text-[clamp(1.5rem,5vw,3.125rem)] font-black leading-[1.06] text-navy"
               stagger={0.04}
               amount={0.2}
             >
               Todo lo que necesitás saber
             </MaskReveal>
-          </div>
+          </motion.div>
 
           {/* The list arrives as a list, but inside a fixed budget: the last row
               starts within 0.28s of the first however many there are. */}

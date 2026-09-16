@@ -43,8 +43,7 @@ export function CtaFooter() {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-full flex items-center justify-center gap-3 bg-navy text-white font-bold text-base sm:text-lg px-5 py-4 rounded-2xl"
-                    whileHover={{ scale: 1.02, boxShadow: SHADOW.navyBloom }}
-                    whileTap={{ scale: 0.97 }}
+                    whileHover={{ boxShadow: SHADOW.navyBloom }}
                     transition={SPRING.press}
                   >
                     ¿Trámite complejo? Hablemos
@@ -64,8 +63,7 @@ export function CtaFooter() {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-full flex items-center justify-center gap-3 bg-white text-navy font-bold text-base sm:text-lg px-5 py-4 rounded-2xl border border-navy/15"
-                    whileHover={{ scale: 1.02, boxShadow: SHADOW.outlinedBloom }}
-                    whileTap={{ scale: 0.97 }}
+                    whileHover={{ boxShadow: SHADOW.outlinedBloom }}
                     transition={SPRING.press}
                   >
                     Agendar consulta en Calendly
