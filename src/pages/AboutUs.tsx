@@ -31,7 +31,7 @@ function Eyebrow({ children }: { children: string }) {
        tintada. Y por la Regla de las Dos Voces, un rótulo estructural
        ("Nuestros pilares") es una afirmación, no una invitación: el coral no
        era suyo. En navy mide 5.05:1 y dice lo que corresponde. */
-    <p className="text-navy/80 font-semibold text-[11px] sm:text-xs tracking-[0.22em] uppercase">
+    <p className="text-navy/80 font-semibold text-sm sm:text-xs tracking-[0.22em] uppercase">
       {children}
     </p>
   )
@@ -337,9 +337,9 @@ export function AboutUs() {
           {/* Sentence case. This is an eight-word sentence, not a label, and the
               system reserves uppercase for the 11–12px micro-label role. */}
           <BlurReveal>
-            <p className="text-navy font-semibold text-base sm:text-lg leading-snug mb-8">
+            <Eyebrow>
               Nuestra forma de trabajo está basada en la siguiente premisa
-            </p>
+            </Eyebrow>
           </BlurReveal>
 
           {/* La premisa es una placa navy, como las del home: una superficie
@@ -349,7 +349,7 @@ export function AboutUs() {
               y a 16px no llega al piso AA. */}
           <BlurReveal delay={0.15}>
             <SpotlightCard
-              className="rounded-2xl bg-navy text-white shadow-card-navy mb-8"
+              className="rounded-2xl bg-navy text-white shadow-card-navy my-8"
               spotlightColor="rgba(255,255,255,0.10)"
               spotlightSize={420}
             >
