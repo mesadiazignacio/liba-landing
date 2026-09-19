@@ -17,7 +17,7 @@ const FAQS = [
   },
   {
     q: '¿Qué documentos necesito para transferir un auto?',
-    a: 'Básicamente:\n• DNI de comprador y vendedor\n• Título y cédula del vehículo.\n• Formulario 08 firmado ante escribano o registro\n• Verificación policial del auto o moto.\nSegún el caso puede haber adicionales que te los detallaremos cuando nos contactás.',
+    a: 'Básicamente:\n• DNI de comprador y vendedor\n• Título y cédula del vehículo.\n• Formulario 08 firmado ante escribano o registro\n• Verificación policial del auto o moto (Según el caso puede haber adicionales que te los detallaremos cuando nos contactás)',
   },
   {
     q: '¿Es necesario que vaya si o si al registro?',
@@ -103,7 +103,7 @@ export function Faqs() {
               stagger={0.04}
               amount={0.2}
             >
-              Todo lo que necesitás saber
+              Información clave que necesitás saber
             </MaskReveal>
           </motion.div>
 
@@ -124,7 +124,7 @@ export function Faqs() {
         </div>
       </section>
 
-      <CtaFooter />
+      <CtaFooter faqs />
       <Footer />
     </div>
   )

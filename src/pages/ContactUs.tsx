@@ -5,6 +5,7 @@ import { BlurReveal } from '../components/effects/BlurReveal'
 import { ScrubText } from '../components/effects/ScrubText'
 import { SpotlightCard } from '../components/effects/SpotlightCard'
 import { IntakeForm } from '../components/sections/IntakeForm'
+import { CtaFooter } from '../components/sections/CtaFooter'
 import { Stage, StageList, StageTrack } from '../components/ui/StageTrack'
 import { WaveDivider } from '../components/ui/WaveDivider'
 import { Footer } from '../components/layout/Footer'
@@ -135,16 +136,19 @@ export function ContactUs() {
   return (
     <div className="bg-white">
 
-      {/* ── 1. FORM ─────────────────────────────────────────────────────── */}
-      {/* La página abre directo en la hoja de ingreso. La banda blush —la
-          reservada para el contacto— arranca desde arriba, detrás de la navbar
-          flotante, así no queda una franja blanca vacía con una ola huérfana.
-          El título pasa a ser el h1 de la ruta y sale de la placa: la placa
-          queda para el formulario, con sombra navy y la luz del puntero sólo
-          ahí. */}
+      {/* ── 1. CANALES ──────────────────────────────────────────────────── */}
+      {/* La página abre con los dos canales directos (WhatsApp y Calendly); el
+          formulario queda debajo para quien prefiere escribir su caso. */}
+      <CtaFooter contact />
+      <WaveDivider fromColor={BAND.white} toColor={BAND.blush} />
+
+      {/* ── 2. FORM ─────────────────────────────────────────────────────── */}
+      {/* La banda blush —la reservada para el contacto— lleva la hoja de
+          ingreso. El título queda fuera de la placa: la placa es para el
+          formulario, con sombra navy y la luz del puntero sólo ahí. */}
       <section
         ref={heroRef}
-        className="relative isolate overflow-hidden bg-paper-blush px-4 pb-14 pt-24 sm:px-6 sm:pb-20 sm:pt-28"
+        className="relative isolate overflow-hidden bg-paper-blush px-4 pb-14 pt-10 sm:px-6 sm:pb-20 sm:pt-14"
       >
         <div className="relative z-10 mx-auto max-w-3xl">
           <motion.div
@@ -152,7 +156,7 @@ export function ContactUs() {
             style={reduced ? undefined : { y: headlineY, opacity: headlineOpacity }}
           >
             <MaskReveal
-              as="h1"
+              as="h2"
               className="font-alverata mb-3 block text-[clamp(1.75rem,5vw,3.125rem)] font-black leading-[1.06] text-navy"
               stagger={0.04}
               amount={0.2}
@@ -179,7 +183,7 @@ export function ContactUs() {
       </section>
       <WaveDivider fromColor={BAND.blush} toColor={BAND.white} />
 
-      {/* ── 2. PROCESS STEPS ────────────────────────────────────────────── */}
+      {/* ── 3. PROCESS STEPS ────────────────────────────────────────────── */}
       <section className="relative isolate overflow-hidden py-14 sm:py-20 px-4 sm:px-6">
         <PaperGround />
         <div className="relative z-10 max-w-3xl mx-auto">
@@ -221,7 +225,7 @@ export function ContactUs() {
         </div>
       </section>
 
-      {/* ── 3. LOCATION ─────────────────────────────────────────────────── */}
+      {/* ── 4. LOCATION ─────────────────────────────────────────────────── */}
       {/* This was the one hard horizontal edge left on the site: white butting
           straight into the blush band with no wave between them. Every other
           band change on every other surface is joined this way. */}
@@ -297,8 +301,7 @@ export function ContactUs() {
 
       {/* ── FOOTER ──────────────────────────────────────────────────────── */}
       {/* Esta página cierra en `paper-blush`, así que la ola del footer sale de
-          ahí. Era una franja de copyright de cinco líneas; ahora es el mismo
-          piso que las otras siete rutas. */}
+          ahí. */}
       <Footer fromColor={BAND.blush} />
 
     </div>

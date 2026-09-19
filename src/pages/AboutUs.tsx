@@ -37,6 +37,13 @@ function Eyebrow({ children }: { children: string }) {
   )
 }
 
+/**
+ * Títulos de «Nuestra misión» y «Nuestros pilares»: el mismo escalón Display
+ * que «Criterio, norma y acompañamiento humano» en el home.
+ */
+const SECTION_TITLE =
+  'font-alverata mb-6 block text-2xl sm:text-3xl md:text-4xl font-black leading-[1.06] text-navy sm:mb-8'
+
 const pillars = [
   {
     title: 'Honestidad',
@@ -76,7 +83,7 @@ const team: TeamMember[] = [
   {
     name: 'Florencia Marina Mesa',
     role: 'Fundadora',
-    bio: 'Mandataria automotor nacional matriculada. Especialista en trámites registrales complejos, devolución de patentes, tramitación segura y atención personalizada. Licenciada en Marketing.',
+    bio: 'Mandataria automotor nacional matriculada. Especialista en trámites registrales complejos, devolución de patentes, tramitación segura y atención personalizada. Licenciada en Marketing y Técnica en Hotelería.',
     initials: 'FM',
     // coral-deep, not coral: these initials are text on a near-white tint of
     // their own colour, and #ed6d92 reaches only ~2.9:1 there.
@@ -85,9 +92,9 @@ const team: TeamMember[] = [
     photoPosition: '50% 18%',
   },
   {
-    name: 'Franco Dimet',
+    name: 'Franco Christ',
     role: 'Co-Fundador',
-    bio: 'Dedicado a la gestión estratégica y gran colaborador operativo. MBA Especializado en Management y Marketing.',
+    bio: 'Dedicado a la gestión estratégica y gran colaborador operativo. MBA en Management y Marketing.',
     initials: 'FD',
     bg: COLOR.navy,
     // La foto original viene muy cerrada: se le extendió la pared a la
@@ -96,9 +103,9 @@ const team: TeamMember[] = [
     photoPosition: '50% 45%',
   },
   {
-    name: 'Mascota',
+    name: 'Albus',
     role: 'Chief Happiness Officer',
-    bio: 'Presente en cada jornada de trabajo con su apoyo, alegría y ladridos. Especialista en calor y combate a clientes.',
+    bio: 'Presente en cada jornada de trabajo con su apoyo, alegría y su pata-pata. Especialista en sinergia de equipo y captura de snacks.',
     initials: '🐾',
     // Outside the palette by intent, and recorded as such in DESIGN.md.
     bg: '#f59e0b',
@@ -288,9 +295,7 @@ export function AboutUs() {
         <PaperGround />
         <div className="max-w-3xl mx-auto text-center">
           <BlurReveal>
-            <div className="mb-3">
-              <Eyebrow>Nuestra misión</Eyebrow>
-            </div>
+            <h2 className={SECTION_TITLE}>Nuestra misión</h2>
           </BlurReveal>
           {/* La misión se enciende palabra por palabra al ritmo del scroll, como
               el manifiesto del home. Sigue en Alverata: el trazo del display se
@@ -309,14 +314,9 @@ export function AboutUs() {
             {/* The eyebrow had two decorative gradient hairlines flanking it —
                 the only place on the site that treatment appears. */}
             <BlurReveal>
-              <div className="mb-4">
-                <Eyebrow>Nuestros pilares</Eyebrow>
-              </div>
-            </BlurReveal>
-            <BlurReveal>
-              <h2 className="text-navy font-black text-2xl sm:text-3xl md:text-4xl leading-tight block font-alverata">
+              <h3 className="text-navy font-black text-2xl sm:text-3xl md:text-4xl leading-tight block font-alverata">
                 ¿Por qué elegir Liba Gestoría?
-              </h2>
+              </h3>
             </BlurReveal>
             <BlurReveal delay={0.12}>
               <p className="text-navy text-sm sm:text-base mt-4 max-w-xl mx-auto">
@@ -366,6 +366,12 @@ export function AboutUs() {
                 </p>
               </div>
             </SpotlightCard>
+          </BlurReveal>
+
+          <BlurReveal delay={0.2}>
+            <p className="text-navy/80 text-base sm:text-lg leading-relaxed max-w-2xl mx-auto">
+              No solo contamos con el conocimiento y las habilidades para realizar el trabajo. También consideramos que la actitud y la pasión son nuestros valores innegociables para resolver tu caso.
+            </p>
           </BlurReveal>
         </div>
       </section>

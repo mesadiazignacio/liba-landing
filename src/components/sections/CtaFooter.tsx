@@ -14,9 +14,35 @@ function CalendlyIcon({ className }: { className?: string }) {
   return <img src="/calendly-logo.png" alt="" className={className} aria-hidden />
 }
 
-export function CtaFooter() {
+interface CtaFooterProps {
+  /** En /faqs: invita a consultar la duda que no está en la lista. */
+  faqs?: boolean
+  /** En /contact-us: la página ya es de contacto, así que pregunta por el canal. */
+  contact?: boolean
+}
+
+function ctaTitle({ faqs, contact }: CtaFooterProps) {
+  if (contact) return '¿Cómo preferís contactarte?'
+  if (faqs) return '¿Tu duda no está acá? Consultanos y te la resolvemos'
+  return '¿Querés trabajar con alguien en quien puedas confiar?'
+}
+
+function ctaWhatsapp({ contact }: CtaFooterProps) {
+  if (contact) return "Comunicate con nosotros"
+  return "¿Trámite complejo? Hablemos"
+}
+
+export function CtaFooter({ faqs = false, contact = false }: CtaFooterProps) {
+  // En /contact-us este bloque abre la página: despeja la navbar flotante y su
+  // título pasa a ser el h1 de la ruta.
+  const Title = contact ? 'h1' : 'h2'
   return (
-    <section id="contacto" className="relative isolate bg-white py-14 sm:py-16 overflow-hidden">
+    <section
+      id="contacto"
+      className={`relative isolate bg-white overflow-hidden ${
+        contact ? 'pt-24 pb-14 sm:pt-28 sm:pb-16' : 'py-14 sm:py-16'
+      }`}
+    >
       <PaperGround />
 
       <div className="relative max-w-4xl mx-auto px-4 sm:px-6 text-center">
@@ -26,9 +52,9 @@ export function CtaFooter() {
             the Display step from DESIGN.md rather than the undocumented 2.6rem it
             had been hand-typing alongside two other surfaces. */}
         <BlurReveal amount={0.3}>
-          <h2 className="text-navy font-black text-[clamp(1.5rem,5vw,3.125rem)] leading-tight mb-10 block font-alverata">
-            ¿Querés trabajar con alguien en quien puedas confiar?
-          </h2>
+          <Title className="text-navy font-black text-[clamp(1.5rem,5vw,3.125rem)] leading-tight mb-10 block font-alverata">
+            {ctaTitle({ faqs, contact })}
+          </Title>
         </BlurReveal>
 
         <BlurReveal delay={0.12}>
@@ -46,7 +72,7 @@ export function CtaFooter() {
                     whileHover={{ boxShadow: SHADOW.navyBloom }}
                     transition={SPRING.press}
                   >
-                    ¿Trámite complejo? Hablemos
+                    {ctaWhatsapp({ faqs, contact })}
                     <WhatsAppIcon className="w-6 h-6 flex-shrink-0" />
                   </motion.a>
                 </MagneticButton>

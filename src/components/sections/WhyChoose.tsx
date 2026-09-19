@@ -5,7 +5,7 @@
    as a ruled two-column list. Same copy, same palette, same faces — the only thing
    that changed is what outranks what. */
 
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import { motion, useScroll, useTransform, type Variants } from 'framer-motion'
 import { BlurReveal } from '../effects/BlurReveal'
 import { ScrubText } from '../effects/ScrubText'
@@ -14,6 +14,7 @@ import { SpotlightCard } from '../effects/SpotlightCard'
 import { cardVariant } from '../../lib/animations'
 import { DUR, EASE, staggerStep } from '../../lib/motion'
 import { features } from '../../data/features'
+import { SHADOW } from '../../lib/shadows'
 import { PaperGround } from '../ui/PaperGround'
 import { useReducedMotionSafe } from '../../hooks/useReducedMotionSafe'
 
@@ -33,8 +34,19 @@ const accentVariant: Variants = {
   visible: { scaleX: 1, transition: { duration: DUR.entrance, ease: EASE.out, delay: 0.25 } },
 }
 
+/** Los cinco ítems comparten un único fondo navy: el que tiene el puntero.
+ *  Arranca en el panel principal y, como en «¿Qué gestión necesitás
+ *  realizar?», no se resetea al salir: queda en lo último que se miró. */
+const RESTING = 0
+
+/** Transición de color del texto, al mismo ritmo que el barrido del fondo. */
+const TEXT_FADE = 'transition-colors duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none'
+
 export function WhyChoose() {
   const reduced = useReducedMotionSafe()
+  const [active, setActive] = useState(RESTING)
+  const leadActive = active === 0
+  const fillTransition = reduced ? { duration: 0 } : { duration: DUR.layout, ease: EASE.out }
 
   // El panel se asienta con el scroll: entra apenas más chico y hundido, y
   // llega a su tamaño cuando su centro alcanza la zona de lectura. Ligado al
@@ -65,10 +77,22 @@ export function WhyChoose() {
         <motion.div
           ref={panelRef}
           style={reduced ? undefined : { scale: panelScale, y: panelY }}
+          onMouseEnter={() => setActive(0)}
         >
-        <BlurReveal>
+        <BlurReveal className="relative">
+          {/* El fondo navy vive detrás de la placa y se barre desde la
+              izquierda cuando el panel es el activo; si no, queda el filete. */}
+          <span aria-hidden className="pointer-events-none absolute inset-0 rounded-2xl border border-navy/10" />
+          <motion.span
+            aria-hidden
+            className="pointer-events-none absolute inset-0 origin-left rounded-2xl bg-navy"
+            initial={false}
+            animate={{ scaleX: leadActive ? 1 : 0, opacity: leadActive ? 1 : 0.6 }}
+            transition={fillTransition}
+            style={{ boxShadow: leadActive ? SHADOW.cardNavy : 'none' }}
+          />
           <SpotlightCard
-            className="rounded-2xl bg-navy shadow-card-navy"
+            className="rounded-2xl"
             spotlightColor="rgba(255,255,255,0.10)"
             spotlightSize={420}
           >
@@ -99,7 +123,7 @@ export function WhyChoose() {
                 whileInView={reduced ? undefined : 'visible'}
                 viewport={{ once: true, amount: 0.6 }}
               >
-                <h3 className="text-white font-black font-alverata text-xl sm:text-2xl md:text-3xl leading-[1.06] sm:leading-[1.06] md:leading-[1.06]">
+                <h3 className={`${leadActive ? 'text-white' : 'text-navy'} ${TEXT_FADE} font-black font-alverata text-xl sm:text-2xl md:text-3xl leading-[1.06] sm:leading-[1.06] md:leading-[1.06]`}>
                   {lead.title}
                 </h3>
                 <motion.span
@@ -118,7 +142,7 @@ export function WhyChoose() {
                   del scroll, el mismo gesto que el manifiesto del home. */}
               <ScrubText
                 from={0.25}
-                className="md:col-span-7 md:-mt-[7px] text-white/85 text-[15px] sm:text-lg leading-relaxed"
+                className={`md:col-span-7 md:-mt-[7px] ${leadActive ? 'text-white/85' : 'text-navy/80'} ${TEXT_FADE} text-[15px] sm:text-lg leading-relaxed`}
               >
                 {lead.description}
               </ScrubText>
@@ -134,10 +158,13 @@ export function WhyChoose() {
           className="mt-10 sm:mt-12 grid grid-cols-1 sm:grid-cols-2 gap-x-10 lg:gap-x-14"
           staggerDelay={staggerStep(rest.length)}
         >
-          {rest.map((feature, i) => (
+          {rest.map((feature, i) => {
+            const isActive = active === i + 1
+            return (
             <motion.div
               key={feature.title}
               variants={cardVariant}
+              onMouseEnter={() => setActive(i + 1)}
               // navy/10, which is what DESIGN.md prescribes for a hairline on a
               // light ground. `border-cool` is documented but has no Tailwind
               // token, so a `border-border-cool` class draws nothing.
@@ -146,29 +173,35 @@ export function WhyChoose() {
                 i >= rest.length - 2 ? 'sm:border-b' : ''
               } ${i === rest.length - 1 ? 'border-b' : ''} border-navy/10`}
             >
-              {/* La regla superior, trazada al entrar. Encima, un tramo coral
-                  que la recorre al pasar el puntero: el único hover de la
-                  lista, y dice "este es el que estás leyendo". */}
+              {/* La regla superior, trazada al entrar. */}
               <motion.span
                 aria-hidden
                 variants={ruleVariant}
                 className="absolute inset-x-0 top-0 h-px origin-left bg-navy/10"
               />
-              <span
+              {/* El mismo fondo navy del panel, barrido desde la izquierda cuando
+                  este ítem es el activo. Sobresale a los lados para leer como
+                  placa y no como renglón resaltado. */}
+              <motion.span
                 aria-hidden
-                className="absolute left-0 top-0 h-[2px] w-full origin-left scale-x-0 bg-coral transition-transform duration-500 ease-out group-hover:scale-x-100 motion-reduce:transition-none"
+                className="pointer-events-none absolute -inset-x-3 inset-y-0 origin-left rounded-2xl bg-navy sm:-inset-x-4"
+                initial={false}
+                animate={{ scaleX: isActive ? 1 : 0, opacity: isActive ? 1 : 0.6 }}
+                transition={fillTransition}
+                style={{ boxShadow: isActive ? SHADOW.cardNavy : 'none' }}
               />
-              <h3 className="text-navy font-bold text-[1.0625rem] sm:text-xl leading-snug mb-2 transition-transform duration-300 ease-out group-hover:translate-x-1.5 motion-reduce:transition-none motion-reduce:group-hover:translate-x-0">
+              <h3 className={`relative ${isActive ? 'text-white translate-x-1.5' : 'text-navy'} transition-[color,transform] duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none font-bold text-[1.0625rem] sm:text-xl leading-snug mb-2 motion-reduce:translate-x-0`}>
                 {feature.title}
               </h3>
               {/* `/80`, no `/70`: medido, `navy/70` da 3.98:1 sobre blanco a
                   15px — bajo el piso AA de 4.5. `/80` mide 5.05:1 y la lista
                   sigue leyéndose un escalón por debajo de su título. */}
-              <p className="text-navy/80 text-sm sm:text-[15px] leading-relaxed">
+              <p className={`relative ${isActive ? 'text-white/85' : 'text-navy/80'} ${TEXT_FADE} text-sm sm:text-[15px] leading-relaxed`}>
                 {feature.description}
               </p>
             </motion.div>
-          ))}
+            )
+          })}
         </StaggerChildren>
       </div>
     </section>

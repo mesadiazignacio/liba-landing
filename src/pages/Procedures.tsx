@@ -34,7 +34,7 @@ const HERO_IMAGE: string | null = null
 // ── Tone helpers ─────────────────────────────────────────────────────────────
 
 const TONE = {
-  navy: { band: COLOR.paperCool, bandText: 'text-navy', card: COLOR.paperCool },
+  navy: { band: COLOR.navy, bandText: 'text-white', card: COLOR.paperCool },
   coral: { band: COLOR.coralDeep, bandText: 'text-white', card: COLOR.paperBlush },
 } as const
 

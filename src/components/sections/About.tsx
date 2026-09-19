@@ -24,9 +24,10 @@ export function About() {
 
       <div className="relative z-10 mx-auto max-w-4xl text-center">
         <BlurReveal amount={0.3}>
-          {/* Rótulo de sección, en la misma forma que «Nuestra misión» en Sobre
-              LIBA: la afirmación grande la llevan los párrafos de abajo. */}
-          <h2 className="mb-3 text-[11px] font-semibold uppercase tracking-[0.22em] text-navy/80 sm:text-xs">
+          {/* Título de sección en el escalón Display, un paso por encima de los
+              párrafos de abajo. «Nuestra misión» y «Nuestros pilares» en Sobre
+              LIBA usan este mismo tamaño. */}
+          <h2 className="font-alverata mb-8 block text-2xl sm:text-3xl md:text-4xl font-black leading-[1.06] text-navy sm:mb-10">
             Criterio, norma y acompañamiento humano.
           </h2>
         </BlurReveal>
