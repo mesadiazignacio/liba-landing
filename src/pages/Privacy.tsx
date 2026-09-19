@@ -33,7 +33,7 @@ const HANDLING = [
   },
   {
     title: 'Seguimiento y publicidad',
-    body: 'Este sitio no tiene analítica, ni píxeles publicitarios, ni cookies propias de seguimiento. El video del inicio se sirve desde YouTube y el mapa de Contacto desde OpenStreetMap, así que esos dos recuadros sí cargan contenido de terceros.',
+    body: 'Este sitio no tiene analítica, ni píxeles publicitarios, ni cookies propias de seguimiento. El mapa de Contacto se sirve desde OpenStreetMap, así que ese recuadro sí carga contenido de terceros.',
   },
   {
     title: 'La documentación de tu trámite',

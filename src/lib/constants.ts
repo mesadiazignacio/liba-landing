@@ -1,5 +1,4 @@
 const _whatsapp = import.meta.env.VITE_WHATSAPP_NUMBER as string
-const _ytUrl = import.meta.env.VITE_YOUTUBE_EMBED_URL as string
 
 export const WHATSAPP_NUMBER = _whatsapp
 export const WHATSAPP_URL = `https://wa.me/${_whatsapp}?text=Hola%2C%20quiero%20consultar%20sobre%20un%20tr%C3%A1mite`
@@ -14,7 +13,6 @@ export function whatsappUrlFor(subject: string): string {
     `Hola, quiero consultar sobre ${subject.charAt(0).toLowerCase()}${subject.slice(1)}`,
   )}`
 }
-export const YOUTUBE_EMBED_URL = _ytUrl.replace('youtube.com/watch?v=', 'youtube.com/embed/')
 export const CALENDLY_URL = import.meta.env.VITE_CALENDLY_URL as string
 
 /**

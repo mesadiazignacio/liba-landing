@@ -10,7 +10,7 @@ import { useReducedMotionSafe } from '../../hooks/useReducedMotionSafe'
 import { useMediaQuery } from '../../hooks/useMediaQuery'
 import { DUR, EASE, SPRING, staggerStep } from '../../lib/motion'
 import { SHADOW } from '../../lib/shadows'
-import { YOUTUBE_EMBED_URL, WHATSAPP_URL, STATS } from '../../lib/constants'
+import { WHATSAPP_URL, STATS } from '../../lib/constants'
 import { PaperGround } from '../ui/PaperGround'
 
 /**
@@ -109,13 +109,17 @@ export function Hero() {
             transition={{ duration: DUR.state, ease: EASE.out }}
           >
             <div className="relative rounded-2xl overflow-hidden" style={{ aspectRatio: '16/9' }}>
-              <iframe
-                src={YOUTUBE_EMBED_URL}
+              {/* Servido desde /public: 1080p H.264 con faststart, así arranca
+                  sin bajar el archivo entero. `preload="metadata"` evita que
+                  los ~9 MB se descarguen hasta que alguien le da play. */}
+              <video
+                src="/video/liba-intro.mp4"
+                poster="/video/liba-intro-poster.jpg"
                 title="LIBA Gestoría del Automotor"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-                loading="lazy"
-                className="absolute inset-0 w-full h-full"
+                controls
+                playsInline
+                preload="metadata"
+                className="absolute inset-0 w-full h-full object-cover bg-navy"
               />
             </div>
           </motion.div>

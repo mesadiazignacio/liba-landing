@@ -71,7 +71,8 @@ The connective tissue is proactive notification: the client hears about a proble
 - The five differentiators in `src/data/features.ts` are LIBA's own stated positioning.
 
 **Placeholder — must be replaced, never presented as finished:**
-- The hero video (`VITE_YOUTUBE_EMBED_URL`) is a stand-in, not a real LIBA production. It must not be described in copy as a brand film or client testimonial video until a real one exists. Same for the WhatsApp number if the env value is still a test line.
+- The hero video (`public/video/liba-intro.mp4`) is LIBA's official intro, with Franco on camera.
+- The WhatsApp number must not be presented as final if the env value is still a test line.
 
 **Absences future work must not fabricate:** no press coverage, no case studies, no client or partner logos, no pricing or fee schedule, no matrícula or certification numbers, no team bios, headshots, or headcount, no founding year or years-in-business claim, no review count or aggregate star rating beyond the six real testimonials, and no turnaround guarantee beyond the confirmed 48 hs average.
 
